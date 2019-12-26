@@ -8,7 +8,6 @@ from disp import dispMgr
 import matplotlib.pyplot as plt
 import sys
 from sklearn.feature_extraction import image
-from scipy.ndimage import gaussian_filter
 from cv2.ximgproc import guidedFilter
 from optimizer import *
 from refiner import *
@@ -18,7 +17,8 @@ parser = argparse.ArgumentParser(description='Disparity Estimation')
 parser.add_argument('--input-left', default='../../data/Synthetic/TL3.png', type=str, help='input left image')
 parser.add_argument('--input-right', default='../../data/Synthetic/TR3.png', type=str, help='input right image')
 parser.add_argument('--output', default='./TL3.pfm', type=str, help='left disparity map')
-parser.add_argument("--GT")
+parser.add_argument('--GT')
+parser.add_argument('--max_disp', default=60, type=int, help='maximum disparity possible')
 
 parser = parse_from_optimizer(parser)
 parser = parse_from_refiner(parser)
@@ -40,8 +40,9 @@ def main():
         GT = readPFM(args.GT)
         error = cal_avgerr(GT,disp)
         print("Error is:", error)
-        with open("log_error.txt","w") as f:
-            f.write(error)
+        # append error to log_error.txt
+        with open("log_error.txt","a") as f:
+            f.write(str(error)+'\n')
         
     #cv2.imwrite('outlier/' + os.path.split(args.output)[1][:-3] + 'png', outlier)
     toc = time.time()

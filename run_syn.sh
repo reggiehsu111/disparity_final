@@ -5,8 +5,10 @@ SYN_DIR="Synthetic/"
 OUT_DIR="Output/"
 LOG_DIR="log/"
 LOGFILE="log.txt"
+LOGERROR="log_error.txt"
 rm $LOGFILE
 touch $LOGFILE
+rm $LOGERROR
 for i in {0..9}
 	do
 		LEFT_PATH="${DATA_DIR}${SYN_DIR}TL$i.png"
@@ -17,3 +19,4 @@ for i in {0..9}
 		echo -e "\n\nlogging photo $i ...\n" | tee -a $LOGFILE
 		python3 main.py --input-left $LEFT_PATH --input-right $RIGHT_PATH --output $OUT_PATH --GT $GT_PATH | tee -a $LOGFILE
 	done
+python3 errors.py | tee -a $LOGFILE

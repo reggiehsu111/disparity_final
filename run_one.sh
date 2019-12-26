@@ -10,4 +10,5 @@ OUT_PATH="${DATA_DIR}${OUT_DIR}out$i.pfm"
 touch $OUT_PATH
 python3 main.py --input-left $LEFT_PATH --input-right $RIGHT_PATH --output $OUT_PATH --GT $GT_PATH
 # Visualize the result
-. vis1.sh $i
+# Uncomment to visualize result
+#. vis1.sh $i
