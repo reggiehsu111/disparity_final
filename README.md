@@ -1,4 +1,17 @@
 # CV Final Project Stereo Matching
+## File Placements:
+```
+.
+    ├── data/                        # Place the data directory here
+          ├── Output/                # Output directory
+          ├── Real/                  # Real images
+          └── Synthetic/             # Synthetic images
+    ├── log/                         # Logging information
+          ├── log.txt                # Log when running `run_syn.h`
+          ├── log_error.txt          # Log image errors to compute average
+          └── arguments.txt          # Backup for arguments
+    └── ...
+```
 
 ## Development Notes
 - Follow the notes when developing
