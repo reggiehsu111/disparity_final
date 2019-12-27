@@ -27,7 +27,7 @@ class refiner():
             # Write you method here
             h, w = D_l.shape
             # Change this line of code
-            out_img = np.array((h,w))
+            out_img = np.zeros((h,w)).astype(np.float32)
         assert(len(out_img.shape)==2)
         return out_img
 

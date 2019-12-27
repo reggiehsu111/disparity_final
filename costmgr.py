@@ -25,8 +25,7 @@ class costMgr():
             # Write you method here
             h, w, ch = in_img_l.shape
             # Change this line of code
-            out_img_l, out_img_r = np.zeros((self.max_disp, h, w)), np.zeros((self.max_disp, h, w))
-
+            out_img_l, out_img_r = np.zeros((self.max_disp+1, h, w)), np.zeros((self.max_disp+1, h, w))
         assert(out_img_l.shape[0] == self.args.max_disp+1 and out_img_r.shape[0] == self.args.max_disp+1)
         return out_img_l, out_img_r
 

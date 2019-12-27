@@ -4,11 +4,11 @@ import cv2
 import time
 import os.path
 from util import writePFM, readPFM, cal_avgerr
-from disp import dispMgr
 import matplotlib.pyplot as plt
 import sys
 from sklearn.feature_extraction import image
 from cv2.ximgproc import guidedFilter
+from disp import *
 from optimizer import *
 from refiner import *
 from costmgr import *
@@ -20,6 +20,7 @@ parser.add_argument('--output', default='./TL3.pfm', type=str, help='left dispar
 parser.add_argument('--GT')
 parser.add_argument('--max_disp', default=60, type=int, help='maximum disparity possible')
 
+parser = parse_from_disp(parser)
 parser = parse_from_optimizer(parser)
 parser = parse_from_refiner(parser)
 parser = parse_from_costmgr(parser)

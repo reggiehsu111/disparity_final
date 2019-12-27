@@ -24,7 +24,7 @@ class optimizer():
             # Write you method here
             _, h, w = in_img.shape
             # Change this line of code
-            out_img = np.array((h, w))
+            out_img = np.zeros((h, w))
         assert(out_img.shape == in_img.shape[1:])
         return out_img
 
