@@ -12,6 +12,7 @@ output : data/Output/out0.pfm
 GT : data/Synthetic/TLD0.pfm
 max_disp : 60
 verbose : False
+config : False
 CM_base : True
 OP_base : True
 RF_base : True
@@ -20,7 +21,7 @@ RF_base : True
 data/Output/out0.pfm
 Compute disparity for data/Synthetic/TL0.png
 Error is: 9.767039
-Elapsed time: 1.740576 sec.
+Elapsed time: 1.873258 sec.
 
 
 logging photo 1 ...
@@ -35,6 +36,7 @@ output : data/Output/out1.pfm
 GT : data/Synthetic/TLD1.pfm
 max_disp : 60
 verbose : False
+config : False
 CM_base : True
 OP_base : True
 RF_base : True
@@ -43,7 +45,7 @@ RF_base : True
 data/Output/out1.pfm
 Compute disparity for data/Synthetic/TL1.png
 Error is: 23.21984
-Elapsed time: 1.693278 sec.
+Elapsed time: 1.721147 sec.
 
 
 logging photo 2 ...
@@ -58,6 +60,7 @@ output : data/Output/out2.pfm
 GT : data/Synthetic/TLD2.pfm
 max_disp : 60
 verbose : False
+config : False
 CM_base : True
 OP_base : True
 RF_base : True
@@ -66,7 +69,7 @@ RF_base : True
 data/Output/out2.pfm
 Compute disparity for data/Synthetic/TL2.png
 Error is: 10.009524
-Elapsed time: 1.691844 sec.
+Elapsed time: 1.721313 sec.
 
 
 logging photo 3 ...
@@ -81,6 +84,7 @@ output : data/Output/out3.pfm
 GT : data/Synthetic/TLD3.pfm
 max_disp : 60
 verbose : False
+config : False
 CM_base : True
 OP_base : True
 RF_base : True
@@ -89,7 +93,7 @@ RF_base : True
 data/Output/out3.pfm
 Compute disparity for data/Synthetic/TL3.png
 Error is: 18.128567
-Elapsed time: 1.735219 sec.
+Elapsed time: 1.781158 sec.
 
 
 logging photo 4 ...
@@ -104,6 +108,7 @@ output : data/Output/out4.pfm
 GT : data/Synthetic/TLD4.pfm
 max_disp : 60
 verbose : False
+config : False
 CM_base : True
 OP_base : True
 RF_base : True
@@ -112,7 +117,7 @@ RF_base : True
 data/Output/out4.pfm
 Compute disparity for data/Synthetic/TL4.png
 Error is: 8.731025
-Elapsed time: 1.807422 sec.
+Elapsed time: 1.826663 sec.
 
 
 logging photo 5 ...
@@ -127,6 +132,7 @@ output : data/Output/out5.pfm
 GT : data/Synthetic/TLD5.pfm
 max_disp : 60
 verbose : False
+config : False
 CM_base : True
 OP_base : True
 RF_base : True
@@ -135,7 +141,7 @@ RF_base : True
 data/Output/out5.pfm
 Compute disparity for data/Synthetic/TL5.png
 Error is: 4.6959763
-Elapsed time: 1.704545 sec.
+Elapsed time: 1.751186 sec.
 
 
 logging photo 6 ...
@@ -150,6 +156,7 @@ output : data/Output/out6.pfm
 GT : data/Synthetic/TLD6.pfm
 max_disp : 60
 verbose : False
+config : False
 CM_base : True
 OP_base : True
 RF_base : True
@@ -158,7 +165,7 @@ RF_base : True
 data/Output/out6.pfm
 Compute disparity for data/Synthetic/TL6.png
 Error is: 5.7545714
-Elapsed time: 1.727376 sec.
+Elapsed time: 1.822905 sec.
 
 
 logging photo 7 ...
@@ -173,6 +180,7 @@ output : data/Output/out7.pfm
 GT : data/Synthetic/TLD7.pfm
 max_disp : 60
 verbose : False
+config : False
 CM_base : True
 OP_base : True
 RF_base : True
@@ -181,7 +189,7 @@ RF_base : True
 data/Output/out7.pfm
 Compute disparity for data/Synthetic/TL7.png
 Error is: 5.4064665
-Elapsed time: 1.722974 sec.
+Elapsed time: 1.776470 sec.
 
 
 logging photo 8 ...
@@ -196,6 +204,7 @@ output : data/Output/out8.pfm
 GT : data/Synthetic/TLD8.pfm
 max_disp : 60
 verbose : False
+config : False
 CM_base : True
 OP_base : True
 RF_base : True
@@ -204,7 +213,7 @@ RF_base : True
 data/Output/out8.pfm
 Compute disparity for data/Synthetic/TL8.png
 Error is: 6.239493
-Elapsed time: 1.731148 sec.
+Elapsed time: 1.761003 sec.
 
 
 logging photo 9 ...
@@ -219,6 +228,7 @@ output : data/Output/out9.pfm
 GT : data/Synthetic/TLD9.pfm
 max_disp : 60
 verbose : False
+config : False
 CM_base : True
 OP_base : True
 RF_base : True
@@ -227,7 +237,7 @@ RF_base : True
 data/Output/out9.pfm
 Compute disparity for data/Synthetic/TL9.png
 Error is: 15.030687
-Elapsed time: 1.739728 sec.
+Elapsed time: 1.740473 sec.
 ###########################
 
 Average Error: 10.69831892 

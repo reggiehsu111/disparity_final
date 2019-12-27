@@ -2,14 +2,14 @@ import numpy as np
 import cv2
 import time
 import os.path
-from util import writePFM, readPFM, cal_avgerr
+from utils.util import writePFM, readPFM, cal_avgerr
 import sys
 import json
-from disp import *
-from optimizer import *
-from refiner import *
-from costmgr import *
-from parser import ConfigParser
+from MGR.disp import *
+from MGR.optimizer import *
+from MGR.refiner import *
+from MGR.costmgr import *
+from utils.parser import ConfigParser
 
 # parser = argparse.ArgumentParser(description='Disparity Estimation')
 parser = ConfigParser(description='Disparity Estimation')

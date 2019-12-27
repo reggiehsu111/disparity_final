@@ -1,6 +1,6 @@
-from optimizer import *
-from refiner import *
-from costmgr import *
+from .optimizer import *
+from .refiner import *
+from .costmgr import *
 import time
 
 def parse_from_disp(parser):
