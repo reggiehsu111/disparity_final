@@ -60,3 +60,8 @@ class refiner():
         labels_filtered = weightedMedianFilter(joint=Il.astype(np.uint8), src=labels.astype(np.uint8), r=32, sigma=15)
         labels = np.where(check_idx, labels, labels_filtered)
         return labels.astype(np.float32)
+
+    def print_v(self, message):
+        if self.args.verbose:
+            print(message)
+        return

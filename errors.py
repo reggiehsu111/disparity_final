@@ -1,4 +1,4 @@
-with open("log_error.txt", "r") as f:
+with open("log/log_error.txt", "r") as f:
 	data = f.read().splitlines()
 data = [float(x) for x in data]
 sum = 0

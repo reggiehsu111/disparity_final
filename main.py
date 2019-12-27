@@ -4,21 +4,22 @@ import cv2
 import time
 import os.path
 from util import writePFM, readPFM, cal_avgerr
-import matplotlib.pyplot as plt
 import sys
-from sklearn.feature_extraction import image
-from cv2.ximgproc import guidedFilter
+import json
 from disp import *
 from optimizer import *
 from refiner import *
 from costmgr import *
+from parser import ConfigParser
 
-parser = argparse.ArgumentParser(description='Disparity Estimation')
+# parser = argparse.ArgumentParser(description='Disparity Estimation')
+parser = ConfigParser(description='Disparity Estimation')
 parser.add_argument('--input-left', default='../../data/Synthetic/TL3.png', type=str, help='input left image')
 parser.add_argument('--input-right', default='../../data/Synthetic/TR3.png', type=str, help='input right image')
 parser.add_argument('--output', default='./TL3.pfm', type=str, help='left disparity map')
 parser.add_argument('--GT')
 parser.add_argument('--max_disp', default=60, type=int, help='maximum disparity possible')
+parser.add_argument('--verbose', action='store_true', help='specify if you want to print out verbosely')
 
 parser = parse_from_disp(parser)
 parser = parse_from_optimizer(parser)
@@ -28,6 +29,10 @@ parser = parse_from_costmgr(parser)
 def main():
     
     args = parser.parse_args()
+    parser.print_config()
+    parser.write_config('Config.json')
+    with open('log/arguments.txt', 'w') as f:
+        json.dump(args.__dict__, f, indent=2)
 
     print(args.output)
     print('Compute disparity for %s' % args.input_left)
@@ -42,10 +47,10 @@ def main():
         error = cal_avgerr(GT,disp)
         print("Error is:", error)
         # append error to log_error.txt
-        with open("log_error.txt","a") as f:
+        with open("log/log_error.txt","a") as f:
             f.write(str(error)+'\n')
-        
-    #cv2.imwrite('outlier/' + os.path.split(args.output)[1][:-3] + 'png', outlier)
+    
+
     toc = time.time()
     writePFM(args.output, disp)
     print('Elapsed time: %f sec.' % (toc - tic))

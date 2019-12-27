@@ -4,11 +4,12 @@ DATA_DIR="data/"
 SYN_DIR="Synthetic/"
 OUT_DIR="Output/"
 LOG_DIR="log/"
-LOGFILE="log.txt"
-LOGERROR="log_error.txt"
+LOGFILE="${LOG_DIR}log.txt"
+LOGERROR="${LOG_DIR}log_error.txt"
 rm $LOGFILE
 touch $LOGFILE
 rm $LOGERROR
+touch $LOGERROR
 for i in {0..9}
 	do
 		LEFT_PATH="${DATA_DIR}${SYN_DIR}TL$i.png"
@@ -17,6 +18,6 @@ for i in {0..9}
 		OUT_PATH="${DATA_DIR}${OUT_DIR}out$i.pfm"
 		touch $OUT_PATH
 		echo -e "\n\nlogging photo $i ...\n" | tee -a $LOGFILE
-		python3 main.py --input-left $LEFT_PATH --input-right $RIGHT_PATH --output $OUT_PATH --GT $GT_PATH | tee -a $LOGFILE
+		python3 main.py --input-left $LEFT_PATH --input-right $RIGHT_PATH --output $OUT_PATH --GT $GT_PATH --CM_base --OP_base --RF_base | tee -a $LOGFILE
 	done
 python3 errors.py | tee -a $LOGFILE
