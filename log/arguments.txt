@@ -1,10 +1,11 @@
 {
-  "input_left": "data/Synthetic/TL9.png",
-  "input_right": "data/Synthetic/TR9.png",
-  "output": "data/Output/out9.pfm",
-  "GT": "data/Synthetic/TLD9.pfm",
+  "input_left": "data/Synthetic/TL0.png",
+  "input_right": "data/Synthetic/TR0.png",
+  "output": "data/Output/out0.pfm",
+  "GT": "data/Synthetic/TLD0.pfm",
   "max_disp": 60,
   "verbose": false,
+  "config": false,
   "CM_base": true,
   "OP_base": true,
   "RF_base": true

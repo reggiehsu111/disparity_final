@@ -1,5 +1,4 @@
 import numpy as np
-import argparse
 import cv2
 import time
 import os.path
@@ -20,6 +19,7 @@ parser.add_argument('--output', default='./TL3.pfm', type=str, help='left dispar
 parser.add_argument('--GT')
 parser.add_argument('--max_disp', default=60, type=int, help='maximum disparity possible')
 parser.add_argument('--verbose', action='store_true', help='specify if you want to print out verbosely')
+parser.add_argument('-c','--config', action='store_true', help='specify if you want to read additional arguments from config')
 
 parser = parse_from_disp(parser)
 parser = parse_from_optimizer(parser)
@@ -27,8 +27,11 @@ parser = parse_from_refiner(parser)
 parser = parse_from_costmgr(parser)
 
 def main():
-    
+
     args = parser.parse_args()
+    # If reading from config:
+    if args.config:
+        parser.read_config('Config.json')
     parser.print_config()
     parser.write_config('Config.json')
     with open('log/arguments.txt', 'w') as f:

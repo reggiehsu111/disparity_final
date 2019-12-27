@@ -10,14 +10,19 @@ class ConfigParser(argparse.ArgumentParser):
 		return
 
 	def parse_args(self):
-		ret = super().parse_args()
-		self.conf_dict = vars(ret)
-		return ret
+		self.args = super().parse_args()
+		self.conf_dict = vars(self.args)
+		return self.args
 
 	def read_config(self, in_config_path):
+		print("Reading from config...")
 		with open(in_config_path, 'r') as f:
-			self.conf_dict = json.load(f)
-		return
+			temp_dict = json.load(f)
+		for k in temp_dict:
+			self.conf_dict[k] = temp_dict[k]
+		self.args.__dict__.update(self.conf_dict)
+		return self.args
+
 
 	def write_config(self, out_config_path):
 		with open(out_config_path, 'w') as f:
