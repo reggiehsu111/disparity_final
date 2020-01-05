@@ -1,5 +1,6 @@
 import numpy as np
 from cv2.ximgproc import weightedMedianFilter
+import cv2
 
 def parse_from_refiner(parser):
     return parser
@@ -9,6 +10,7 @@ class refiner():
     # Refine the disparity map
     def __init__(self, args):
         self.args = args
+        self.max_disp = args.max_disp
         return
 
     def run(self, D_l, D_r, *args, base=False):
