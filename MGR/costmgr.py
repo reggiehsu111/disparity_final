@@ -10,7 +10,14 @@ import pickle
 
 def parse_from_costmgr(parser):
     parser.add_argument('--arms_th', default=50, type=float, help='the threshold for computing arms')
+    parser.add_argument('--log_disp', action='store_true', help='Specify to log all levels of disparity map')
     return parser
+
+def show_costs(matrix):
+    print("Writing out...")
+    for x in tqdm(range(matrix.shape[0])):
+        cv2.imwrite("log/disps/"+str(x)+".jpg", matrix[x])
+    return
 
 def hammingDistance(n1, n2) : 
   
@@ -107,6 +114,8 @@ class costMgrBase:
             tmp_r = np.hstack((tmp, np.full((h, x), padding)))
             tmp_r = np.clip(tmp_r, 0, 255)
             cost_matrix_right[x] = tmp_r
+        if self.args.log_disp:
+            show_costs(cost_matrix_left)
 
         return cost_matrix_left, cost_matrix_right
 
@@ -125,8 +134,9 @@ class costMgrBase:
         Ir = cv2.GaussianBlur(Ir, (3,3), 2)
         # Find pixel pairs
         S = 10
+        nd = 32
         print("Start calculating tau and weights...")
-        pairs = get_sample_pairs(5, 32)
+        pairs = get_sample_pairs(S, nd)
         for y in tqdm(range(Il.shape[0])):
             for x in range(Il.shape[1]):
                 tau = 0
@@ -135,7 +145,7 @@ class costMgrBase:
                     # Ignore points that are out of boundary
                     if y+p[0] < 0 or y+p[0] > h-1 or  x+p[1] < 0 or x+p[1] > w-1 or y+p[2] < 0 or y+p[2] > h-1 or  x+p[3] < 0 or x+p[3] > w-1:
                         tau = (tau<<1)
-                        weights.append(1)
+                        weights.append(1000)
                     else:
                         tau = (tau<<1) + binary_mask_tau(Il[y+p[0], x+p[1]], Il[y+p[2], x+p[3]])
                         weights.append(max(np.sum(np.abs(Il_lab[y,x] - Il_lab[y+p[0], x+p[1]])), np.sum(np.abs(Il_lab[y,x] - Il_lab[y+p[2], x+p[3]]))))
@@ -174,13 +184,15 @@ class costMgrBase:
         padding = 0
         for d in range(self.max_disp+1):
             tmp = np.zeros((h,w-d))
-            tmp = compute_cost(tau_matrix[:, d:w], tau_matrix[:, :w-d], weight_matrix[:, d:w], 32)
+            tmp = compute_cost(tau_matrix[:, d:w], tau_matrix[:, :w-d], weight_matrix[:, d:w], nd)
             tmp_l = np.hstack((np.full((h, d), padding), tmp))
             tmp_l = np.clip(tmp_l, 0, 255)
-            cost_matrix_left[d] = tmp_l
+            cost_matrix_left[d] = tmp_l*10
             tmp_r = np.hstack((tmp, np.full((h, d), padding)))
-            tmp_r = np.clip(tmp_r, 0, 255)
+            tmp_r = np.clip(tmp_r, 0, 255)*10
             cost_matrix_right[d] = tmp_r
+        if self.args.log_disp:
+            show_costs(cost_matrix_left)
 
 
 
@@ -407,6 +419,8 @@ class costMgr(costMgrBase):
             print("Aggregating vertical cost...")
             cost_volume_l = self.cost_aggregate_v(cost_volume_l, U_l)
             cost_volume_r = self.cost_aggregate_v(cost_volume_r, U_r)
+        if self.args.log_disp:
+            show_costs(cost_volume_l)
         return cost_volume_l, cost_volume_r
 
 # if __name__ == "__main__":

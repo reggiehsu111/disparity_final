@@ -9,5 +9,6 @@
   "CM_base": false,
   "OP_base": true,
   "RF_base": true,
-  "arms_th": 50
+  "arms_th": 10,
+  "log_disp": true
 }
