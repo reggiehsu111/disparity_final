@@ -331,35 +331,61 @@ class costMgr(costMgrBase):
             cost_r[d] = np.concatenate((diff, np.full((self.h, d), 999)), axis=1)
         return cost_l, cost_r
 
-    def cost_aggregate(self, cost, U):
+    def cost_aggregate_h(self, cost, U):
         y, x = np.indices((self.h, self.w))
         # calculate h integral images
-        cost_h_integral = cost
+        cost_h_integral = np.concatenate((np.zeros((self.max_disp + 1, self.h, 1)), cost), axis=2)
+        # cost_h_integral = np.concatenate((cost, np.zeros((self.max_disp + 1, self.h, 1))), axis=2)
         E_h = np.zeros_like(cost)
-        for w in range(1, self.w):
+        for w in range(1, self.w+1):
             cost_h_integral[:, :, w] += cost_h_integral[:, :, w - 1]
         for d in range(self.max_disp + 1):
-            E_h[d] = cost_h_integral[d, y, x + U['h_p'][d]] - \
-                     cost_h_integral[d, y, np.maximum(x - U['h_m'][d] - 1, 0)]
-        # E_h = cost_h_integral[:, y, x + U['h_p']] - cost_h_integral[:, y, np.maximum(x - U['h_m'] - 1, 0)]
+            E_h[d] = cost_h_integral[d, y, x + U['h_p'][d] + 1] - \
+                     cost_h_integral[d, y, x - U['h_m'][d]]
         A_h = U['h_p'] + U['h_m'] + 1
 
         # calculate full integral images
-        cost_v_integral = E_h
-        A_v_integral = A_h
+        cost_v_integral = np.concatenate((np.zeros((self.max_disp + 1, 1, self.w)), E_h), axis=1)
+        A_v_integral = np.concatenate((np.zeros((self.max_disp + 1, 1, self.w)), A_h), axis=1)
         E_full = np.zeros_like(cost)
         A_full = np.zeros_like(cost)
-        for h in range(1, self.h):
+        for h in range(1, self.h+1):
             cost_v_integral[:, h, :] += cost_v_integral[:, h - 1, :]
             A_v_integral[:, h, :] += A_v_integral[:, h - 1, :]
         for d in range(self.max_disp + 1):
-            E_full[d] = cost_v_integral[d, y + U['v_p'][d], x] - \
-                        cost_v_integral[d, np.maximum(y - U['v_m'][d] - 1, 0), x]
-            A_full[d] = A_v_integral[d, y + U['v_p'][d], x] - \
-                        A_v_integral[d, np.maximum(y - U['v_m'][d] - 1, 0), x]
+            E_full[d] = cost_v_integral[d, y + U['v_p'][d] + 1, x] - \
+                        cost_v_integral[d, y - U['v_m'][d], x]
+            A_full[d] = A_v_integral[d, y + U['v_p'][d] + 1, x] - \
+                        A_v_integral[d, y - U['v_m'][d], x]
         A_full[A_full == 0] = 1
-        # E_full = cost_v_integral[:, y + U['v_p'], x] - cost_v_integral[:, np.maximum( y - U['v_m'] - 1, 0), x]
-        # A_full = A_v_integral[:, y + U['v_p'], x] - A_v_integral[:, np.maximum(y - U['v_m'] - 1, 0), x]
+        return E_full / A_full
+
+    def cost_aggregate_v(self, cost, U):
+        y, x = np.indices((self.h, self.w))
+        # calculate v integral images
+        cost_v_integral = np.concatenate((np.zeros((self.max_disp + 1, 1, self.w)), cost), axis=1)
+        E_v = np.zeros_like(cost)
+        for h in range(1, self.h+1):
+            cost_v_integral[:, h, :] += cost_v_integral[:, h - 1, :]
+        for d in range(self.max_disp + 1):
+            E_v[d] = cost_v_integral[d, y + U['v_p'][d] + 1, x] - \
+                     cost_v_integral[d, y - U['v_m'][d], x]
+        A_v = U['v_p'] + U['v_m'] + 1
+
+        # calculate full integral images
+        cost_h_integral = np.concatenate((np.zeros((self.max_disp + 1, self.h, 1)), E_v), axis=2)
+        A_h_integral = np.concatenate((np.zeros((self.max_disp + 1, self.h, 1)), A_v), axis=2)
+        E_full = np.zeros_like(cost)
+        A_full = np.zeros_like(cost)
+        for w in range(1, self.w+1):
+            cost_h_integral[:, :, w] += cost_h_integral[:, :, w - 1]
+            A_h_integral[:, :, w] += A_h_integral[:, :, w - 1]
+        for d in range(self.max_disp + 1):
+            E_full[d] = cost_h_integral[d, y, x + U['h_p'][d] + 1] - \
+                        cost_h_integral[d, y, x - U['h_m'][d]]
+            A_full[d] = A_h_integral[d, y, x + U['h_p'][d] + 1] - \
+                        A_h_integral[d, y, x - U['h_m'][d]]
+        A_full[A_full == 0] = 1
         return E_full / A_full
 
     def improved_method(self, I_l, I_r):
@@ -371,11 +397,16 @@ class costMgr(costMgrBase):
         print('Computing U ...')
         U_l, U_r = self.get_U(arms_l, arms_r)
         print("Computing pixel-wise cost for each disparity...")
-        cost_l, cost_r = self.get_cost(I_l, I_r)
+        cost_volume_l, cost_volume_r = self.get_cost(I_l, I_r)
+        # return cost_l, cost_r
 
-        print("Aggregating cost...")
-        cost_volume_l = self.cost_aggregate(cost_l, U_l)
-        cost_volume_r = self.cost_aggregate(cost_r, U_r)
+        for _ in range(1):
+            print("Aggregating horizontal cost...")
+            cost_volume_l = self.cost_aggregate_h(cost_volume_l, U_l)
+            cost_volume_r = self.cost_aggregate_h(cost_volume_r, U_r)
+            print("Aggregating vertical cost...")
+            cost_volume_l = self.cost_aggregate_v(cost_volume_l, U_l)
+            cost_volume_r = self.cost_aggregate_v(cost_volume_r, U_r)
         return cost_volume_l, cost_volume_r
 
 # if __name__ == "__main__":

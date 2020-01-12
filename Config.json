@@ -1,13 +1,20 @@
 {
+<<<<<<< HEAD
     "input_left": "data/Synthetic/TL0.png",
     "input_right": "data/Synthetic/TR0.png",
     "output": "data/Output/out0.pfm",
     "GT": "data/Synthetic/TLD0.pfm",
+=======
+    "input_left": "data/Synthetic/TL3.png",
+    "input_right": "data/Synthetic/TR3.png",
+    "output": "data/Output/out3.pfm",
+    "GT": "data/Synthetic/TLD3.pfm",
+>>>>>>> 887a86918918d8f87659c45f79080fa969ee2d68
     "max_disp": 60,
     "verbose": false,
     "config": false,
     "CM_base": false,
     "OP_base": true,
     "RF_base": true,
-    "arms_th": 50
+    "arms_th": 10
 }
