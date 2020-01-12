@@ -7,11 +7,69 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 import pickle
 
+WINDOW_SIZE = 37
 
 def parse_from_costmgr(parser):
-    parser.add_argument('--arms_th', default=50, type=float, help='the threshold for computing arms')
+    parser.add_argument('--arms_th', default=10, type=float, help='the threshold for computing arms')
     parser.add_argument('--log_disp', action='store_true', help='Specify to log all levels of disparity map')
     return parser
+
+def find_disp(i, w, h, max_disp, N, costl, costr, phi_l, phi_r):
+    labels_l = np.zeros((w, max_disp+1))
+    labels_r = np.zeros((w, max_disp+1))
+    for j in range(w):
+        for d in range(max_disp+1):
+            if j - d < 0:
+                labels_l[j, d] = N
+                continue
+            tmp = (costl[i, j] != costr[i, j - d]) & phi_l[i, j]
+            dis = np.sum(tmp)
+            labels_l[j,d] = dis
+        for d in range(max_disp+1):
+            if j + d >= w:
+                labels_r[j, d] = N
+                break
+            tmp = (costl[i, j + d] != costr[i, j]) & phi_r[i, j]
+            dis = np.sum(tmp)
+            labels_r[j,d] = dis
+    return [labels_l, labels_r]
+
+def compute_cost(i, w, h, Il_gray, Il_lab, Ir_gray, Ir_lab, N):
+    SIGMA = 6
+    dx1 = np.around(np.random.normal(0, SIGMA, N)).astype('int')
+    dy1 = np.around(np.random.normal(0, SIGMA, N)).astype('int')
+    dx2 = np.around(np.random.normal(0, SIGMA, N)).astype('int')
+    dy2 = np.around(np.random.normal(0, SIGMA, N)).astype('int')
+    costl = np.zeros((w, N), dtype=np.bool)
+    costr = np.zeros((w, N), dtype=np.bool)
+    phi_l = np.zeros((w, N), dtype=np.bool)
+    phi_r = np.zeros((w, N), dtype=np.bool)
+    px = np.clip(i + dx1, max(i - WINDOW_SIZE // 2, 0), min(i + WINDOW_SIZE // 2, h - 1))
+    qx = np.clip(i + dx2, max(i - WINDOW_SIZE // 2, 0), min(i + WINDOW_SIZE // 2, h - 1))
+    for j in range(w):
+        py = np.clip(j + dy1, max(j - WINDOW_SIZE // 2, 0), min(j + WINDOW_SIZE // 2, w - 1))
+        qy = np.clip(j + dy2, max(j - WINDOW_SIZE // 2, 0), min(j + WINDOW_SIZE // 2, w - 1))
+        costl[j] = (Il_gray[px, py] > Il_gray[qx, qy])
+        costr[j] = (Ir_gray[px, py] > Ir_gray[qx, qy])
+        Wl = np.amax(
+            np.array([
+                np.sum(np.abs(Il_lab[i, j] - Il_lab[px, py]), axis=1),
+                np.sum(np.abs(Il_lab[i, j] - Il_lab[qx, qy]), axis=1)
+            ]),
+            axis=0
+        )
+        T = np.percentile(Wl, 25)
+        phi_l[j] = (Wl <= T)
+        Wr = np.amax(
+            np.array([
+                np.sum(np.abs(Ir_lab[i, j] - Ir_lab[px, py]), axis=1),
+                np.sum(np.abs(Ir_lab[i, j] - Ir_lab[qx, qy]), axis=1)
+            ]),
+            axis=0
+        )
+        T = np.percentile(Wr, 25)
+        phi_r[j] = (Wr <= T)
+    return [costl, costr, phi_l, phi_r]
 
 def show_costs(matrix):
     print("Writing out...")
@@ -53,17 +111,6 @@ def binary_mask_tau(pix1, pix2):
     else:
         return 0
 
-def compute_cost(tau_l, tau_r, weight, bits):
-    temp = np.bitwise_xor(tau_l.astype(np.uint8), tau_r.astype(np.uint8))
-    print("temp shape:", temp.shape)
-    total = np.bitwise_and(temp,weight.astype(np.uint8))
-    setBits = np.zeros(temp.shape)
-    while (bits > 0) : 
-        setBits += temp & 1
-        temp >>= 1
-        bits -= 1
-    print("setBits:", setBits)
-    return setBits*10
 
 
 
@@ -122,33 +169,65 @@ class costMgrBase:
     def improved_method(self, Il, Ir):
 
         h, w, ch = Il.shape
-        Il_lab = cv2.cvtColor(Il.astype(np.uint8), cv2.COLOR_RGB2LAB)
+
+        Il = cv2.GaussianBlur(Il, (3,3), 2)
+        Ir = cv2.GaussianBlur(Ir, (3,3), 2)
+        Il_gray = cv2.cvtColor(Il, cv2.COLOR_BGR2GRAY)
+        Ir_gray = cv2.cvtColor(Ir, cv2.COLOR_BGR2GRAY)
+        Il_lab = cv2.cvtColor(Il.astype(np.uint8), cv2.COLOR_BGR2Lab).astype('float')
+        Ir_lab = cv2.cvtColor(Ir.astype(np.uint8), cv2.COLOR_BGR2Lab).astype('float')
         # Array to store disparities for window sliding left, i.e. Ir sliding right
         cost_matrix_left = np.zeros((self.max_disp+1, h, w))
         # Array to store disparities for window sliding right
         cost_matrix_right = np.zeros((self.max_disp+1, h, w))
         tau_matrix = np.zeros((h, w))
         weight_matrix = np.zeros((h, w))
+        N = 128
 
-        Il = cv2.GaussianBlur(Il, (3,3), 2)
-        Ir = cv2.GaussianBlur(Ir, (3,3), 2)
+        costl = []
+        costr = []
+        phi_l = []
+        phi_r = []
+        print("Getting costs...")
+        for x in tqdm(range(h)):
+            tmp = compute_cost(x, w, h, Il_gray, Il_lab, Ir_gray, Ir_lab, N)
+            costl.append(tmp[0])
+            costr.append(tmp[1])
+            phi_l.append(tmp[2])
+            phi_r.append(tmp[3])
+        costl = np.array(costl)
+        costr = np.array(costr)
+        phi_l = np.array(phi_l)
+        phi_r = np.array(phi_r)
+        print("Aggregating...")
+        labels_l = []
+        labels_r = []
+        for x in tqdm(range(h)):
+            tmp = find_disp(x, w, h, self.max_disp, N, costl, costr, phi_l, phi_r)
+            labels_l.append(tmp[0])
+            labels_r.append(tmp[1])
+        cost_matrix_left = np.array(labels_l)
+        cost_matrix_right = np.array(labels_r)
+        cost_matrix_left = np.rollaxis(cost_matrix_left, 2)
+        cost_matrix_right = np.rollaxis(cost_matrix_right, 2)
+
         # Find pixel pairs
-        S = 10
-        nd = 32
-        print("Start calculating tau and weights...")
-        pairs = get_sample_pairs(S, nd)
-        for y in tqdm(range(Il.shape[0])):
-            for x in range(Il.shape[1]):
-                tau = 0
-                weights = []
-                for p in pairs:
-                    # Ignore points that are out of boundary
-                    if y+p[0] < 0 or y+p[0] > h-1 or  x+p[1] < 0 or x+p[1] > w-1 or y+p[2] < 0 or y+p[2] > h-1 or  x+p[3] < 0 or x+p[3] > w-1:
-                        tau = (tau<<1)
-                        weights.append(1000)
-                    else:
-                        tau = (tau<<1) + binary_mask_tau(Il[y+p[0], x+p[1]], Il[y+p[2], x+p[3]])
-                        weights.append(max(np.sum(np.abs(Il_lab[y,x] - Il_lab[y+p[0], x+p[1]])), np.sum(np.abs(Il_lab[y,x] - Il_lab[y+p[2], x+p[3]]))))
+        # S = 10
+        # nd = 32
+        # print("Start calculating tau and weights...")
+        # pairs = get_sample_pairs(S, nd)
+        # for y in tqdm(range(Il.shape[0])):
+        #     for x in range(Il.shape[1]):
+        #         tau = 0
+        #         weights = []
+        #         for p in pairs:
+        #             # Ignore points that are out of boundary
+        #             if y+p[0] < 0 or y+p[0] > h-1 or  x+p[1] < 0 or x+p[1] > w-1 or y+p[2] < 0 or y+p[2] > h-1 or  x+p[3] < 0 or x+p[3] > w-1:
+        #                 tau = (tau<<1)
+        #                 weights.append(1000)
+        #             else:
+        #                 tau = (tau<<1) + binary_mask_tau(Il[y+p[0], x+p[1]], Il[y+p[2], x+p[3]])
+        #                 weights.append(max(np.sum(np.abs(Il_lab[y,x] - Il_lab[y+p[0], x+p[1]])), np.sum(np.abs(Il_lab[y,x] - Il_lab[y+p[2], x+p[3]]))))
 
 
                 # for i in range(32):
@@ -160,17 +239,16 @@ class costMgrBase:
                 #     # Compute SAD for each pair and compute weights
                 #     weights.append(max(np.sum(np.abs(Il_lab[y,x] - Il_lab[pos[0], pos[1]])), np.sum(np.abs(Il_lab[y,x] - Il_lab[pos[2], pos[3]]))))
                 # print("weights:",weights)
-                weights = np.array(weights)
-                weights_sorted = np.sort(weights)
-                T = weights_sorted[7]
-                # Compute binary mask
-                temp_weight = 0
-                for i in weights:
-                    temp_weight = (temp_weight<<1) + binary_mask(i,T)
-                # print("tau:", bin(tau))
-                # print("weights:", bin(temp_weight))
-                tau_matrix[y,x] = tau
-                weight_matrix[y,x] = temp_weight
+                # weights = np.array(weights)
+                # T = np.percentile(weights, 25)
+                # # Compute binary mask
+                # temp_weight = 0
+                # for i in weights:
+                #     temp_weight = (temp_weight<<1) + binary_mask(i,T)
+                # # print("tau:", bin(tau))
+                # # print("weights:", bin(temp_weight))
+                # tau_matrix[y,x] = tau
+                # weight_matrix[y,x] = temp_weight
         print("Finish calculating tau and weights...")
         # with open("temp_tau.pkl", "wb") as f:
             # pickle.dump(tau_matrix, f)
@@ -181,16 +259,16 @@ class costMgrBase:
         # with open("temp_weight.pkl", "rb") as f:
         #     weight_matrix = pickle.load(f)
 
-        padding = 0
-        for d in range(self.max_disp+1):
-            tmp = np.zeros((h,w-d))
-            tmp = compute_cost(tau_matrix[:, d:w], tau_matrix[:, :w-d], weight_matrix[:, d:w], nd)
-            tmp_l = np.hstack((np.full((h, d), padding), tmp))
-            tmp_l = np.clip(tmp_l, 0, 255)
-            cost_matrix_left[d] = tmp_l*10
-            tmp_r = np.hstack((tmp, np.full((h, d), padding)))
-            tmp_r = np.clip(tmp_r, 0, 255)*10
-            cost_matrix_right[d] = tmp_r
+        # padding = 0
+        # for d in range(self.max_disp+1):
+        #     tmp = np.zeros((h,w-d))
+        #     tmp = compute_cost(tau_matrix[:, d:w], tau_matrix[:, :w-d], weight_matrix[:, d:w], nd)
+        #     tmp_l = np.hstack((np.full((h, d), padding), tmp))
+        #     tmp_l = np.clip(tmp_l, 0, 255)
+        #     cost_matrix_left[d] = tmp_l*10
+        #     tmp_r = np.hstack((tmp, np.full((h, d), padding)))
+        #     tmp_r = np.clip(tmp_r, 0, 255)*10
+        #     cost_matrix_right[d] = tmp_r
         if self.args.log_disp:
             show_costs(cost_matrix_left)
 
@@ -419,6 +497,15 @@ class costMgr(costMgrBase):
             print("Aggregating vertical cost...")
             cost_volume_l = self.cost_aggregate_v(cost_volume_l, U_l)
             cost_volume_r = self.cost_aggregate_v(cost_volume_r, U_r)
+        # for x in range(cost_volume_l.shape[0]):
+        #     tmp = cost_volume_l[x, :, x:self.w];
+        #     tmp = guidedFilter(guide=I_l[:, x:self.w], src=tmp.astype(np.uint8), radius=80, eps=200, dDepth=-1)
+        #     tmp_l = np.hstack((cost_volume_l[x, :, :x], tmp))
+        #     tmp_l = np.clip(tmp_l, 0, 255)
+        #     cost_volume_l[x] = tmp_l
+        #     tmp_r = np.hstack((tmp, cost_volume_l[x, :, :x]))
+        #     tmp_r = np.clip(tmp_r, 0, 255)
+        #     cost_volume_r[x] = tmp_r
         if self.args.log_disp:
             show_costs(cost_volume_l)
         return cost_volume_l, cost_volume_r
