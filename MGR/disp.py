@@ -11,7 +11,7 @@ def parse_from_disp(parser):
 
 class dispMgr():
     def __init__(self, args):
-        self.CM = costMgrBase(args)
+        self.CM = costMgr(args)
         self.OP = optimizer(args)
         self.RF = refiner(args)
         self.args = args
@@ -37,7 +37,7 @@ class dispMgr():
         start = time.time()
         OP_out_r = self.OP.run(CM_out_r, base=self.args.OP_base)
         self.print_v("##### Elapsed time: "+ str(time.time()-start) +" #####\n")
-        disp = self.RF.run(OP_out_l, OP_out_r, Il, base=self.args.RF_base)
+        disp = self.RF.run(OP_out_l, OP_out_r, Il, CM_out_l, base=self.args.RF_base)
         return disp
 
     def print_v(self, message):
