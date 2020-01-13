@@ -8,29 +8,37 @@ class optimizer():
         self.args = args
         return
 
-    def run(self, in_img, *args, base=False):
+    def run(self, in_img_l, in_img_r, *args, base=False):
         """
             Params:
                 Input shape  : (max_disp+1, h, w)
                 *args        : Anything to pass in
-                base         : if bas method is used 
+                base         : if base method is used 
             Output shape : (h, w)
             
         """
-        assert(in_img.shape[0] == self.args.max_disp+1)
+        assert(in_img_l.shape[0] == self.args.max_disp+1)
+        assert(in_img_r.shape[0] == self.args.max_disp+1)
         if base:
-            out_img = self.base_method(in_img)
+            out_img_l, out_img_r = self.base_method(in_img_l, in_img_r)
         else:
             # Write you method here
-            _, h, w = in_img.shape
+            _, h, w = in_img_l.shape
             # Change this line of code
-            out_img = np.zeros((h, w))
-        assert(out_img.shape == in_img.shape[1:])
-        return out_img
+            out_img_l, out_img_r = self.improved_method(in_img_l, in_img_r)
+        assert(out_img_l.shape == in_img_l.shape[1:])
+        assert(out_img_r.shape == in_img_r.shape[1:])
+        return out_img_l, out_img_r 
 
-    def base_method(self, in_img):
+    def base_method(self, in_img_l, in_img_r):
         """
             base method used in HW4
         """
-        out_img = in_img.argmin(axis=0)
-        return out_img
+        out_img_l = in_img_l.argmin(axis=0)
+        out_img_r = in_img_r.argmin(axis=0)
+        return out_img_l, out_img_r
+
+    def improved_method(self, in_img_l, in_img_r):
+        out_img_l = np.zeros((h, w))
+        out_img_r = np.zeros((h, w))
+        return out_img_l, out_img_r

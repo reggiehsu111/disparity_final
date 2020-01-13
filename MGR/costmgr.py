@@ -12,7 +12,7 @@ WINDOW_SIZE = 37
 def parse_from_costmgr(parser):
     parser.add_argument('--arms_th', default=10, type=float, help='the threshold for computing arms')
     parser.add_argument('--log_disp', action='store_true', help='Specify to log all levels of disparity map')
-    parser.add_argument('--N', default=128, type=int, help='For the usage of binary stereo matching')
+    parser.add_argument('--N', default=256, type=int, help='For the usage of binary stereo matching')
     return parser
 
 
@@ -24,14 +24,14 @@ def aggregate(costl, costr, phi):
 
 def compute_cost(w, h, Il_gray, Il_lab, Ir_gray, Ir_lab, N):
     SIGMA = 6
-    dx1 = np.around(np.random.normal(0, SIGMA, N*h)).astype('int')
-    dy1 = np.around(np.random.normal(0, SIGMA, N*h)).astype('int')
-    dx2 = np.around(np.random.normal(0, SIGMA, N*h)).astype('int')
-    dy2 = np.around(np.random.normal(0, SIGMA, N*h)).astype('int')
-    dx1 = np.tile(dx1.reshape((h,1,N)), (1,w,1))
-    dx2 = np.tile(dx2.reshape((h,1,N)), (1,w,1))
-    dy1 = np.tile(dy1.reshape((h,1,N)), (1,w,1))
-    dy2 = np.tile(dy2.reshape((h,1,N)), (1,w,1))
+    dx1 = np.around(np.random.normal(0, SIGMA, N)).astype('int')
+    dy1 = np.around(np.random.normal(0, SIGMA, N)).astype('int')
+    dx2 = np.around(np.random.normal(0, SIGMA, N)).astype('int')
+    dy2 = np.around(np.random.normal(0, SIGMA, N)).astype('int')
+    dx1 = np.tile(dx1.reshape((1,1,N)), (h,w,1))
+    dx2 = np.tile(dx2.reshape((1,1,N)), (h,w,1))
+    dy1 = np.tile(dy1.reshape((1,1,N)), (h,w,1))
+    dy2 = np.tile(dy2.reshape((1,1,N)), (h,w,1))
 
     costl = np.zeros((h, w, N), dtype=np.bool)
     costr = np.zeros((h, w, N), dtype=np.bool)

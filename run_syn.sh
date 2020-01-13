@@ -18,6 +18,6 @@ for i in {0..9}
 		OUT_PATH="${DATA_DIR}${OUT_DIR}out$i.pfm"
 		touch $OUT_PATH
 		echo -e "\n\nlogging photo $i ...\n" | tee -a $LOGFILE
-		python3 main.py --input-left $LEFT_PATH --input-right $RIGHT_PATH --output $OUT_PATH --GT $GT_PATH --OP_base --RF_base | tee -a $LOGFILE
+		python3 main.py --input-left $LEFT_PATH --input-right $RIGHT_PATH --output $OUT_PATH --GT $GT_PATH --OP_base --RF_base --N 128| tee -a $LOGFILE
 	done
 python3 utils/errors.py | tee -a $LOGFILE

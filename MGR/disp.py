@@ -29,15 +29,14 @@ class dispMgr():
         # Optimization
         self.print_v("##### Optimizing... #####")
         start = time.time()
-        OP_out_l = self.OP.run(CM_out_l, base=self.args.OP_base)
+        OP_out_l, OP_out_r = self.OP.run(CM_out_l, CM_out_r, base=self.args.OP_base)
         self.print_v("##### Elapsed time: "+ str(time.time()-start) +" #####\n")
 
         # Refinement
         self.print_v("##### Refining... #####")
         start = time.time()
-        OP_out_r = self.OP.run(CM_out_r, base=self.args.OP_base)
-        self.print_v("##### Elapsed time: "+ str(time.time()-start) +" #####\n")
         disp = self.RF.run(OP_out_l, OP_out_r, Il, CM_out_l, base=self.args.RF_base)
+        self.print_v("##### Elapsed time: "+ str(time.time()-start) +" #####\n")
         return disp
 
     def print_v(self, message):
