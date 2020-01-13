@@ -11,7 +11,7 @@ def parse_from_disp(parser):
 
 class dispMgr():
     def __init__(self, args):
-        self.CM = costMgr(args)
+        self.CM = costMgrBase(args)
         self.OP = optimizer(args)
         self.RF = refiner(args)
         self.args = args
