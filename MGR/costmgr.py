@@ -22,7 +22,7 @@ def aggregate(costl, costr, phi):
     tmp = np.sum(tmp, axis=2)
     return tmp
 
-def compute_cost_alter(w, h, Il_gray, Il_lab, Ir_gray, Ir_lab, N):
+def compute_cost(w, h, Il_gray, Il_lab, Ir_gray, Ir_lab, N):
     SIGMA = 6
     dx1 = np.around(np.random.normal(0, SIGMA, N*h)).astype('int')
     dy1 = np.around(np.random.normal(0, SIGMA, N*h)).astype('int')
@@ -149,19 +149,17 @@ class costMgrBase:
         cost_matrix_left = np.zeros((self.max_disp+1, h, w))
         # Array to store disparities for window sliding right
         cost_matrix_right = np.zeros((self.max_disp+1, h, w))
-        tau_matrix = np.zeros((h, w))
-        weight_matrix = np.zeros((h, w))
         N = self.args.N
         
         print("Getting costs...")
-        costl, costr, phi_l, phi_r = compute_cost_alter(w, h, Il_gray, Il_lab, Ir_gray, Ir_lab, N)
+        costl, costr, phi_l, phi_r = compute_cost(w, h, Il_gray, Il_lab, Ir_gray, Ir_lab, N)
 
         print("Aggregating...")
         padding = N
         for d in tqdm(range(self.max_disp+1)):
             tmp = np.zeros((h,w-d))
             tmp = aggregate(costl[:, d:w], costr[:, :w-d], phi_l[:, d:w])
-            tmp = guidedFilter(guide=Il[:, d:w], src=tmp.astype(np.uint8), radius=80, eps=200, dDepth=-1)
+            tmp = guidedFilter(guide=Il[:, d:w], src=tmp.astype(np.uint8), radius=15, eps=100, dDepth=-1)
             tmp_l = np.hstack((np.full((h, d), padding), tmp))
             tmp_l = np.clip(tmp_l, 0, 255)
             cost_matrix_left[d] = tmp_l
