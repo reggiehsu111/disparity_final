@@ -45,6 +45,20 @@ def main():
     img_right = cv2.imread(args.input_right)
     tic = time.time()
     #add
+    
+    img_left_g = cv2.cvtColor(img_left , cv2.COLOR_BGR2GRAY)
+    img_right_g = cv2.cvtColor(img_right ,  cv2.COLOR_BGR2GRAY)
+    eq_l = cv2.equalizeHist(img_left_g)
+    eq_r = cv2.equalizeHist(img_right_g)
+    q_l = eq_l/img_left_g
+    q_r = eq_r/img_right_g
+    img_left = img_left.transpose(2,0,1)
+    img_right = img_right.transpose(2,0,1)
+    img_left = img_left*q_l
+    img_right = img_right*q_r
+    img_left = img_left.transpose(1,2,0)
+    img_right = img_right.transpose(1,2,0)
+    
     DM = dispMgr(args)
     disp = DM.computeDisp(img_left,img_right)
     # Only when GT is valid
@@ -60,7 +74,7 @@ def main():
     toc = time.time()
     writePFM(args.output, disp)
     print('Elapsed time: %f sec.' % (toc - tic))
-
+    
 
 
 
