@@ -174,7 +174,6 @@ class costMgr(costMgrBase):
         y, x = np.indices((self.h, self.w))
         # calculate h integral images
         cost_h_integral = np.concatenate((np.zeros((self.max_disp + 1, self.h, 1)), cost), axis=2)
-        # cost_h_integral = np.concatenate((cost, np.zeros((self.max_disp + 1, self.h, 1))), axis=2)
         E_h = np.zeros_like(cost)
         for w in range(1, self.w+1):
             cost_h_integral[:, :, w] += cost_h_integral[:, :, w - 1]
