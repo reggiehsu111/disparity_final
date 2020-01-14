@@ -209,9 +209,14 @@ class costMgrBase:
         for d in tqdm(range(self.max_disp+1)):
             tmp = np.zeros((h,w-d))
             tmp = aggregate(costl[:, d:w], costr[:, :w-d], phi_l[:, d:w])
+<<<<<<< HEAD
             # tmp = single_channel_agg(tmp, costl[:, d:w], phi_l[:, d:w])
             tmp = guidedFilter(guide=Il[:, d:w], src=tmp.astype(np.uint8), radius=15, eps=100, dDepth=-1)
 
+=======
+            tmp = guidedFilter(guide=Il[:, d:w], src=tmp.astype(np.uint8), radius=15, eps=100, dDepth=-1)
+            # tmp = cv2.bilateralFilter(tmp.astype(np.float32), 100, 9, 16)
+>>>>>>> 3a05841c05fae00e3a2b5a17cc1d516c882d3d1b
             tmp_l = np.hstack((np.full((h, d), padding), tmp))
             tmp_l = np.clip(tmp_l, 0, 255)
             cost_matrix_left[d] = tmp_l
@@ -341,7 +346,6 @@ class costMgr(costMgrBase):
         y, x = np.indices((self.h, self.w))
         # calculate h integral images
         cost_h_integral = np.concatenate((np.zeros((self.max_disp + 1, self.h, 1)), cost), axis=2)
-        # cost_h_integral = np.concatenate((cost, np.zeros((self.max_disp + 1, self.h, 1))), axis=2)
         E_h = np.zeros_like(cost)
         for w in range(1, self.w+1):
             cost_h_integral[:, :, w] += cost_h_integral[:, :, w - 1]
