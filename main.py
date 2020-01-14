@@ -72,19 +72,9 @@ def main():
     print(args.max_disp)
     
     #add
-    img_left_g = cv2.cvtColor(img_left , cv2.COLOR_BGR2GRAY)
-    img_right_g = cv2.cvtColor(img_right ,  cv2.COLOR_BGR2GRAY)
-    eq_l = cv2.equalizeHist(img_left_g)
-    eq_r = cv2.equalizeHist(img_right_g)
-    q_l = eq_l/img_left_g
-    q_r = eq_r/img_right_g
-    img_left = img_left.transpose(2,0,1)
-    img_right = img_right.transpose(2,0,1)
-    img_left = img_left*q_l
-    img_right = img_right*q_r
-    img_left = img_left.transpose(1,2,0)
-    img_right = img_right.transpose(1,2,0)
-    
+    img_left = hisEqulColor(img_left)
+    img_right = hisEqulColor(img_right)
+
     DM = dispMgr(args)
     disp = DM.computeDisp(img_left,img_right)
     # Only when GT is valid
@@ -101,7 +91,13 @@ def main():
     writePFM(args.output, disp)
     print('Elapsed time: %f sec.' % (toc - tic))
 
-
+def hisEqulColor(img):
+    ycrcb = cv2.cvtColor(img, cv2.COLOR_BGR2YCR_CB)
+    channels = cv2.split(ycrcb)
+    cv2.equalizeHist(channels[0], channels[0])
+    cv2.merge(channels, ycrcb)
+    cv2.cvtColor(ycrcb, cv2.COLOR_YCR_CB2BGR, img)
+    return img
 
 if __name__ == '__main__':
     main()
