@@ -166,7 +166,7 @@ class costMgrBase:
         # Array to store disparities for window sliding right
         cost_matrix_right = np.zeros((self.max_disp + 1, h, w))
         # Define padding
-        padding = 0
+        padding = self.max_disp
 
         # >>> Cost computation
         # TODO: Compute matching cost from Il and Ir
@@ -205,12 +205,13 @@ class costMgrBase:
         costl, costr, phi_l, phi_r = compute_cost(w, h, Il_gray, Il_lab, Ir_gray, Ir_lab, N)
 
         print("Aggregating...")
-        padding = N
+        padding = self.max_disp
         for d in tqdm(range(self.max_disp+1)):
             tmp = np.zeros((h,w-d))
             tmp = aggregate(costl[:, d:w], costr[:, :w-d], phi_l[:, d:w])
             # tmp = single_channel_agg(tmp, costl[:, d:w], phi_l[:, d:w])
-            tmp = guidedFilter(guide=Il[:, d:w], src=tmp.astype(np.uint8), radius=15, eps=100, dDepth=-1)
+            tmp = guidedFilter(guide=Il[:, d:w], src=tmp.astype(np.uint8), radius=1, eps=50, dDepth=-1)
+            # tmp = cv2.bilateralFilter(tmp.astype(np.float32), 5, 9, 16)
             tmp_l = np.hstack((np.full((h, d), padding), tmp))
             tmp_l = np.clip(tmp_l, 0, 255)
             cost_matrix_left[d] = tmp_l

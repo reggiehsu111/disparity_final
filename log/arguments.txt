@@ -1,8 +1,8 @@
 {
-  "input_left": "data/Synthetic/TL1.png",
-  "input_right": "data/Synthetic/TR1.png",
-  "output": "data/Output/out1.jpg",
-  "GT": "data/Synthetic/TLD1.pfm",
+  "input_left": "data/Synthetic/TL7.png",
+  "input_right": "data/Synthetic/TR7.png",
+  "output": "data/Output/out7.pfm",
+  "GT": "data/Synthetic/TLD7.pfm",
   "max_disp": 60,
   "verbose": false,
   "config": false,

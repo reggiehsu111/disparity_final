@@ -2,10 +2,21 @@ import numpy as np
 from cv2.ximgproc import weightedMedianFilter
 import cv2
 from scipy import ndimage
+from cv2.ximgproc import guidedFilter
 
 def parse_from_refiner(parser):
     return parser
 
+def form_color_map(disp):
+    # normalize disparity to 0.0~1.0 for visualization
+    max_disp = np.nanmax(disp[disp != np.inf])
+    min_disp = np.nanmin(disp[disp != np.inf])
+    disp_normalized = (disp - min_disp) / (max_disp - min_disp)
+
+    # Jet color mapping
+    disp_normalized = (disp_normalized * 255.0).astype(np.uint8)
+    disp_normalized = cv2.applyColorMap(disp_normalized, cv2.COLORMAP_JET)
+    return disp_normalized
 
 class refiner():
     # Refine the disparity map
@@ -39,7 +50,12 @@ class refiner():
             base method used in HW4
         """
         Il = args[0]
+        gray = cv2.cvtColor(Il, cv2.COLOR_RGB2GRAY)
         h, w = D_l.shape
+        D_l = self.border_refinement(D_l, h, w)
+        D_r = self.border_refinement(D_r, h, w)
+        D_l = cv2.medianBlur(D_l.astype('uint8'),3).astype('int')
+        D_r = cv2.medianBlur(D_r.astype('uint8'),3).astype('int')
         # consistency check
         y, x = np.indices((h, w))
         check_idx = D_l == D_r[y, np.maximum(x-D_l[y, x], 0)]
@@ -62,7 +78,64 @@ class refiner():
         labels = np.minimum(F_l, F_r)
         labels_filtered = weightedMedianFilter(joint=Il.astype(np.uint8), src=labels.astype(np.uint8), r=32, sigma=15)
         labels = np.where(check_idx, labels, labels_filtered)
+
+        # labels = guidedFilter(guide=gray, src=labels.astype(np.uint8), radius=1, eps=50, dDepth=-1)
+        labels = cv2.bilateralFilter(labels.astype(np.float32), 5, 9, 16)
+
+        outlier = self.find_outlier(D_l, D_r, h, w)
+        labels = self.segmentation(Il, labels, outlier, 200, 200, True)
+        
+        
+
+        # labels = guidedFilter(guide=Il, src=labels.astype(np.uint8), radius=2, eps=30, dDepth=-1)
+        disp_normalized = form_color_map(labels)
+        cv2.imwrite('log/bilateralFilter.jpg', disp_normalized)
         return labels.astype(np.float32)
+
+    def find_outlier(self, D_l, D_r, h, w, dilate=True):
+        D_L = D_l.astype('int')
+        D_R = D_r.astype('int')
+        #kernel = cv2.getStructuringElement(cv2.MORPH_RECT,(3, 3))
+        outlier = np.zeros((h,w))
+        for x in range(w):
+            for y in range(h):
+                if(x-D_L[y,x] >= 0 and x-D_L[y,x] < w):
+                    if(np.abs(D_L[y,x]-D_R[y,x-D_L[y,x]]) < 1.5):
+                        outlier[y,x] = 1
+        return outlier
+    def segmentation(self, Il, D_l, outlier, k, min_size, bi):
+        segmentator = cv2.ximgproc.segmentation.createGraphSegmentation(sigma=0.5, k=k, min_size=min_size)
+        segment = segmentator.processImage(Il)   
+
+        d = np.copy(D_l).astype('int')
+
+        for i in range(np.max(segment)):
+            valid = np.logical_and(outlier == 1, segment == i)
+            invalid = np.logical_and(outlier == 0, segment == i)
+
+            if(d[valid].size != 0 and d[invalid].size != 0 and d[valid].size/(d[valid].size+d[invalid].size) > 0.15):
+                vote = np.bincount(d[valid])
+                index = np.argwhere(vote == np.max(vote))
+                mean = np.mean(d[valid])
+                new_d = 255
+                for j in index:
+                    if j - mean < new_d:
+                        new_d = j
+                d[invalid] = new_d
+
+            if(d[invalid].size/(d[valid].size+d[invalid].size) > 0.95 and np.max(np.where(np.logical_or(valid,invalid) == True)[1]) < np.max(D_l) + 5):
+                d[segment == i] = int((self.max_disp) * 0.9)
+
+        if bi:
+            d = cv2.bilateralFilter(d.astype('uint8'),10,9,2).astype('float32')
+        
+        D_l = d
+        return D_l
+
+    def border_refinement(self, disp, h, w):
+        img_valid = disp[2:h-2,5:w-2].astype('uint8')
+        new_img = cv2.copyMakeBorder(img_valid,2,2,5,2,cv2.BORDER_REPLICATE)
+        return new_img.astype('int')
 
     def refinement(self, displ, dispr, *args):
         threshold = 0.005   # determine the holes need to be filled with
