@@ -44,44 +44,13 @@ def main():
     img_left = cv2.imread(args.input_left)
     img_right = cv2.imread(args.input_right)
     tic = time.time()
-    
     # max distance
     print(args.max_disp)
-    surf = cv2.xfeatures2d.SURF_create(1000)
-    bf = cv2.BFMatcher()
-    left_kp, left_des = surf.detectAndCompute(img_left,None)
-    right_kp, right_des = surf.detectAndCompute(img_right,None)
-    matches = bf.knnMatch(left_des, right_des, k=2)
-    good = list()
-    pos = 0
-    for (m, n) in matches:
-        if m.distance < 0.75 * n.distance:
-            good.append(m)
-    dis = list()
-    for _m in good:
-        left_idx = left_kp[_m.queryIdx].pt
-        right_idx = right_kp[_m.trainIdx].pt
-        if (left_idx[0] > right_idx[0]):
-            dis.append(left_idx[0] - right_idx[0])
-    dis = (np.array(dis))
-    dis = np.sort(dis)
-    dis = np.abs(dis)
-    
-    max_dis = 60
-
-    for i in range(len(dis)):
-        if (dis[-1-i] - dis[-1-(i+1)]) < 2 and (dis[-1-i] - dis[-1-(i+2)]) < 2:
-            max_dis = dis[-1-i]
-            break
-
-    max_dis += 1
-    args.max_disp = int(max_dis)
+    args.max_disp = max_dis(img_left, img_right)
     print(args.max_disp)
-    
-    #add
+    #add hisEqulColor
     img_left = hisEqulColor(img_left)
     img_right = hisEqulColor(img_right)
-
     DM = dispMgr(args)
     disp = DM.computeDisp(img_left,img_right)
     # Only when GT is valid
@@ -105,6 +74,35 @@ def hisEqulColor(img):
     cv2.merge(channels, ycrcb)
     cv2.cvtColor(ycrcb, cv2.COLOR_YCR_CB2BGR, img)
     return img
+
+def max_dis(img_left, img_right):
+    surf = cv2.xfeatures2d.SURF_create(1000)
+    bf = cv2.BFMatcher()
+    left_kp, left_des = surf.detectAndCompute(img_left,None)
+    right_kp, right_des = surf.detectAndCompute(img_right,None)
+    matches = bf.knnMatch(left_des, right_des, k=2)
+    good = list()
+    pos = 0
+    for (m, n) in matches:
+        if m.distance < 0.75 * n.distance:
+            good.append(m)
+    dis = list()
+    for _m in good:
+        left_idx = left_kp[_m.queryIdx].pt
+        right_idx = right_kp[_m.trainIdx].pt
+        if (left_idx[0] > right_idx[0]):
+            dis.append(left_idx[0] - right_idx[0])
+    dis = (np.array(dis))
+    dis = np.sort(dis)
+    dis = np.abs(dis)
+    max_dis = 60
+    for i in range(len(dis)):
+        if (dis[-1-i] - dis[-1-(i+1)]) < 2 and (dis[-1-i] - dis[-1-(i+2)]) < 2:
+            max_dis = dis[-1-i]
+            break
+    max_dis += 1
+    return int(max_dis)
+
 
 if __name__ == '__main__':
     main()
