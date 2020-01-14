@@ -1,0 +1,15 @@
+{
+  "input_left": "data/Synthetic/TL1.png",
+  "input_right": "data/Synthetic/TR1.png",
+  "output": "data/Output/out1.jpg",
+  "GT": "data/Synthetic/TLD1.pfm",
+  "max_disp": 60,
+  "verbose": false,
+  "config": false,
+  "CM_base": false,
+  "OP_base": true,
+  "RF_base": true,
+  "arms_th": 10,
+  "log_disp": false,
+  "N": 128
+}

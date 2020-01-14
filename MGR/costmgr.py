@@ -1,12 +1,86 @@
 import argparse
 import cv2
 import numpy as np
+import cv2
 from cv2.ximgproc import guidedFilter
+import matplotlib.pyplot as plt
+from tqdm import tqdm
+import pickle
 
+WINDOW_SIZE = 37
 
 def parse_from_costmgr(parser):
-    parser.add_argument('--arms_th', default=50, type=float, help='the threshold for computing arms')
+    parser.add_argument('--arms_th', default=10, type=float, help='the threshold for computing arms')
+    parser.add_argument('--log_disp', action='store_true', help='Specify to log all levels of disparity map')
+    parser.add_argument('--N', default=128, type=int, help='For the usage of binary stereo matching')
     return parser
+
+
+def aggregate(costl, costr, phi):
+    tmp = np.bitwise_xor(costl, costr)
+    tmp = np.bitwise_and(tmp, phi)
+    tmp = np.sum(tmp, axis=2)
+    return tmp
+
+def compute_cost(w, h, Il_gray, Il_lab, Ir_gray, Ir_lab, N):
+    SIGMA = 6
+    dx1 = np.around(np.random.normal(0, SIGMA, N)).astype('int')
+    dy1 = np.around(np.random.normal(0, SIGMA, N)).astype('int')
+    dx2 = np.around(np.random.normal(0, SIGMA, N)).astype('int')
+    dy2 = np.around(np.random.normal(0, SIGMA, N)).astype('int')
+    dx1 = np.tile(dx1.reshape((1,1,N)), (h,w,1))
+    dx2 = np.tile(dx2.reshape((1,1,N)), (h,w,1))
+    dy1 = np.tile(dy1.reshape((1,1,N)), (h,w,1))
+    dy2 = np.tile(dy2.reshape((1,1,N)), (h,w,1))
+
+    costl = np.zeros((h, w, N), dtype=np.bool)
+    costr = np.zeros((h, w, N), dtype=np.bool)
+    phi_l = np.zeros((h, w, N), dtype=np.bool)
+    phi_r = np.zeros((h, w, N), dtype=np.bool)
+    xx, yy = np.meshgrid(np.linspace(0,w-1, w), np.linspace(0, h-1, h))
+
+    px = np.tile(xx.astype(np.uint16).reshape((h,w,1)), N)
+    lower_x = np.clip(px-WINDOW_SIZE // 2, 0, w-1)
+    upper_x = np.clip(px+WINDOW_SIZE // 2, 0, w-1)
+    px = np.clip(px + dx1, lower_x, upper_x)
+    qx = np.clip(px + dx2, lower_x, upper_x)
+    
+    py = np.tile(yy.astype(np.uint16).reshape((h,w,1)), N)
+    lower_y = np.clip(py-WINDOW_SIZE // 2, 0, h-1)
+    upper_y = np.clip(py+WINDOW_SIZE // 2, 0, h-1)
+    py = np.clip(py + dy1, lower_y, upper_y)
+    qy = np.clip(py + dy2, lower_y, upper_y)
+    costl = Il_gray[py, px] > Il_gray[qy, qx]
+    costr = Ir_gray[py, px] > Ir_gray[qy, qx]
+    Il_lab_tile = np.tile(Il_lab.reshape((Il_lab.shape[0], Il_lab.shape[1], 1, Il_lab.shape[2])), (1,1,N,1))
+    Ir_lab_tile = np.tile(Ir_lab.reshape((Ir_lab.shape[0], Ir_lab.shape[1], 1, Ir_lab.shape[2])), (1,1,N,1))
+    Wl = np.amax(
+            np.array([
+                np.sum(np.abs(Il_lab_tile - Il_lab[py, px]), axis = 3),
+                np.sum(np.abs(Il_lab_tile - Il_lab[qy, qx]), axis= 3)
+            ]),
+            axis=0
+        )
+    T = np.tile(np.percentile(Wl, 25, 2).reshape((h, w, 1)), N)
+    phi_l = (Wl <= T)
+    Wr = np.amax(
+            np.array([
+                np.sum(np.abs(Ir_lab_tile - Ir_lab[py, px]), axis = 3),
+                np.sum(np.abs(Ir_lab_tile - Ir_lab[qy, qx]), axis= 3)
+            ]),
+            axis=0
+        )
+    T = np.tile(np.percentile(Wr, 25, 2).reshape((h, w, 1)), N)
+    phi_r = (Wr <= T)
+    return costl, costr, phi_l, phi_r
+
+def show_costs(matrix):
+    print("Writing out...")
+    for x in tqdm(range(matrix.shape[0])):
+        cv2.imwrite("log/disps/"+str(x)+".jpg", matrix[x])
+    return
+
+
 
 
 class costMgrBase:
@@ -56,11 +130,49 @@ class costMgrBase:
             tmp_r = np.hstack((tmp, np.full((h, x), padding)))
             tmp_r = np.clip(tmp_r, 0, 255)
             cost_matrix_right[x] = tmp_r
+        if self.args.log_disp:
+            show_costs(cost_matrix_left)
 
         return cost_matrix_left, cost_matrix_right
 
-    def improved_method(self, I_l, I_r):
-        return None, None
+    def improved_method(self, Il, Ir):
+
+        h, w, ch = Il.shape
+
+        Il = cv2.GaussianBlur(Il, (3,3), 2)
+        Ir = cv2.GaussianBlur(Ir, (3,3), 2)
+        Il_gray = cv2.cvtColor(Il, cv2.COLOR_BGR2GRAY)
+        Ir_gray = cv2.cvtColor(Ir, cv2.COLOR_BGR2GRAY)
+        Il_lab = cv2.cvtColor(Il.astype(np.uint8), cv2.COLOR_BGR2Lab).astype('float')
+        Ir_lab = cv2.cvtColor(Ir.astype(np.uint8), cv2.COLOR_BGR2Lab).astype('float')
+        # Array to store disparities for window sliding left, i.e. Ir sliding right
+        cost_matrix_left = np.zeros((self.max_disp+1, h, w))
+        # Array to store disparities for window sliding right
+        cost_matrix_right = np.zeros((self.max_disp+1, h, w))
+        N = self.args.N
+        
+        print("Getting costs...")
+        costl, costr, phi_l, phi_r = compute_cost(w, h, Il_gray, Il_lab, Ir_gray, Ir_lab, N)
+
+        print("Aggregating...")
+        padding = N
+        for d in tqdm(range(self.max_disp+1)):
+            tmp = np.zeros((h,w-d))
+            tmp = aggregate(costl[:, d:w], costr[:, :w-d], phi_l[:, d:w])
+            tmp = guidedFilter(guide=Il[:, d:w], src=tmp.astype(np.uint8), radius=15, eps=100, dDepth=-1)
+            # tmp = cv2.bilateralFilter(tmp.astype(np.float32), 100, 9, 16)
+            tmp_l = np.hstack((np.full((h, d), padding), tmp))
+            tmp_l = np.clip(tmp_l, 0, 255)
+            cost_matrix_left[d] = tmp_l
+            tmp_r = np.hstack((tmp, np.full((h, d), padding)))
+            tmp_r = np.clip(tmp_r, 0, 255)
+            cost_matrix_right[d] = tmp_r
+
+        if self.args.log_disp:
+            show_costs(cost_matrix_left)
+     
+        return cost_matrix_left, cost_matrix_right
+
 
 
 class costMgr(costMgrBase):
@@ -245,6 +357,17 @@ class costMgr(costMgrBase):
             print("Aggregating vertical cost...")
             cost_volume_l = self.cost_aggregate_v(cost_volume_l, U_l)
             cost_volume_r = self.cost_aggregate_v(cost_volume_r, U_r)
+        # for x in range(cost_volume_l.shape[0]):
+        #     tmp = cost_volume_l[x, :, x:self.w];
+        #     tmp = guidedFilter(guide=I_l[:, x:self.w], src=tmp.astype(np.uint8), radius=80, eps=200, dDepth=-1)
+        #     tmp_l = np.hstack((cost_volume_l[x, :, :x], tmp))
+        #     tmp_l = np.clip(tmp_l, 0, 255)
+        #     cost_volume_l[x] = tmp_l
+        #     tmp_r = np.hstack((tmp, cost_volume_l[x, :, :x]))
+        #     tmp_r = np.clip(tmp_r, 0, 255)
+        #     cost_volume_r[x] = tmp_r
+        if self.args.log_disp:
+            show_costs(cost_volume_l)
         return cost_volume_l, cost_volume_r
 
 # if __name__ == "__main__":
