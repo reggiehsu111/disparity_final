@@ -78,12 +78,12 @@ class refiner():
         labels = np.minimum(F_l, F_r)
         labels_filtered = weightedMedianFilter(joint=Il.astype(np.uint8), src=labels.astype(np.uint8), r=32, sigma=15)
         labels = np.where(check_idx, labels, labels_filtered)
-
-        # labels = guidedFilter(guide=gray, src=labels.astype(np.uint8), radius=1, eps=50, dDepth=-1)
-        labels = cv2.bilateralFilter(labels.astype(np.float32), 5, 9, 16)
-
+        
+        # labels = cv2.bilateralFilter(labels.astype(np.float32), 5, 9, 16)
         outlier = self.find_outlier(D_l, D_r, h, w)
         labels = self.segmentation(Il, labels, outlier, 200, 200, True)
+
+        # labels = guidedFilter(guide=gray, src=labels.astype(np.uint8), radius=1, eps=50, dDepth=-1)
         
         
 

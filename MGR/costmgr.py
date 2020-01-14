@@ -412,15 +412,10 @@ class costMgr(costMgrBase):
             print("Aggregating vertical cost...")
             cost_volume_l = self.cost_aggregate_v(cost_volume_l, U_l)
             cost_volume_r = self.cost_aggregate_v(cost_volume_r, U_r)
-        # for x in range(cost_volume_l.shape[0]):
-        #     tmp = cost_volume_l[x, :, x:self.w];
-        #     tmp = guidedFilter(guide=I_l[:, x:self.w], src=tmp.astype(np.uint8), radius=80, eps=200, dDepth=-1)
-        #     tmp_l = np.hstack((cost_volume_l[x, :, :x], tmp))
-        #     tmp_l = np.clip(tmp_l, 0, 255)
-        #     cost_volume_l[x] = tmp_l
-        #     tmp_r = np.hstack((tmp, cost_volume_l[x, :, :x]))
-        #     tmp_r = np.clip(tmp_r, 0, 255)
-        #     cost_volume_r[x] = tmp_r
+        for x in range(cost_volume_l.shape[0]):
+            cost_volume_l[x] = guidedFilter(guide=I_l, src=cost_volume_l[x].astype(np.uint8), radius=2, eps=50, dDepth=-1)
+            cost_volume_r[x] = guidedFilter(guide=I_l, src=cost_volume_r[x].astype(np.uint8), radius=1, eps=50, dDepth=-1)
+
         if self.args.log_disp:
             show_costs(cost_volume_l)
         return cost_volume_l, cost_volume_r
