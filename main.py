@@ -44,8 +44,34 @@ def main():
     img_left = cv2.imread(args.input_left)
     img_right = cv2.imread(args.input_right)
     tic = time.time()
-    #add
     
+    # max distance
+    print(args.max_disp)
+    surf = cv2.xfeatures2d.SURF_create(1000)
+    bf = cv2.BFMatcher()
+    left_kp, left_des = surf.detectAndCompute(img_left,None)
+    right_kp, right_des = surf.detectAndCompute(img_right,None)
+    matches = bf.knnMatch(left_des, right_des, k=2)
+    good = list()
+    pos = 0
+    for (m, n) in matches:
+        if m.distance < 0.75 * n.distance:
+            good.append(m)
+    dis = list()
+    for _m in good:
+        left_idx = left_kp[_m.queryIdx].pt
+        right_idx = right_kp[_m.trainIdx].pt
+        if (left_idx[0] > right_idx[0]):
+            dis.append(left_idx[0] - right_idx[0])
+    dis = (np.array(dis))
+    dis = np.sort(dis)
+    dis = np.abs(dis)
+    max_dis = np.max(dis)
+    max_dis += 1
+    args.max_disp = int(max_dis)
+    print(args.max_disp)
+    
+    #add
     img_left_g = cv2.cvtColor(img_left , cv2.COLOR_BGR2GRAY)
     img_right_g = cv2.cvtColor(img_right ,  cv2.COLOR_BGR2GRAY)
     eq_l = cv2.equalizeHist(img_left_g)
@@ -74,7 +100,6 @@ def main():
     toc = time.time()
     writePFM(args.output, disp)
     print('Elapsed time: %f sec.' % (toc - tic))
-    
 
 
 
