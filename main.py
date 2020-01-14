@@ -66,7 +66,14 @@ def main():
     dis = (np.array(dis))
     dis = np.sort(dis)
     dis = np.abs(dis)
-    max_dis = np.max(dis)
+    
+    max_dis = 60
+
+    for i in range(len(dis)):
+        if (dis[-1-i] - dis[-1-(i+1)]) < 2 and (dis[-1-i] - dis[-1-(i+2)]) < 2:
+            max_dis = dis[-1-i]
+            break
+
     max_dis += 1
     args.max_disp = int(max_dis)
     print(args.max_disp)
