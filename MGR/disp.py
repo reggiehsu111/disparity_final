@@ -32,6 +32,10 @@ class dispMgr():
         OP_out_l, OP_out_r = self.OP.run(CM_out_l, CM_out_r, base=self.args.OP_base)
         self.print_v("##### Elapsed time: "+ str(time.time()-start) +" #####\n")
 
+        print("Writing out...")
+        cv2.imwrite("log/OP_l.jpg", OP_out_l*3)
+        cv2.imwrite("log/OP_r.jpg", OP_out_r*3)
+
         # Refinement
         self.print_v("##### Refining... #####")
         start = time.time()
