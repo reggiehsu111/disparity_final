@@ -50,6 +50,7 @@ class refiner():
             base method used in HW4
         """
         Il = args[0]
+        CM_out_l = args[1]
         gray = cv2.cvtColor(Il, cv2.COLOR_RGB2GRAY)
         h, w = D_l.shape
         D_l = self.border_refinement(D_l, h, w)
@@ -75,17 +76,18 @@ class refiner():
             fill_vector = np.where(~np.isnan(col), col, fill_vector)
             F_r[:, j] = np.where(np.isnan(col), fill_vector, col)
 
+
         labels = np.minimum(F_l, F_r)
         labels_filtered = weightedMedianFilter(joint=Il.astype(np.uint8), src=labels.astype(np.uint8), r=32, sigma=15)
         labels = np.where(check_idx, labels, labels_filtered)
 
         # labels = guidedFilter(guide=gray, src=labels.astype(np.uint8), radius=1, eps=50, dDepth=-1)
+
         labels = cv2.bilateralFilter(labels.astype(np.float32), 5, 9, 16)
+        labels = self.subpixel_enhancement(labels.astype(np.int32), CM_out_l)
 
         outlier = self.find_outlier(D_l, D_r, h, w)
         labels = self.segmentation(Il, labels, outlier, 200, 200, True)
-        
-        
 
         # labels = guidedFilter(guide=Il, src=labels.astype(np.uint8), radius=2, eps=30, dDepth=-1)
         disp_normalized = form_color_map(labels)
@@ -136,6 +138,19 @@ class refiner():
         img_valid = disp[2:h-2,5:w-2].astype('uint8')
         new_img = cv2.copyMakeBorder(img_valid,2,2,5,2,cv2.BORDER_REPLICATE)
         return new_img.astype('int')
+
+    def subpixel_enhancement(self, labels, CM_out_l):
+        h,w = labels.shape
+        for y in range(h):
+            for x in range(w):
+                disp = labels[y, x]
+                if disp >= 1 and disp < self.max_disp - 1:
+                    denominator = 2 * (CM_out_l[disp - 1, y, x] + CM_out_l[disp + 1, y, x] - 2 * CM_out_l[disp, y, x])
+                    if denominator > 1e-5:
+                        labels[y, x] = disp - min(1, max(-1, (CM_out_l[disp + 1, y, x] - CM_out_l[disp - 1, y, x]) / denominator))
+        return labels
+
+
 
     def refinement(self, displ, dispr, *args):
         threshold = 0.005   # determine the holes need to be filled with
