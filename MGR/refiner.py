@@ -143,8 +143,8 @@ class refiner():
         # apply Winner Take All on cost volumn again 
         labels = CM_out_l.argmin(axis=0)
 
-        # cv2.imshow('WTA', (labels.astype(np.float32)/self.max_disp*255).astype(np.uint8))
-        # cv2.waitKey(0)
+        cv2.imshow('WTA', (labels.astype(np.float32)/self.max_disp*255).astype(np.uint8))
+        cv2.waitKey(0)
 
         # weighted median filter
         labels_filtered = cv2.ximgproc.weightedMedianFilter(joint=Il.astype(np.uint8), src=labels.astype(np.uint8), r=10, sigma=15)
@@ -174,6 +174,7 @@ class Joint_bilateral_filter(object):
 
         # padding
         r = int(self.radius)
+        displ = cv2.copyMakeBorder(displ, r, r, r, r, cv2.BORDER_REFLECT)
         input = cv2.copyMakeBorder(input, r, r, r, r, cv2.BORDER_REFLECT)
         guidance = cv2.copyMakeBorder(guidance, r, r, r, r, cv2.BORDER_REFLECT)
         input = input.astype("float64")
@@ -197,8 +198,8 @@ class Joint_bilateral_filter(object):
                         kernel /= np.sum(kernel) 
 
                         if occluded[i - r, j - r] == 1:    # occluded
-                            if len(input[i - r:i + r + 1, j - r:j + r + 1][input[i - r:i + r + 1, j - r:j + r + 1] != 0]):
-                                Dmin = np.min(input[i - r:i + r + 1, j - r:j + r + 1][input[i - r:i + r + 1, j - r:j + r + 1] != 0])
+                            if len(displ[i - r:i + r + 1, j - r:j + r + 1][displ[i - r:i + r + 1, j - r:j + r + 1] != 0]):
+                                Dmin = np.min(displ[i - r:i + r + 1, j - r:j + r + 1][displ[i - r:i + r + 1, j - r:j + r + 1] != 0])
                                 disparity_kernel = np.exp(- np.abs(displ[i-r, j-r] - Dmin) / (0.5 * Dmin) )
                                 kernel *= disparity_kernel
                         

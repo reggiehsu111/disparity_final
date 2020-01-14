@@ -44,6 +44,7 @@ def main():
     img_left = cv2.imread(args.input_left)
     img_right = cv2.imread(args.input_right)
     tic = time.time()
+    #add
     DM = dispMgr(args)
     disp = DM.computeDisp(img_left,img_right)
     # Only when GT is valid
