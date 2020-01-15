@@ -51,12 +51,15 @@ class refiner():
         """
         Il = args[0]
         CM_out_l = args[1]
+        CM_out_r = args[2]
         gray = cv2.cvtColor(Il, cv2.COLOR_RGB2GRAY)
         h, w = D_l.shape
         D_l = self.border_refinement(D_l, h, w)
         D_r = self.border_refinement(D_r, h, w)
         D_l = cv2.medianBlur(D_l.astype('uint8'),3).astype('int')
         D_r = cv2.medianBlur(D_r.astype('uint8'),3).astype('int')
+        D_l = self.edge_detection(D_l.astype(np.int32), CM_out_l, diff=5)
+        D_r = self.edge_detection(D_r.astype(np.int32), CM_out_r, diff=5)
         # consistency check
         y, x = np.indices((h, w))
         outlier = self.find_outlier(D_l, D_r, h, w)
@@ -86,11 +89,16 @@ class refiner():
 
         # labels = guidedFilter(guide=gray, src=labels.astype(np.uint8), radius=1, eps=50, dDepth=-1)
 
-        # labels = cv2.bilateralFilter(labels.astype(np.float32), 5, 9, 16)
-        # labels = self.subpixel_enhancement(labels.astype(np.int32), CM_out_l)
+
         labels = cv2.fastNlMeansDenoising(labels.astype(np.uint8))
-        
+
+        # labels = self.edge_detection(labels.astype(np.int32), CM_out_l, diff=5)
+
+        # labels = self.subpixel_enhancement(labels.astype(np.int32), CM_out_l)
+
+        outlier = self.find_outlier(D_l, D_r, h, w)
         labels = self.segmentation(Il, labels, outlier, 200, 200, True)
+
         labels = cv2.fastNlMeansDenoising(labels.astype(np.uint8))
 
         # labels = guidedFilter(guide=Il, src=labels.astype(np.uint8), radius=2, eps=30, dDepth=-1)
@@ -154,6 +162,39 @@ class refiner():
                         labels[y, x] = disp - min(1, max(-1, (CM_out_l[disp + 1, y, x] - CM_out_l[disp - 1, y, x]) / denominator))
         return labels
 
+    def edge_detection(self, labels, cost, diff=5):
+        h, w = labels.shape
+
+        result = np.zeros_like(labels)
+        dx = ndimage.filters.sobel(labels, axis=0)
+        dy = ndimage.filters.sobel(labels, axis=1)
+
+        for y in range(h):
+            for x in range(w):
+                result[y, x] = labels[y, x]
+                if dx[y, x] > diff and x > 0 and x < w - 1:
+                    if cost[labels[y, x - 1], y, x] < cost[labels[y, x], y, x] and cost[labels[y, x + 1], y, x] < cost[labels[y, x], y, x]:
+                        if abs(cost[labels[y, x - 1], y, x] - cost[labels[y, x], y, x]) < abs(cost[labels[y, x + 1], y, x] - cost[labels[y, x], y, x]):
+                            result[y, x] = labels[y, x - 1]
+                        else:
+                            result[y, x] = labels[y, x + 1]
+                    elif cost[labels[y, x + 1], y, x] < cost[labels[y, x], y, x]:
+                        result[y, x] = labels[y, x + 1]
+                    else:
+                        result[y, x] = labels[y, x - 1]
+                
+                if dy[y, x] > diff and y > 0 and y < h - 1:
+                    if cost[labels[y - 1, x], y, x] < cost[labels[y, x], y, x] and cost[labels[y + 1, x], y, x] < cost[labels[y, x], y, x]:
+                        if abs(cost[labels[y - 1, x], y, x] - cost[labels[y, x], y, x]) < abs(cost[labels[y + 1, x], y, x] - cost[labels[y, x], y, x]):
+                            result[y, x] = labels[y - 1, x]
+                        else:
+                            result[y, x] = labels[y + 1, x]
+                    elif cost[labels[y + 1, x], y, x] < cost[labels[y, x], y, x]:
+                        result[y, x] = labels[y + 1, x]
+                    else:
+                        result[y, x] = labels[y - 1, x]
+        
+        return result
 
 
     def refinement(self, displ, dispr, *args):

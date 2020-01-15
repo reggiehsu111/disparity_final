@@ -6,10 +6,10 @@
   "max_disp": 60,
   "verbose": false,
   "config": false,
-  "CM_base": false,
+  "CM_base": true,
   "OP_base": true,
   "RF_base": true,
   "arms_th": 10,
   "log_disp": false,
-  "N": 128
+  "N": 256
 }
