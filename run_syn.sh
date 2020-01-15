@@ -1,7 +1,7 @@
 # python3 main.py --input-left <path to left image> --input-right <path toright image> --output <path to output PFM file>
 #!/bin/bash
 DATA_DIR="data/"
-SYN_DIR="Synthetic/"
+SYN_DIR="Real/"
 OUT_DIR="Output/"
 LOG_DIR="log/"
 LOGFILE="${LOG_DIR}log.txt"
