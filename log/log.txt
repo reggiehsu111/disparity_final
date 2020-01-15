@@ -2,3 +2,374 @@
 
 logging photo 0 ...
 
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL0.png
+input_right : data/Synthetic/TR0.png
+output : data/Output/out0.pfm
+GT : data/Synthetic/TLD0.pfm
+max_disp : 60
+verbose : False
+config : False
+CM_base : False
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 128
+#########################
+
+data/Output/out0.pfm
+Compute disparity for data/Synthetic/TL0.png
+60
+47
+Computing arms...
+Computing U ...
+Computing pixel-wise cost for each disparity...
+Getting costs...
+Aggregating...
+Aggregating horizontal cost...
+Aggregating vertical cost...
+Writing out...
+Error is: 2.171545
+Elapsed time: 177.628773 sec.
+
+
+logging photo 1 ...
+
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL1.png
+input_right : data/Synthetic/TR1.png
+output : data/Output/out1.pfm
+GT : data/Synthetic/TLD1.pfm
+max_disp : 60
+verbose : False
+config : False
+CM_base : False
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 128
+#########################
+
+data/Output/out1.pfm
+Compute disparity for data/Synthetic/TL1.png
+60
+52
+Computing arms...
+Computing U ...
+Computing pixel-wise cost for each disparity...
+Getting costs...
+Aggregating...
+Aggregating horizontal cost...
+Aggregating vertical cost...
+Writing out...
+Error is: 3.1218984
+Elapsed time: 151.608619 sec.
+
+
+logging photo 2 ...
+
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL2.png
+input_right : data/Synthetic/TR2.png
+output : data/Output/out2.pfm
+GT : data/Synthetic/TLD2.pfm
+max_disp : 60
+verbose : False
+config : False
+CM_base : False
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 128
+#########################
+
+data/Output/out2.pfm
+Compute disparity for data/Synthetic/TL2.png
+60
+31
+Computing arms...
+Computing U ...
+Computing pixel-wise cost for each disparity...
+Getting costs...
+Aggregating...
+Aggregating horizontal cost...
+Aggregating vertical cost...
+Writing out...
+Error is: 3.6324646
+Elapsed time: 176.008319 sec.
+
+
+logging photo 3 ...
+
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL3.png
+input_right : data/Synthetic/TR3.png
+output : data/Output/out3.pfm
+GT : data/Synthetic/TLD3.pfm
+max_disp : 60
+verbose : False
+config : False
+CM_base : False
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 128
+#########################
+
+data/Output/out3.pfm
+Compute disparity for data/Synthetic/TL3.png
+60
+59
+Computing arms...
+Computing U ...
+Computing pixel-wise cost for each disparity...
+Getting costs...
+Aggregating...
+Aggregating horizontal cost...
+Aggregating vertical cost...
+Writing out...
+Error is: 4.271061
+Elapsed time: 193.957922 sec.
+
+
+logging photo 4 ...
+
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL4.png
+input_right : data/Synthetic/TR4.png
+output : data/Output/out4.pfm
+GT : data/Synthetic/TLD4.pfm
+max_disp : 60
+verbose : False
+config : False
+CM_base : False
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 128
+#########################
+
+data/Output/out4.pfm
+Compute disparity for data/Synthetic/TL4.png
+60
+55
+Computing arms...
+Computing U ...
+Computing pixel-wise cost for each disparity...
+Getting costs...
+Aggregating...
+Aggregating horizontal cost...
+Aggregating vertical cost...
+Writing out...
+Error is: 4.3446474
+Elapsed time: 149.127879 sec.
+
+
+logging photo 5 ...
+
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL5.png
+input_right : data/Synthetic/TR5.png
+output : data/Output/out5.pfm
+GT : data/Synthetic/TLD5.pfm
+max_disp : 60
+verbose : False
+config : False
+CM_base : False
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 128
+#########################
+
+data/Output/out5.pfm
+Compute disparity for data/Synthetic/TL5.png
+60
+54
+Computing arms...
+Computing U ...
+Computing pixel-wise cost for each disparity...
+Getting costs...
+Aggregating...
+Aggregating horizontal cost...
+Aggregating vertical cost...
+Writing out...
+Error is: 4.168059
+Elapsed time: 132.574471 sec.
+
+
+logging photo 6 ...
+
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL6.png
+input_right : data/Synthetic/TR6.png
+output : data/Output/out6.pfm
+GT : data/Synthetic/TLD6.pfm
+max_disp : 60
+verbose : False
+config : False
+CM_base : False
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 128
+#########################
+
+data/Output/out6.pfm
+Compute disparity for data/Synthetic/TL6.png
+60
+36
+Computing arms...
+Computing U ...
+Computing pixel-wise cost for each disparity...
+Getting costs...
+Aggregating...
+Aggregating horizontal cost...
+Aggregating vertical cost...
+Writing out...
+Error is: 3.533244
+Elapsed time: 86.713641 sec.
+
+
+logging photo 7 ...
+
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL7.png
+input_right : data/Synthetic/TR7.png
+output : data/Output/out7.pfm
+GT : data/Synthetic/TLD7.pfm
+max_disp : 60
+verbose : False
+config : False
+CM_base : False
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 128
+#########################
+
+data/Output/out7.pfm
+Compute disparity for data/Synthetic/TL7.png
+60
+61
+Computing arms...
+Computing U ...
+Computing pixel-wise cost for each disparity...
+Getting costs...
+Aggregating...
+Aggregating horizontal cost...
+Aggregating vertical cost...
+Writing out...
+Error is: 5.565794
+Elapsed time: 107.667556 sec.
+
+
+logging photo 8 ...
+
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL8.png
+input_right : data/Synthetic/TR8.png
+output : data/Output/out8.pfm
+GT : data/Synthetic/TLD8.pfm
+max_disp : 60
+verbose : False
+config : False
+CM_base : False
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 128
+#########################
+
+data/Output/out8.pfm
+Compute disparity for data/Synthetic/TL8.png
+60
+45
+Computing arms...
+Computing U ...
+Computing pixel-wise cost for each disparity...
+Getting costs...
+Aggregating...
+Aggregating horizontal cost...
+Aggregating vertical cost...
+Writing out...
+Error is: 2.7332294
+Elapsed time: 100.716924 sec.
+
+
+logging photo 9 ...
+
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL9.png
+input_right : data/Synthetic/TR9.png
+output : data/Output/out9.pfm
+GT : data/Synthetic/TLD9.pfm
+max_disp : 60
+verbose : False
+config : False
+CM_base : False
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 128
+#########################
+
+data/Output/out9.pfm
+Compute disparity for data/Synthetic/TL9.png
+60
+60
+Computing arms...
+Computing U ...
+Computing pixel-wise cost for each disparity...
+Getting costs...
+Aggregating...
+Aggregating horizontal cost...
+Aggregating vertical cost...
+Writing out...
+Error is: 3.1050632
+Elapsed time: 104.037652 sec.
+###########################
+
+Average Error: 3.6647006000000006 
+
+###########################
