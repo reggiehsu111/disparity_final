@@ -54,8 +54,8 @@ class refiner():
         CM_out_r = args[2]
         gray = cv2.cvtColor(Il, cv2.COLOR_RGB2GRAY)
         h, w = D_l.shape
-        D_l = self.border_refinement(D_l, h, w)
-        D_r = self.border_refinement(D_r, h, w)
+        D_l = self.border(D_l, h, w)
+        D_r = self.border(D_r, h, w)
         D_l = cv2.medianBlur(D_l.astype('uint8'),3).astype('int')
         D_r = cv2.medianBlur(D_r.astype('uint8'),3).astype('int')
         D_l = self.edge_detection(D_l.astype(np.int32), CM_out_l, diff=5)
@@ -90,14 +90,15 @@ class refiner():
         # labels = guidedFilter(guide=gray, src=labels.astype(np.uint8), radius=1, eps=50, dDepth=-1)
 
         # labels = cv2.fastNlMeansDenoising(labels.astype(np.uint8))
-
         labels = self.edge_detection(labels.astype(np.int32), CM_out_l, diff=5)
         # labels = self.subpixel_enhancement(labels.astype(np.int32), CM_out_l)
 
         outlier = self.find_outlier(D_l, D_r, h, w)
-        labels = self.segmentation(Il, labels, outlier, 200, 200, True)
-
-        labels = cv2.fastNlMeansDenoising(labels.astype(np.uint8))
+        labels = self.segmentation(Il, labels, outlier, 200, 200)
+        if not self.args.real:
+            print("Synthetic")
+            labels = cv2.fastNlMeansDenoising(labels.astype(np.uint8))
+            labels = cv2.bilateralFilter(labels.astype('uint8'),10,9,2).astype('float32')
 
         # labels = guidedFilter(guide=Il, src=labels.astype(np.uint8), radius=2, eps=30, dDepth=-1)
         disp_normalized = form_color_map(labels)
@@ -115,7 +116,7 @@ class refiner():
                     if(np.abs(D_L[y,x]-D_R[y,x-D_L[y,x]]) < 1.5):
                         outlier[y,x] = 1
         return outlier
-    def segmentation(self, Il, D_l, outlier, k, min_size, bi):
+    def segmentation(self, Il, D_l, outlier, k, min_size):
         segmentator = cv2.ximgproc.segmentation.createGraphSegmentation(sigma=0.5, k=k, min_size=min_size)
         segment = segmentator.processImage(Il)   
 
@@ -137,14 +138,11 @@ class refiner():
 
             if(d[invalid].size/(d[valid].size+d[invalid].size) > 0.95 and np.max(np.where(np.logical_or(valid,invalid) == True)[1]) < np.max(D_l) + 5):
                 d[segment == i] = int((self.max_disp) * 0.9)
-
-        if bi:
-            d = cv2.bilateralFilter(d.astype('uint8'),10,9,2).astype('float32')
         
         D_l = d
         return D_l
 
-    def border_refinement(self, disp, h, w):
+    def border(self, disp, h, w):
         img_valid = disp[2:h-2,5:w-2].astype('uint8')
         new_img = cv2.copyMakeBorder(img_valid,2,2,5,2,cv2.BORDER_REPLICATE)
         return new_img.astype('int')

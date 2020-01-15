@@ -2,6 +2,10 @@
 
 logging photo 0 ...
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 
 #########################
 Config:
@@ -13,16 +17,26 @@ GT : data/Synthetic/TLD0.pfm
 max_disp : 60
 verbose : False
 config : False
+<<<<<<< HEAD
 CM_base : False
+=======
+real : False
+CM_base : True
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 OP_base : True
 RF_base : True
 arms_th : 10
 log_disp : False
+<<<<<<< HEAD
 N : 128
+=======
+N : 256
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 #########################
 
 data/Output/out0.pfm
 Compute disparity for data/Synthetic/TL0.png
+<<<<<<< HEAD
 60
 47
 Computing arms...
@@ -35,6 +49,12 @@ Aggregating vertical cost...
 Writing out...
 Error is: 2.171545
 Elapsed time: 177.628773 sec.
+=======
+Writing out...
+Synthetic
+Error is: 2.337147
+Elapsed time: 6.478761 sec.
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 
 
 logging photo 1 ...
@@ -50,16 +70,26 @@ GT : data/Synthetic/TLD1.pfm
 max_disp : 60
 verbose : False
 config : False
+<<<<<<< HEAD
 CM_base : False
+=======
+real : False
+CM_base : True
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 OP_base : True
 RF_base : True
 arms_th : 10
 log_disp : False
+<<<<<<< HEAD
 N : 128
+=======
+N : 256
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 #########################
 
 data/Output/out1.pfm
 Compute disparity for data/Synthetic/TL1.png
+<<<<<<< HEAD
 60
 52
 Computing arms...
@@ -72,6 +102,12 @@ Aggregating vertical cost...
 Writing out...
 Error is: 3.1218984
 Elapsed time: 151.608619 sec.
+=======
+Writing out...
+Synthetic
+Error is: 2.4349644
+Elapsed time: 6.630540 sec.
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 
 
 logging photo 2 ...
@@ -87,16 +123,26 @@ GT : data/Synthetic/TLD2.pfm
 max_disp : 60
 verbose : False
 config : False
+<<<<<<< HEAD
 CM_base : False
+=======
+real : False
+CM_base : True
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 OP_base : True
 RF_base : True
 arms_th : 10
 log_disp : False
+<<<<<<< HEAD
 N : 128
+=======
+N : 256
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 #########################
 
 data/Output/out2.pfm
 Compute disparity for data/Synthetic/TL2.png
+<<<<<<< HEAD
 60
 31
 Computing arms...
@@ -109,6 +155,12 @@ Aggregating vertical cost...
 Writing out...
 Error is: 3.6324646
 Elapsed time: 176.008319 sec.
+=======
+Writing out...
+Synthetic
+Error is: 2.2715843
+Elapsed time: 6.165799 sec.
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 
 
 logging photo 3 ...
@@ -124,16 +176,26 @@ GT : data/Synthetic/TLD3.pfm
 max_disp : 60
 verbose : False
 config : False
+<<<<<<< HEAD
 CM_base : False
+=======
+real : False
+CM_base : True
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 OP_base : True
 RF_base : True
 arms_th : 10
 log_disp : False
+<<<<<<< HEAD
 N : 128
+=======
+N : 256
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 #########################
 
 data/Output/out3.pfm
 Compute disparity for data/Synthetic/TL3.png
+<<<<<<< HEAD
 60
 59
 Computing arms...
@@ -146,6 +208,12 @@ Aggregating vertical cost...
 Writing out...
 Error is: 4.271061
 Elapsed time: 193.957922 sec.
+=======
+Writing out...
+Synthetic
+Error is: 2.9772816
+Elapsed time: 6.723045 sec.
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 
 
 logging photo 4 ...
@@ -161,16 +229,26 @@ GT : data/Synthetic/TLD4.pfm
 max_disp : 60
 verbose : False
 config : False
+<<<<<<< HEAD
 CM_base : False
+=======
+real : False
+CM_base : True
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 OP_base : True
 RF_base : True
 arms_th : 10
 log_disp : False
+<<<<<<< HEAD
 N : 128
+=======
+N : 256
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 #########################
 
 data/Output/out4.pfm
 Compute disparity for data/Synthetic/TL4.png
+<<<<<<< HEAD
 60
 55
 Computing arms...
@@ -183,6 +261,12 @@ Aggregating vertical cost...
 Writing out...
 Error is: 4.3446474
 Elapsed time: 149.127879 sec.
+=======
+Writing out...
+Synthetic
+Error is: 4.2423005
+Elapsed time: 6.792764 sec.
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 
 
 logging photo 5 ...
@@ -198,16 +282,26 @@ GT : data/Synthetic/TLD5.pfm
 max_disp : 60
 verbose : False
 config : False
+<<<<<<< HEAD
 CM_base : False
+=======
+real : False
+CM_base : True
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 OP_base : True
 RF_base : True
 arms_th : 10
 log_disp : False
+<<<<<<< HEAD
 N : 128
+=======
+N : 256
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 #########################
 
 data/Output/out5.pfm
 Compute disparity for data/Synthetic/TL5.png
+<<<<<<< HEAD
 60
 54
 Computing arms...
@@ -220,6 +314,12 @@ Aggregating vertical cost...
 Writing out...
 Error is: 4.168059
 Elapsed time: 132.574471 sec.
+=======
+Writing out...
+Synthetic
+Error is: 3.033726
+Elapsed time: 6.743849 sec.
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 
 
 logging photo 6 ...
@@ -235,16 +335,26 @@ GT : data/Synthetic/TLD6.pfm
 max_disp : 60
 verbose : False
 config : False
+<<<<<<< HEAD
 CM_base : False
+=======
+real : False
+CM_base : True
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 OP_base : True
 RF_base : True
 arms_th : 10
 log_disp : False
+<<<<<<< HEAD
 N : 128
+=======
+N : 256
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 #########################
 
 data/Output/out6.pfm
 Compute disparity for data/Synthetic/TL6.png
+<<<<<<< HEAD
 60
 36
 Computing arms...
@@ -257,6 +367,12 @@ Aggregating vertical cost...
 Writing out...
 Error is: 3.533244
 Elapsed time: 86.713641 sec.
+=======
+Writing out...
+Synthetic
+Error is: 2.292182
+Elapsed time: 6.295227 sec.
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 
 
 logging photo 7 ...
@@ -272,16 +388,26 @@ GT : data/Synthetic/TLD7.pfm
 max_disp : 60
 verbose : False
 config : False
+<<<<<<< HEAD
 CM_base : False
+=======
+real : False
+CM_base : True
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 OP_base : True
 RF_base : True
 arms_th : 10
 log_disp : False
+<<<<<<< HEAD
 N : 128
+=======
+N : 256
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 #########################
 
 data/Output/out7.pfm
 Compute disparity for data/Synthetic/TL7.png
+<<<<<<< HEAD
 60
 61
 Computing arms...
@@ -294,6 +420,12 @@ Aggregating vertical cost...
 Writing out...
 Error is: 5.565794
 Elapsed time: 107.667556 sec.
+=======
+Writing out...
+Synthetic
+Error is: 3.174061
+Elapsed time: 7.072453 sec.
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 
 
 logging photo 8 ...
@@ -309,16 +441,26 @@ GT : data/Synthetic/TLD8.pfm
 max_disp : 60
 verbose : False
 config : False
+<<<<<<< HEAD
 CM_base : False
+=======
+real : False
+CM_base : True
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 OP_base : True
 RF_base : True
 arms_th : 10
 log_disp : False
+<<<<<<< HEAD
 N : 128
+=======
+N : 256
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 #########################
 
 data/Output/out8.pfm
 Compute disparity for data/Synthetic/TL8.png
+<<<<<<< HEAD
 60
 45
 Computing arms...
@@ -331,6 +473,12 @@ Aggregating vertical cost...
 Writing out...
 Error is: 2.7332294
 Elapsed time: 100.716924 sec.
+=======
+Writing out...
+Synthetic
+Error is: 1.6488324
+Elapsed time: 6.654251 sec.
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 
 
 logging photo 9 ...
@@ -346,16 +494,26 @@ GT : data/Synthetic/TLD9.pfm
 max_disp : 60
 verbose : False
 config : False
+<<<<<<< HEAD
 CM_base : False
+=======
+real : False
+CM_base : True
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 OP_base : True
 RF_base : True
 arms_th : 10
 log_disp : False
+<<<<<<< HEAD
 N : 128
+=======
+N : 256
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
 #########################
 
 data/Output/out9.pfm
 Compute disparity for data/Synthetic/TL9.png
+<<<<<<< HEAD
 60
 60
 Computing arms...
@@ -373,3 +531,16 @@ Elapsed time: 104.037652 sec.
 Average Error: 3.6647006000000006 
 
 ###########################
+=======
+Writing out...
+Synthetic
+Error is: 2.9954464
+Elapsed time: 6.982932 sec.
+###########################
+
+Average Error: 2.7407525600000002 
+
+###########################
+=======
+>>>>>>> ae256ad4330ddeff0716457658f444f20643fd84
+>>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
