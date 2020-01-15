@@ -109,7 +109,7 @@ def max_dis(img_left, img_right):
         if (dis[len(dis)-1-i] - dis[len(dis)-2-i]) < 2 and (dis[len(dis)-1-i] - dis[len(dis)-3-i]) < 2:
             max_dis = dis[len(dis)-1-i]
             break
-    max_dis += 1
+    max_dis += 10
     return int(max_dis)
 
 
