@@ -89,15 +89,9 @@ class refiner():
 
         # labels = guidedFilter(guide=gray, src=labels.astype(np.uint8), radius=1, eps=50, dDepth=-1)
 
+        # labels = cv2.fastNlMeansDenoising(labels.astype(np.uint8))
 
-<<<<<<< HEAD
         labels = self.edge_detection(labels.astype(np.int32), CM_out_l, diff=5)
-=======
-        labels = cv2.fastNlMeansDenoising(labels.astype(np.uint8))
-
-        # labels = self.edge_detection(labels.astype(np.int32), CM_out_l, diff=5)
-
->>>>>>> c56b662f930d65e270ef153a3deeca52af8a67a4
         # labels = self.subpixel_enhancement(labels.astype(np.int32), CM_out_l)
 
         outlier = self.find_outlier(D_l, D_r, h, w)
