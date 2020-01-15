@@ -93,12 +93,12 @@ def max_dis(img_left, img_right):
         if (left_idx[0] > right_idx[0]):
             dis.append(left_idx[0] - right_idx[0])
     dis = (np.array(dis))
-    dis = np.sort(dis)
     dis = np.abs(dis)
+    dis = np.sort(dis)
     max_dis = 60
     for i in range(len(dis)):
-        if (dis[-1-i] - dis[-1-(i+1)]) < 2 and (dis[-1-i] - dis[-1-(i+2)]) < 2:
-            max_dis = dis[-1-i]
+        if (dis[len(dis)-1-i] - dis[len(dis)-2-i]) < 2 and (dis[len(dis)-1-i] - dis[len(dis)-3-i]) < 2:
+            max_dis = dis[len(dis)-1-i]
             break
     max_dis += 1
     return int(max_dis)

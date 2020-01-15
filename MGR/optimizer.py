@@ -36,7 +36,46 @@ class optimizer():
         """
         out_img_l = in_img_l.argmin(axis=0)
         out_img_r = in_img_r.argmin(axis=0)
-        return out_img_l, out_img_r
+        out_img_l_true = out_img_l.copy()
+        out_img_r_true = out_img_r.copy()
+        wl, hl = out_img_l.shape
+        wr, hr = out_img_r.shape
+        windows = 2
+        check1 = 0
+        check2 = 0
+        for i in range(windows,wl-windows):
+            for j in range(windows,hl-windows):
+                #first check if it is bad
+                deltaup    = abs(out_img_l[i][j]-out_img_l[i][j+1])
+                deltadown  = abs(out_img_l[i][j]-out_img_l[i][j-1])
+                deltaleft  = abs(out_img_l[i][j]-out_img_l[i-1][j])
+                deltaright = abs(out_img_l[i][j]-out_img_l[i+1][j])
+                maxdis = 10
+                if(deltaup>maxdis and deltadown>maxdis and deltaleft>maxdis and deltaright>maxdis):
+                    vote = np.zeros(self.args.max_disp + 1)
+                    for k in range(-2,3):
+                        for l in range(-2,3):
+                            vote[out_img_l[i+k][j+l]] += 1
+                    out_img_l_true[i][j] = vote.argmax()
+                    check1 += 1
+        for i in range(windows,wr-windows):
+            for j in range(windows,hr-windows):
+                #first check if it is bad
+                deltaup    = abs(out_img_r[i][j]-out_img_r[i][j+1])
+                deltadown  = abs(out_img_r[i][j]-out_img_r[i][j-1])
+                deltaleft  = abs(out_img_r[i][j]-out_img_r[i-1][j])
+                deltaright = abs(out_img_r[i][j]-out_img_r[i+1][j])
+                maxdis = 10
+                if(deltaup>maxdis and deltadown>maxdis and deltaleft>maxdis and deltaright>maxdis):
+                    vote = np.zeros(self.args.max_disp + 1)
+                    for k in range(-2,3):
+                        for l in range(-2,3):
+                            vote[out_img_r[i+k][j+l]] += 1
+                    out_img_r_true[i][j] = vote.argmax()
+                    check2 += 1
+        print(check1)      
+        print(check2)
+        return out_img_l_true, out_img_r_true
 
     def improved_method(self, in_img_l, in_img_r):
         out_img_l = np.zeros((h, w))
