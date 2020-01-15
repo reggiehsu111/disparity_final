@@ -86,7 +86,7 @@ class refiner():
         labels = cv2.bilateralFilter(labels.astype(np.float32), 5, 9, 16)
 
         labels = self.edge_detection(labels.astype(np.int32), CM_out_l, diff=5)
-        labels = self.subpixel_enhancement(labels.astype(np.int32), CM_out_l)
+        # labels = self.subpixel_enhancement(labels.astype(np.int32), CM_out_l)
 
         outlier = self.find_outlier(D_l, D_r, h, w)
         labels = self.segmentation(Il, labels, outlier, 200, 200, True)
