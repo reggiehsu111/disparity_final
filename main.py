@@ -42,14 +42,11 @@ def main():
 
     print(args.output)
     print('Compute disparity for %s' % args.input_left)
-    # REAL = False
-    # if args.input_left.endswith("bmp"):
-    #     REAL = True
-    # args.real = (args.real or REAL)
-    # if args.real:
-    #     args.CM_base = False
-    # else:
-    #     args.CM_base = True
+    REAL = False
+    if args.input_left.endswith("bmp"):
+        REAL = True
+    args.real = (args.real or REAL)
+  
     img_left = cv2.imread(args.input_left)
     img_right = cv2.imread(args.input_right)
     tic = time.time()

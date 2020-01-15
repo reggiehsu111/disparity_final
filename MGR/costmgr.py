@@ -172,7 +172,7 @@ class costMgrBase:
         # Block matching
         for x in range(self.max_disp + 1):
             tmp = np.sum(np.abs(Il[:, x:w] - Ir[:, 0:w - x]), axis=2)
-            # tmp = guidedFilter(guide=Il[:, x:w], src=tmp.astype(np.uint8), radius=5, eps=4, dDepth=-1)
+            tmp = guidedFilter(guide=Il[:, x:w], src=tmp.astype(np.uint8), radius=5, eps=4, dDepth=-1)
             tmp_l = np.hstack((np.full((h, x), padding), tmp))
             tmp_l = np.clip(tmp_l, 0, 255)
             cost_matrix_left[x] = tmp_l
@@ -209,7 +209,7 @@ class costMgrBase:
             tmp = np.zeros((h,w-d))
             tmp = aggregate(costl[:, d:w], costr[:, :w-d], phi_l[:, d:w])
             # tmp = single_channel_agg(tmp, costl[:, d:w], phi_l[:, d:w])
-            # tmp = guidedFilter(guide=Il[:, d:w], src=tmp.astype(np.uint8), radius=1, eps=50, dDepth=-1)
+            tmp = guidedFilter(guide=Il[:, d:w], src=tmp.astype(np.uint8), radius=1, eps=50, dDepth=-1)
             # tmp = cv2.bilateralFilter(tmp.astype(np.float32), 5, 9, 16)
             tmp_l = np.hstack((np.full((h, d), padding), tmp))
             tmp_l = np.clip(tmp_l, 0, 255)
@@ -362,7 +362,7 @@ class costMgr(costMgrBase):
             tmp = np.zeros((h, w - d))
             tmp = aggregate(costl[:, d:w], costr[:, :w - d], phi_l[:, d:w])
             # tmp = single_channel_agg(tmp, costl[:, d:w], phi_l[:, d:w])
-            tmp = guidedFilter(guide=Il[:, d:w], src=tmp.astype(np.uint8), radius=1, eps=50, dDepth=-1)
+            # tmp = guidedFilter(guide=Il[:, d:w], src=tmp.astype(np.uint8), radius=1, eps=50, dDepth=-1)
             # tmp = cv2.bilateralFilter(tmp.astype(np.float32), 5, 9, 16)
             tmp_l = np.hstack((np.full((h, d), padding), tmp))
             tmp_l = np.clip(tmp_l, 0, 255)
@@ -439,7 +439,7 @@ class costMgr(costMgrBase):
         # c1 : census
         # c2 : base
         # c3 : bsm 
-        ld_1 = 100
+        ld_1 = 350
         ld_2 = 100
         ld_3 = 100
         costs = (1-np.exp(-c1/ld_1))+(1-np.exp(-c2/ld_2))+(1-np.exp(-c3/ld_3))
@@ -509,8 +509,8 @@ class costMgr(costMgrBase):
         # cost_base_l, cost_base_r = self.get_cost(I_l, I_r)
         cost_base_l, cost_base_r = self.base_method(I_l, I_r)
         cost_bsm_l, cost_bsm_r = self.get_cost_BSM(I_l, I_r)
-        # cost_volume_l = cost_census_l
-        # cost_volume_r = cost_census_r
+        # cost_volume_l = cost_base_l
+        # cost_volume_r = cost_base_r
 
 
         cost_volume_l = self.cost_merge(cost_census_l, cost_base_l, cost_bsm_l)
