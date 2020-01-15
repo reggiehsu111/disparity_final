@@ -19,4 +19,5 @@ for i in {0..9}
 		touch $OUT_PATH
 		echo -e "\n\nlogging photo $i ...\n" | tee -a $LOGFILE
 		python3 main.py --input-left $LEFT_PATH --input-right $RIGHT_PATH --output $OUT_PATH --GT $GT_PATH --CM_base --OP_base --RF_base --N 256| tee -a $LOGFILE
-python3 utils/errors.py | tee -a $LOGFILE
+    python3 utils/errors.py | tee -a $LOGFILE
+  done

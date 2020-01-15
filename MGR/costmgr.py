@@ -326,6 +326,7 @@ class costMgr(costMgrBase):
         return U_dict_l, U_dict_r
 
     def get_cost(self, I_l, I_r):
+        print("==> Compute base cost...")
         cost_l = np.zeros((self.max_disp + 1, self.h, self.w))
         cost_r = np.zeros((self.max_disp + 1, self.h, self.w))
         for d in range(self.max_disp + 1):
@@ -336,6 +337,7 @@ class costMgr(costMgrBase):
         return cost_l, cost_r
 
     def get_cost_BSM(self, Il, Ir):
+        print("==> Compute BSM cost...")
 
         h, w, ch = Il.shape
 
@@ -494,19 +496,18 @@ class costMgr(costMgrBase):
         print('Computing U ...')
         U_l, U_r = self.get_U(arms_l, arms_r)
 
-        print("Creating census window...")
-        self.build_census_window(11,11,I_l,I_r)
-        print("Computing census cost...")
-        cost_census_l = self.census_cost_L(11, 11, self.max_disp+1)
-        cost_census_r = self.census_cost_R(11, 11, self.max_disp+1)
-        # cost_volume_l = cost_census_l
-        # cost_volume_r = cost_census_r
+        # print("Creating census window...")
+        # self.build_census_window(11,11,I_l,I_r)
+        # print("Computing census cost...")
+        # cost_census_l = self.census_cost_L(11, 11, self.max_disp+1)
+        # cost_census_r = self.census_cost_R(11, 11, self.max_disp+1)
 
         print("Computing pixel-wise cost for each disparity...")
-        cost_volume_l, cost_volume_r = self.get_cost(I_l, I_r)
-        cost_base_l, cost_base_r = self.base_method(I_l, I_r)
+        census_mgr = CensusCostMgr(r=2, max_disp=self.max_disp)
+        cost_census_l, cost_census_r = census_mgr.get_cost(I_l, I_r)
+        cost_base_l, cost_base_r = self.get_cost(I_l, I_r)
+        # cost_base_l, cost_base_r = self.base_method(I_l, I_r)
         cost_bsm_l, cost_bsm_r = self.get_cost_BSM(I_l, I_r)
-
 
         cost_volume_l = self.cost_merge(cost_census_l, cost_base_l, cost_bsm_l)
         cost_volume_r = self.cost_merge(cost_census_r, cost_base_r, cost_bsm_r)
@@ -527,6 +528,40 @@ class costMgr(costMgrBase):
         if self.args.log_disp:
             show_costs(cost_volume_l)
         return cost_volume_l, cost_volume_r
+
+
+class CensusCostMgr:
+    def __init__(self, r, max_disp):
+        self.r = r
+        self.k = 2*r + 1
+        self.max_disp = max_disp
+        self.census_l, self.census_r = None, None
+
+    def compute_census(self, I):
+        h, w, ch = I.shape
+        I_padded = np.pad(I, ((self.r,), (self.r,), (0,)), mode='constant')
+        y, x = np.indices((h, w))
+        census = np.zeros((self.k ** 2, h, w, ch))
+        for i in range(self.k):
+            for j in range(self.k):
+                I_shift = I_padded[y+i, x+j]
+                census[i*self.k + j] = I < I_shift
+        return census
+
+    def get_cost(self, I_l, I_r):
+        print("==> Compute census cost...")
+        h, w, ch = I_l.shape
+        self.census_l = self.compute_census(I_l)
+        self.census_r = self.compute_census(I_r)
+
+        cost_l = np.zeros((self.max_disp + 1, h, w))
+        cost_r = np.zeros((self.max_disp + 1, h, w))
+        for d in range(self.max_disp + 1):
+            # census: (k, h, w, ch)
+            diff = (self.census_l[:, :, d:, :] != self.census_r[:, :, :w-d, :]).sum(axis=-1).sum(axis=0)
+            cost_l[d] = np.concatenate((np.full((h, d), 999), diff), axis=1)
+            cost_r[d] = np.concatenate((diff, np.full((h, d), 999)), axis=1)
+        return cost_l, cost_r
 
 # if __name__ == "__main__":
 #     parser = argparse.ArgumentParser(description='Disparity Estimation')

@@ -1,8 +1,8 @@
 {
-    "input_left": "data/Synthetic/TL2.png",
-    "input_right": "data/Synthetic/TR2.png",
-    "output": "data/Output/out2.pfm",
-    "GT": "data/Synthetic/TLD2.pfm",
+    "input_left": "data/Synthetic/TL0.png",
+    "input_right": "data/Synthetic/TR0.png",
+    "output": "data/Output/out0.pfm",
+    "GT": "data/Synthetic/TLD0.pfm",
     "max_disp": 60,
     "verbose": false,
     "config": false,
@@ -12,5 +12,5 @@
     "RF_base": true,
     "arms_th": 10,
     "log_disp": false,
-    "N": 128
+    "N": 256
 }

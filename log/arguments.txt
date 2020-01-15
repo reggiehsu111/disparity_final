@@ -1,15 +1,8 @@
 {
-<<<<<<< HEAD
-  "input_left": "data/Synthetic/TL9.png",
-  "input_right": "data/Synthetic/TR9.png",
-  "output": "data/Output/out9.pfm",
-  "GT": "data/Synthetic/TLD9.pfm",
-=======
-  "input_left": "data/Synthetic/TL2.png",
-  "input_right": "data/Synthetic/TR2.png",
-  "output": "data/Output/out2.pfm",
-  "GT": "data/Synthetic/TLD2.pfm",
->>>>>>> cc1e47746e08ac5c3bc0dba2b62ea6b4b5b508b2
+  "input_left": "data/Synthetic/TL0.png",
+  "input_right": "data/Synthetic/TR0.png",
+  "output": "data/Output/out0.pfm",
+  "GT": "data/Synthetic/TLD0.pfm",
   "max_disp": 60,
   "verbose": false,
   "config": false,
@@ -19,5 +12,5 @@
   "RF_base": true,
   "arms_th": 10,
   "log_disp": false,
-  "N": 128
+  "N": 256
 }
