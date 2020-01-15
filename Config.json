@@ -11,5 +11,5 @@
     "RF_base": true,
     "arms_th": 10,
     "log_disp": false,
-    "N": 256
+    "N": 128
 }

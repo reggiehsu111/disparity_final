@@ -1,7 +1,6 @@
 import argparse
 import cv2
 import numpy as np
-import cv2
 from cv2.ximgproc import guidedFilter
 import matplotlib.pyplot as plt
 from tqdm import tqdm
@@ -210,7 +209,7 @@ class costMgrBase:
             tmp = np.zeros((h,w-d))
             tmp = aggregate(costl[:, d:w], costr[:, :w-d], phi_l[:, d:w])
             # tmp = single_channel_agg(tmp, costl[:, d:w], phi_l[:, d:w])
-            tmp = guidedFilter(guide=Il[:, d:w], src=tmp.astype(np.uint8), radius=1, eps=50, dDepth=-1)
+            # tmp = guidedFilter(guide=Il[:, d:w], src=tmp.astype(np.uint8), radius=1, eps=50, dDepth=-1)
             # tmp = cv2.bilateralFilter(tmp.astype(np.float32), 5, 9, 16)
             tmp_l = np.hstack((np.full((h, d), padding), tmp))
             tmp_l = np.clip(tmp_l, 0, 255)
@@ -412,9 +411,9 @@ class costMgr(costMgrBase):
             print("Aggregating vertical cost...")
             cost_volume_l = self.cost_aggregate_v(cost_volume_l, U_l)
             cost_volume_r = self.cost_aggregate_v(cost_volume_r, U_r)
-        for x in range(cost_volume_l.shape[0]):
-            cost_volume_l[x] = guidedFilter(guide=I_l, src=cost_volume_l[x].astype(np.uint8), radius=2, eps=50, dDepth=-1)
-            cost_volume_r[x] = guidedFilter(guide=I_l, src=cost_volume_r[x].astype(np.uint8), radius=1, eps=50, dDepth=-1)
+        # for x in range(cost_volume_l.shape[0]):
+        #     cost_volume_l[x] = guidedFilter(guide=I_l, src=cost_volume_l[x].astype(np.uint8), radius=5, eps=4, dDepth=-1)
+        #     cost_volume_r[x] = guidedFilter(guide=I_l, src=cost_volume_r[x].astype(np.uint8), radius=5, eps=4, dDepth=-1)
 
         if self.args.log_disp:
             show_costs(cost_volume_l)
