@@ -221,7 +221,6 @@ class costMgrBase:
             tmp_r = np.clip(tmp_r, 0, 255)
             cost_matrix_right[d] = tmp_r
         # cost_matrix_left, cost_matrix_right = feature_aggregate(self.max_disp+1, h, w, cost_matrix_left, cost_matrix_right, costl, costr, phi_l, phi_r)
-
         if self.args.log_disp:
             show_costs(cost_matrix_left)
      
@@ -336,6 +335,48 @@ class costMgr(costMgrBase):
             cost_r[d] = np.concatenate((diff, np.full((self.h, d), 999)), axis=1)
         return cost_l, cost_r
 
+    def get_cost_BSM(self, Il, Ir):
+
+        h, w, ch = Il.shape
+
+        Il = cv2.GaussianBlur(Il, (3, 3), 2)
+        Ir = cv2.GaussianBlur(Ir, (3, 3), 2)
+        Il_gray = cv2.cvtColor(Il, cv2.COLOR_BGR2GRAY)
+        Ir_gray = cv2.cvtColor(Ir, cv2.COLOR_BGR2GRAY)
+        Il_lab = cv2.cvtColor(Il.astype(np.uint8), cv2.COLOR_BGR2Lab).astype('float')
+        Ir_lab = cv2.cvtColor(Ir.astype(np.uint8), cv2.COLOR_BGR2Lab).astype('float')
+        # Array to store disparities for window sliding left, i.e. Ir sliding right
+        cost_matrix_left = np.zeros((self.max_disp + 1, h, w))
+        # Array to store disparities for window sliding right
+        cost_matrix_right = np.zeros((self.max_disp + 1, h, w))
+        N = self.args.N
+
+        print("Getting costs...")
+        costl, costr, phi_l, phi_r = compute_cost(w, h, Il_gray, Il_lab, Ir_gray, Ir_lab, N)
+
+        print("Aggregating...")
+        padding = self.max_disp
+        for d in tqdm(range(self.max_disp + 1)):
+            tmp = np.zeros((h, w - d))
+            tmp = aggregate(costl[:, d:w], costr[:, :w - d], phi_l[:, d:w])
+            # tmp = single_channel_agg(tmp, costl[:, d:w], phi_l[:, d:w])
+            tmp = guidedFilter(guide=Il[:, d:w], src=tmp.astype(np.uint8), radius=1, eps=50, dDepth=-1)
+            # tmp = cv2.bilateralFilter(tmp.astype(np.float32), 5, 9, 16)
+            tmp_l = np.hstack((np.full((h, d), padding), tmp))
+            tmp_l = np.clip(tmp_l, 0, 255)
+            cost_matrix_left[d] = tmp_l
+            # tmp = aggregate(costl[:, d:w], costr[:, :w-d], phi_r[:, d:w])
+            # tmp = single_channel_agg(tmp, costl[:, d:w], phi_r[:, d:w])
+            # tmp = guidedFilter(guide=Il[:, d:w], src=tmp.astype(np.uint8), radius=15, eps=100, dDepth=-1)
+            tmp_r = np.hstack((tmp, np.full((h, d), padding)))
+            tmp_r = np.clip(tmp_r, 0, 255)
+            cost_matrix_right[d] = tmp_r
+        # cost_matrix_left, cost_matrix_right = feature_aggregate(self.max_disp+1, h, w, cost_matrix_left, cost_matrix_right, costl, costr, phi_l, phi_r)
+        if self.args.log_disp:
+            show_costs(cost_matrix_left)
+
+        return cost_matrix_left, cost_matrix_right
+
     def cost_aggregate_h(self, cost, U):
         y, x = np.indices((self.h, self.w))
         # calculate h integral images
@@ -392,6 +433,58 @@ class costMgr(costMgrBase):
         A_full[A_full == 0] = 1
         return E_full / A_full
 
+    def cost_merge(self,c1,c2,c3):
+        # c1 : census
+        # c2 : base
+        # c3 : bsm 
+        ld_1 = 350
+        ld_2 = 80
+        ld_3 = 50
+        costs = (1-np.exp(-c1/ld_1))+(1-np.exp(-c2/ld_2))+(1-np.exp(-c3/ld_3))
+        costs /= 3
+        return costs
+
+    def census_cost_L(self,ww,wl, max_disp):
+        area = (2*wl+1)*(2*ww+1)
+        cost_matrix_left = np.zeros((max_disp,self.h,self.w))
+        print("Left cost...")
+        for d in tqdm(range(max_disp)):
+            censusR_shift = np.concatenate( ( np.repeat(self.census_array_R[:,0,:].reshape(self.h,1,area), d, axis=1  ), self.census_array_R[:,:self.w-d,:] ),axis=1)
+            cost_matrix_left[d,:,:] = np.sum((np.logical_xor(self.census_array_L,censusR_shift)),axis=2)
+    
+        return cost_matrix_left
+
+    def census_cost_R(self,ww,wl,max_disp):
+        area = (2*wl+1)*(2*ww+1)
+        cost_matrix_right = np.zeros((max_disp,self.h,self.w))
+        print("Right cost...")
+        for d in tqdm(range(max_disp)):
+            censusL_shift = np.concatenate( (self.census_array_L[:,d:,:], ( np.repeat(self.census_array_L[:,-1,:].reshape(self.h,1,area), d, axis=1 ) ) ),axis=1)
+            cost_matrix_right[d,:,:] = np.sum((np.logical_xor(self.census_array_R,censusL_shift)),axis=2)
+    
+        return cost_matrix_right
+
+    def build_census_window(self,ww,wl,I_l,I_r):
+        area = (2*wl+1)*(2*ww+1)
+        
+        meanL = np.mean(I_l,axis=2)
+        meanR = np.mean(I_r,axis=2)
+        meanL_pad = cv2.copyMakeBorder(meanL,wl,wl,ww,ww,cv2.BORDER_REPLICATE)
+        meanR_pad = cv2.copyMakeBorder(meanR,wl,wl,ww,ww,cv2.BORDER_REPLICATE)
+    
+        census_array_L = np.zeros((self.h,self.w,area))
+        census_array_R = np.zeros((self.h,self.w,area))
+        for x in tqdm(range(ww,self.w+ww)):
+            for y in range(wl,self.h+wl):
+                _x = x - ww
+                _y = y - wl
+                winL = meanL_pad[y-wl:y+wl+1,x-ww:x+ww+1].reshape(area)
+                winR = meanR_pad[y-wl:y+wl+1,x-ww:x+ww+1].reshape(area)
+                census_array_L[_y,_x,:] = np.array(winL >= winL[int((area+1)/2)])
+                census_array_R[_y,_x,:] = np.array(winR >= winR[int((area+1)/2)])
+        self.census_array_L = census_array_L
+        self.census_array_R = census_array_R
+
     def improved_method(self, I_l, I_r):
         self.h, self.w, _ = I_l.shape
         print('Computing arms...')
@@ -400,8 +493,24 @@ class costMgr(costMgrBase):
 
         print('Computing U ...')
         U_l, U_r = self.get_U(arms_l, arms_r)
+
+        print("Creating census window...")
+        self.build_census_window(11,11,I_l,I_r)
+        print("Computing census cost...")
+        cost_census_l = self.census_cost_L(11, 11, self.max_disp+1)
+        cost_census_r = self.census_cost_R(11, 11, self.max_disp+1)
+        # cost_volume_l = cost_census_l
+        # cost_volume_r = cost_census_r
+
         print("Computing pixel-wise cost for each disparity...")
         cost_volume_l, cost_volume_r = self.get_cost(I_l, I_r)
+        cost_base_l, cost_base_r = self.base_method(I_l, I_r)
+        cost_bsm_l, cost_bsm_r = self.get_cost_BSM(I_l, I_r)
+
+
+        cost_volume_l = self.cost_merge(cost_census_l, cost_base_l, cost_bsm_l)
+        cost_volume_r = self.cost_merge(cost_census_r, cost_base_r, cost_bsm_r)
+
         # return cost_l, cost_r
 
         for _ in range(1):
