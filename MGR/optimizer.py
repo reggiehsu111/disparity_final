@@ -1,4 +1,5 @@
 import numpy as np
+import cv2
 
 def parse_from_optimizer(parser):
     return parser
@@ -77,7 +78,21 @@ class optimizer():
         print(check2)
         return out_img_l_true, out_img_r_true
 
+    def softmax(self, in_img):
+        exp = np.exp(in_img)
+        out_img = exp/np.sum(exp, axis = 0)
+        return out_img
+
     def improved_method(self, in_img_l, in_img_r):
-        out_img_l = np.zeros((h, w))
-        out_img_r = np.zeros((h, w))
+        temp_l = np.argsort(in_img_l, axis=0)
+        temp_r = np.argsort(in_img_r, axis=0)
+        # for x in range(temp_l.shape[0]):
+        #     cv2.imwrite("log/disp_sorted/"+str(x)+"_l.jpg", temp_l[x])
+        #     cv2.imwrite("log/disp_sorted/"+str(x)+"_r.jpg", temp_r[x])
+
+        out_img_l = in_img_l.argmin(axis=0)
+        out_img_r = in_img_r.argmin(axis=0)
+        print("Denoising disparity map...")
+        out_img_l = cv2.fastNlMeansDenoising(out_img_l.astype(np.uint8))
+        out_img_r = cv2.fastNlMeansDenoising(out_img_r.astype(np.uint8))
         return out_img_l, out_img_r

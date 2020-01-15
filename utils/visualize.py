@@ -3,11 +3,7 @@ from util import readPFM, writePFM, cal_avgerr
 import numpy as np
 import cv2
 
-def main():
-	# read disparity pfm file (float32)
-	# the ground truth disparity maps may contain inf pixels as invalid pixels
-	disp = readPFM(str(sys.argv[1]))
-
+def form_color_map(disp):
 	# normalize disparity to 0.0~1.0 for visualization
 	max_disp = np.nanmax(disp[disp != np.inf])
 	min_disp = np.nanmin(disp[disp != np.inf])
@@ -16,6 +12,15 @@ def main():
 	# Jet color mapping
 	disp_normalized = (disp_normalized * 255.0).astype(np.uint8)
 	disp_normalized = cv2.applyColorMap(disp_normalized, cv2.COLORMAP_JET)
+	return disp_normalized
+
+
+def main():
+	# read disparity pfm file (float32)
+	# the ground truth disparity maps may contain inf pixels as invalid pixels
+	disp = readPFM(str(sys.argv[1]))
+
+	disp_normalized = form_color_map(disp)
 	cv2.imshow("visualized disparity", disp_normalized)
 	cv2.waitKey(0)
 	cv2.destroyAllWindows()

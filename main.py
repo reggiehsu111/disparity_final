@@ -20,6 +20,7 @@ parser.add_argument('--GT', type=str, help='path to the ground truth image')
 parser.add_argument('--max_disp', default=60, type=int, help='maximum disparity possible')
 parser.add_argument('--verbose', action='store_true', help='specify if you want to print out verbosely')
 parser.add_argument('-c','--config', action='store_true', help='specify if you want to read additional arguments from config')
+parser.add_argument('-r','--real', action='store_true', help='specify if the input images are real')
 
 parser = parse_from_disp(parser)
 parser = parse_from_optimizer(parser)
@@ -41,13 +42,21 @@ def main():
 
     print(args.output)
     print('Compute disparity for %s' % args.input_left)
+    REAL = False
+    if args.input_left.endswith("bmp"):
+        REAL = True
+    args.real = (args.real or REAL)
+    if args.real:
+        args.CM_base = False
+    else:
+        args.CM_base = True
     img_left = cv2.imread(args.input_left)
     img_right = cv2.imread(args.input_right)
     tic = time.time()
     # max distance
-    print(args.max_disp)
+    # print(args.max_disp)
     args.max_disp = max_dis(img_left, img_right)
-    print(args.max_disp)
+    # print(args.max_disp)
     #add hisEqulColor
     img_left = hisEqulColor(img_left)
     img_right = hisEqulColor(img_right)
