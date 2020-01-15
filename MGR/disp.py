@@ -2,6 +2,9 @@ from .optimizer import *
 from .refiner import *
 from .costmgr import *
 import time
+from scipy import ndimage as ndi
+from skimage.morphology import watershed
+from skimage.feature import peak_local_max
 
 def parse_from_disp(parser):
     parser.add_argument('--CM_base', action='store_true', help='Specify only when using base method for costMgr')
@@ -41,6 +44,7 @@ class dispMgr():
         start = time.time()
         disp = self.RF.run(OP_out_l, OP_out_r, Il, CM_out_l, base=self.args.RF_base)
         self.print_v("##### Elapsed time: "+ str(time.time()-start) +" #####\n")
+
         return disp
 
     def print_v(self, message):

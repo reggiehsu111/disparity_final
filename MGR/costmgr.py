@@ -16,10 +16,10 @@ def parse_from_costmgr(parser):
     return parser
 
 
-def aggregate(costl, costr, phi):
+def aggregate(costl, costr, phi, axis=2):
     tmp = np.bitwise_xor(costl, costr)
     tmp = np.bitwise_and(tmp, phi)
-    tmp = np.sum(tmp, axis=2)
+    tmp = np.sum(tmp, axis=axis)
     return tmp
 
 def compute_cost(w, h, Il_gray, Il_lab, Ir_gray, Ir_lab, N):
@@ -79,6 +79,56 @@ def show_costs(matrix):
     for x in tqdm(range(matrix.shape[0])):
         cv2.imwrite("log/disps/"+str(x)+".jpg", matrix[x])
     return
+def single_channel_agg(temp, costl, phi):
+    window = 1
+    sigma1 = 9
+    sigma2 = 16
+    h, w = temp.shape
+    kernel = np.zeros((2*window+1, 2*window+1))
+    kernel_temp = np.copy(kernel)
+    ret = np.zeros((h,w))
+
+    for x in range(kernel.shape[1]):
+        kernel[:,x] = np.exp(-np.abs(x)/sigma1)
+    temp = np.pad(temp, window, 'symmetric')
+    for x in range(window, w-window):
+        for y in range(window, h-window):
+            for j in range(-window, window):
+                for i in range(-window, window):
+                    kernel_temp[j,i] = kernel[j,i] * np.exp(-aggregate(costl[y+j, x], costl[y+j, x+i], phi[y+j, x], axis=0)/sigma2)
+            ret[y-window,x-window] = np.sum(kernel_temp*temp[y-window:y+window+1, x-window:x+window+1])
+
+    return ret
+
+def feature_aggregate(d, h, w, cost_matrix_left, cost_matrix_right, costl, costr, phi_l, phi_r):
+    window = 2
+    sigma1 = 9
+    sigma2 = 16
+
+    # P = np.zeros((w,h,2*window+1))
+    # PHI = np.zeros((w, w))
+    # gamma = np.zeros((h, w, w))
+    # for y in range(h):
+    #     for z in range(-window, window):
+    #         for x in range(window, w-window):
+    #             print(z)
+    #             P[x, y, z] = np.exp(-abs(z)/sigma1)*np.exp(-aggregate(costl[y, x], costl[y, x+z]))
+    # for y in range(window, h-window):
+    #     if y == window:
+    #         for x in range(window, w-window):
+    #             for z in range(-window, window):
+    #                 PHI[x+z, x] = np.sum(P[x, y-window:y+window, z])
+    #                 PHI[x, x+z] = PHI[x+z, x]
+
+    #         break
+    #     for x in range(w):
+    #         for i in range(d):
+    #             gamma[y, x+i, x] = np.sum(cost_matrix_left[i, y-window:y+window, x])
+    # print(gamma)
+
+
+
+    return cost_matrix_left, cost_matrix_right
 
 
 
@@ -116,7 +166,7 @@ class costMgrBase:
         # Array to store disparities for window sliding right
         cost_matrix_right = np.zeros((self.max_disp + 1, h, w))
         # Define padding
-        padding = 0
+        padding = self.max_disp
 
         # >>> Cost computation
         # TODO: Compute matching cost from Il and Ir
@@ -155,18 +205,23 @@ class costMgrBase:
         costl, costr, phi_l, phi_r = compute_cost(w, h, Il_gray, Il_lab, Ir_gray, Ir_lab, N)
 
         print("Aggregating...")
-        padding = N
+        padding = self.max_disp
         for d in tqdm(range(self.max_disp+1)):
             tmp = np.zeros((h,w-d))
             tmp = aggregate(costl[:, d:w], costr[:, :w-d], phi_l[:, d:w])
-            tmp = guidedFilter(guide=Il[:, d:w], src=tmp.astype(np.uint8), radius=15, eps=100, dDepth=-1)
-            # tmp = cv2.bilateralFilter(tmp.astype(np.float32), 100, 9, 16)
+            # tmp = single_channel_agg(tmp, costl[:, d:w], phi_l[:, d:w])
+            tmp = guidedFilter(guide=Il[:, d:w], src=tmp.astype(np.uint8), radius=1, eps=50, dDepth=-1)
+            # tmp = cv2.bilateralFilter(tmp.astype(np.float32), 5, 9, 16)
             tmp_l = np.hstack((np.full((h, d), padding), tmp))
             tmp_l = np.clip(tmp_l, 0, 255)
             cost_matrix_left[d] = tmp_l
+            # tmp = aggregate(costl[:, d:w], costr[:, :w-d], phi_r[:, d:w])
+            # tmp = single_channel_agg(tmp, costl[:, d:w], phi_r[:, d:w])
+            # tmp = guidedFilter(guide=Il[:, d:w], src=tmp.astype(np.uint8), radius=15, eps=100, dDepth=-1)
             tmp_r = np.hstack((tmp, np.full((h, d), padding)))
             tmp_r = np.clip(tmp_r, 0, 255)
             cost_matrix_right[d] = tmp_r
+        # cost_matrix_left, cost_matrix_right = feature_aggregate(self.max_disp+1, h, w, cost_matrix_left, cost_matrix_right, costl, costr, phi_l, phi_r)
 
         if self.args.log_disp:
             show_costs(cost_matrix_left)
