@@ -56,7 +56,7 @@ def main():
     # max distance
     # print(args.max_disp)
     args.max_disp = max_dis(img_left, img_right)
-    # print(args.max_disp)
+    print("max disp:", args.max_disp)
     #add hisEqulColor
     img_left = hisEqulColor(img_left)
     img_right = hisEqulColor(img_right)
@@ -110,7 +110,9 @@ def max_dis(img_left, img_right):
             max_dis = dis[len(dis)-1-i]
             break
     max_dis += 1
-    return int(max_dis)
+    temp = max(6,int(max_dis))
+    temp = min(temp, 70)
+    return temp
 
 
 if __name__ == '__main__':

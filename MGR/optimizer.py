@@ -94,7 +94,7 @@ class optimizer():
 
         out_img_l = in_img_l.argmin(axis=0)
         out_img_r = in_img_r.argmin(axis=0)
-        print("Denoising disparity map...")
-        out_img_l = cv2.fastNlMeansDenoising(out_img_l.astype(np.uint8))
-        out_img_r = cv2.fastNlMeansDenoising(out_img_r.astype(np.uint8))
+        # print("Denoising disparity map...")
+        # out_img_l = cv2.fastNlMeansDenoising(out_img_l.astype(np.uint8))
+        # out_img_r = cv2.fastNlMeansDenoising(out_img_r.astype(np.uint8))
         return out_img_l, out_img_r

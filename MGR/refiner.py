@@ -54,10 +54,10 @@ class refiner():
         CM_out_r = args[2]
         gray = cv2.cvtColor(Il, cv2.COLOR_RGB2GRAY)
         h, w = D_l.shape
-        D_l = self.border(D_l, h, w)
-        D_r = self.border(D_r, h, w)
-        D_l = cv2.medianBlur(D_l.astype('uint8'),3).astype('int')
-        D_r = cv2.medianBlur(D_r.astype('uint8'),3).astype('int')
+        # D_l = self.border(D_l, h, w)
+        # D_r = self.border(D_r, h, w)
+        # D_l = cv2.medianBlur(D_l.astype('uint8'),3).astype('int')
+        # D_r = cv2.medianBlur(D_r.astype('uint8'),3).astype('int')
         D_l = self.edge_detection(D_l.astype(np.int32), CM_out_l, diff=5)
         D_r = self.edge_detection(D_r.astype(np.int32), CM_out_r, diff=5)
         # consistency check
@@ -85,13 +85,14 @@ class refiner():
         labels = np.minimum(F_l, F_r)
         labels_filtered = weightedMedianFilter(joint=Il.astype(np.uint8), src=labels.astype(np.uint8), r=32, sigma=15)
         labels = np.where(check_idx, labels, labels_filtered)
+        labels = cv2.medianBlur(labels.astype('uint8'),3).astype('int')
         
 
         # labels = guidedFilter(guide=gray, src=labels.astype(np.uint8), radius=1, eps=50, dDepth=-1)
 
         # labels = cv2.fastNlMeansDenoising(labels.astype(np.uint8))
         labels = self.edge_detection(labels.astype(np.int32), CM_out_l, diff=5)
-        # labels = self.subpixel_enhancement(labels.astype(np.int32), CM_out_l)
+        
 
         outlier = self.find_outlier(D_l, D_r, h, w)
         labels = self.segmentation(Il, labels, outlier, 200, 200)
@@ -99,6 +100,7 @@ class refiner():
             print("Synthetic")
             labels = cv2.fastNlMeansDenoising(labels.astype(np.uint8))
             labels = cv2.bilateralFilter(labels.astype('uint8'),10,9,2).astype('float32')
+        # labels = self.subpixel_enhancement(labels.astype(np.int32), CM_out_l)
 
         # labels = guidedFilter(guide=Il, src=labels.astype(np.uint8), radius=2, eps=30, dDepth=-1)
         disp_normalized = form_color_map(labels)
