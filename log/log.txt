@@ -6,10 +6,10 @@ logging photo 0 ...
 #########################
 Config:
 
-input_left : data/Synthetic/TL0.png
-input_right : data/Synthetic/TR0.png
+input_left : data/Real/TL0.png
+input_right : data/Real/TR0.png
 output : data/Output/out0.pfm
-GT : data/Synthetic/TLD0.pfm
+GT : data/Real/TLD0.pfm
 max_disp : 60
 verbose : False
 config : False
@@ -36,10 +36,10 @@ logging photo 1 ...
 #########################
 Config:
 
-input_left : data/Synthetic/TL1.png
-input_right : data/Synthetic/TR1.png
+input_left : data/Real/TL1.png
+input_right : data/Real/TR1.png
 output : data/Output/out1.pfm
-GT : data/Synthetic/TLD1.pfm
+GT : data/Real/TLD1.pfm
 max_disp : 60
 verbose : False
 config : False
@@ -52,16 +52,28 @@ N : 256
 #########################
 
 data/Output/out1.pfm
+<<<<<<< HEAD
+Compute disparity for data/Real/TL1.png
+60
+=======
 Compute disparity for data/Synthetic/TL1.png
 60
 52
 Writing out...
+<<<<<<< HEAD
 Error is: 2.4309635
 Elapsed time: 5.664011 sec.
+=======
+Error is: 4.6804633
+Elapsed time: 64.790409 sec.
+>>>>>>> 69dfeb20e210ea14db453ba716d906ec179d3b27
+>>>>>>> 5056c978f26936a79d3567a4a22fe3e09502263f
 
 
 logging photo 2 ...
 
+<<<<<<< HEAD
+=======
 
 #########################
 Config:
@@ -241,6 +253,7 @@ Elapsed time: 6.115815 sec.
 
 
 logging photo 8 ...
+<<<<<<< HEAD
 
 
 #########################
@@ -303,3 +316,5 @@ Elapsed time: 6.010812 sec.
 Average Error: 2.74688925 
 
 ###########################
+=======
+>>>>>>> 5056c978f26936a79d3567a4a22fe3e09502263f
