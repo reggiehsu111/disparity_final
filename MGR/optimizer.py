@@ -37,11 +37,12 @@ class optimizer():
         """
         out_img_l = in_img_l.argmin(axis=0)
         out_img_r = in_img_r.argmin(axis=0)
+        #my
         out_img_l_true = out_img_l.copy()
         out_img_r_true = out_img_r.copy()
         wl, hl = out_img_l.shape
         wr, hr = out_img_r.shape
-        windows = 2
+        windows = 8
         check1 = 0
         check2 = 0
         for i in range(windows,wl-windows):
@@ -54,8 +55,8 @@ class optimizer():
                 maxdis = 10
                 if(deltaup>maxdis and deltadown>maxdis and deltaleft>maxdis and deltaright>maxdis):
                     vote = np.zeros(self.args.max_disp + 1)
-                    for k in range(-2,3):
-                        for l in range(-2,3):
+                    for k in range(-windows,windows+1):
+                        for l in range(-windows,windows+1):
                             vote[out_img_l[i+k][j+l]] += 1
                     out_img_l_true[i][j] = vote.argmax()
                     check1 += 1
@@ -69,13 +70,14 @@ class optimizer():
                 maxdis = 10
                 if(deltaup>maxdis and deltadown>maxdis and deltaleft>maxdis and deltaright>maxdis):
                     vote = np.zeros(self.args.max_disp + 1)
-                    for k in range(-2,3):
-                        for l in range(-2,3):
+                    for k in range(-windows,windows+1):
+                        for l in range(-windows,windows+1):
                             vote[out_img_r[i+k][j+l]] += 1
                     out_img_r_true[i][j] = vote.argmax()
                     check2 += 1
         print(check1)      
         print(check2)
+
         return out_img_l_true, out_img_r_true
 
     def softmax(self, in_img):
