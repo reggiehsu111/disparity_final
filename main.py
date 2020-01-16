@@ -46,14 +46,17 @@ def main():
     if args.input_left.endswith("bmp"):
         REAL = True
     args.real = (args.real or REAL)
-  
+    if args.real:
+        args.CM_base = False
+    else:
+        args.CM_base = True
     img_left = cv2.imread(args.input_left)
     img_right = cv2.imread(args.input_right)
     tic = time.time()
     # max distance
-    # print(args.max_disp)
+    print(args.max_disp)
     args.max_disp = max_dis(img_left, img_right)
-    print("max disp:", args.max_disp)
+    print(args.max_disp)
     #add hisEqulColor
     img_left = hisEqulColor(img_left)
     img_right = hisEqulColor(img_right)
@@ -106,10 +109,8 @@ def max_dis(img_left, img_right):
         if (dis[len(dis)-1-i] - dis[len(dis)-2-i]) < 2 and (dis[len(dis)-1-i] - dis[len(dis)-3-i]) < 2:
             max_dis = dis[len(dis)-1-i]
             break
-    max_dis += 1
-    temp = max(6,int(max_dis))
-    temp = min(temp, 70)
-    return temp
+    max_dis += 10
+    return int(max_dis)
 
 
 if __name__ == '__main__':
