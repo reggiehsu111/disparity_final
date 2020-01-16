@@ -6,25 +6,26 @@ logging photo 0 ...
 #########################
 Config:
 
-input_left : data/Synthetic/TL0.png
-input_right : data/Synthetic/TR0.png
-output : data/Output/out0.pfm
-GT : data/Synthetic/TLD0.pfm
+input_left : data/Real/TL0.bmp
+input_right : data/Real/TR0.bmp
+output : data/Output/real_out0.pfm
+GT : None
 max_disp : 60
 verbose : False
 config : False
-real : False
+real : True
 CM_base : False
 OP_base : True
 RF_base : True
 arms_th : 10
 log_disp : False
-N : 256
+N : 128
 #########################
 
-data/Output/out0.pfm
-Compute disparity for data/Synthetic/TL0.png
-max disp: 47
+data/Output/real_out0.pfm
+Compute disparity for data/Real/TL0.bmp
+60
+6
 Computing arms...
 Computing U ...
 Computing pixel-wise cost for each disparity...
@@ -34,12 +35,11 @@ Getting costs...
 Aggregating...
 Aggregating horizontal cost...
 Aggregating vertical cost...
-1913
-2391
+0
+0
 Writing out...
 Segmenting...
-Error is: 1.3781337
-Elapsed time: 85.792500 sec.
+Elapsed time: 16.613585 sec.
 
 
 logging photo 1 ...
@@ -48,25 +48,26 @@ logging photo 1 ...
 #########################
 Config:
 
-input_left : data/Synthetic/TL1.png
-input_right : data/Synthetic/TR1.png
-output : data/Output/out1.pfm
-GT : data/Synthetic/TLD1.pfm
+input_left : data/Real/TL1.bmp
+input_right : data/Real/TR1.bmp
+output : data/Output/real_out1.pfm
+GT : None
 max_disp : 60
 verbose : False
 config : False
-real : False
+real : True
 CM_base : False
 OP_base : True
 RF_base : True
 arms_th : 10
 log_disp : False
-N : 256
+N : 128
 #########################
 
-data/Output/out1.pfm
-Compute disparity for data/Synthetic/TL1.png
-max disp: 52
+data/Output/real_out1.pfm
+Compute disparity for data/Real/TL1.bmp
+60
+6
 Computing arms...
 Computing U ...
 Computing pixel-wise cost for each disparity...
@@ -76,12 +77,11 @@ Getting costs...
 Aggregating...
 Aggregating horizontal cost...
 Aggregating vertical cost...
-1633
-1927
+0
+0
 Writing out...
 Segmenting...
-Error is: 2.2882462
-Elapsed time: 81.119762 sec.
+Elapsed time: 16.608634 sec.
 
 
 logging photo 2 ...
@@ -90,25 +90,26 @@ logging photo 2 ...
 #########################
 Config:
 
-input_left : data/Synthetic/TL2.png
-input_right : data/Synthetic/TR2.png
-output : data/Output/out2.pfm
-GT : data/Synthetic/TLD2.pfm
+input_left : data/Real/TL2.bmp
+input_right : data/Real/TR2.bmp
+output : data/Output/real_out2.pfm
+GT : None
 max_disp : 60
 verbose : False
 config : False
-real : False
+real : True
 CM_base : False
 OP_base : True
 RF_base : True
 arms_th : 10
 log_disp : False
-N : 256
+N : 128
 #########################
 
-data/Output/out2.pfm
-Compute disparity for data/Synthetic/TL2.png
-max disp: 31
+data/Output/real_out2.pfm
+Compute disparity for data/Real/TL2.bmp
+60
+13
 Computing arms...
 Computing U ...
 Computing pixel-wise cost for each disparity...
@@ -118,12 +119,11 @@ Getting costs...
 Aggregating...
 Aggregating horizontal cost...
 Aggregating vertical cost...
-345
-552
+14
+14
 Writing out...
 Segmenting...
-Error is: 2.2772431
-Elapsed time: 69.406792 sec.
+Elapsed time: 17.919095 sec.
 
 
 logging photo 3 ...
@@ -132,25 +132,26 @@ logging photo 3 ...
 #########################
 Config:
 
-input_left : data/Synthetic/TL3.png
-input_right : data/Synthetic/TR3.png
-output : data/Output/out3.pfm
-GT : data/Synthetic/TLD3.pfm
+input_left : data/Real/TL3.bmp
+input_right : data/Real/TR3.bmp
+output : data/Output/real_out3.pfm
+GT : None
 max_disp : 60
 verbose : False
 config : False
-real : False
+real : True
 CM_base : False
 OP_base : True
 RF_base : True
 arms_th : 10
 log_disp : False
-N : 256
+N : 128
 #########################
 
-data/Output/out3.pfm
-Compute disparity for data/Synthetic/TL3.png
-max disp: 59
+data/Output/real_out3.pfm
+Compute disparity for data/Real/TL3.bmp
+60
+6
 Computing arms...
 Computing U ...
 Computing pixel-wise cost for each disparity...
@@ -160,12 +161,11 @@ Getting costs...
 Aggregating...
 Aggregating horizontal cost...
 Aggregating vertical cost...
-1090
-1601
+0
+0
 Writing out...
 Segmenting...
-Error is: 2.568934
-Elapsed time: 78.588251 sec.
+Elapsed time: 16.521865 sec.
 
 
 logging photo 4 ...
@@ -174,25 +174,26 @@ logging photo 4 ...
 #########################
 Config:
 
-input_left : data/Synthetic/TL4.png
-input_right : data/Synthetic/TR4.png
-output : data/Output/out4.pfm
-GT : data/Synthetic/TLD4.pfm
+input_left : data/Real/TL4.bmp
+input_right : data/Real/TR4.bmp
+output : data/Output/real_out4.pfm
+GT : None
 max_disp : 60
 verbose : False
 config : False
-real : False
+real : True
 CM_base : False
 OP_base : True
 RF_base : True
 arms_th : 10
 log_disp : False
-N : 256
+N : 128
 #########################
 
-data/Output/out4.pfm
-Compute disparity for data/Synthetic/TL4.png
-max disp: 55
+data/Output/real_out4.pfm
+Compute disparity for data/Real/TL4.bmp
+60
+15
 Computing arms...
 Computing U ...
 Computing pixel-wise cost for each disparity...
@@ -202,12 +203,11 @@ Getting costs...
 Aggregating...
 Aggregating horizontal cost...
 Aggregating vertical cost...
-2892
-2779
+95
+98
 Writing out...
 Segmenting...
-Error is: 3.0758593
-Elapsed time: 98.807323 sec.
+Elapsed time: 18.747388 sec.
 
 
 logging photo 5 ...
@@ -216,25 +216,26 @@ logging photo 5 ...
 #########################
 Config:
 
-input_left : data/Synthetic/TL5.png
-input_right : data/Synthetic/TR5.png
-output : data/Output/out5.pfm
-GT : data/Synthetic/TLD5.pfm
+input_left : data/Real/TL5.bmp
+input_right : data/Real/TR5.bmp
+output : data/Output/real_out5.pfm
+GT : None
 max_disp : 60
 verbose : False
 config : False
-real : False
+real : True
 CM_base : False
 OP_base : True
 RF_base : True
 arms_th : 10
 log_disp : False
-N : 256
+N : 128
 #########################
 
-data/Output/out5.pfm
-Compute disparity for data/Synthetic/TL5.png
-max disp: 54
+data/Output/real_out5.pfm
+Compute disparity for data/Real/TL5.bmp
+60
+11
 Computing arms...
 Computing U ...
 Computing pixel-wise cost for each disparity...
@@ -244,12 +245,11 @@ Getting costs...
 Aggregating...
 Aggregating horizontal cost...
 Aggregating vertical cost...
-693
-1045
+23
+19
 Writing out...
 Segmenting...
-Error is: 4.5174613
-Elapsed time: 97.673096 sec.
+Elapsed time: 17.710688 sec.
 
 
 logging photo 6 ...
@@ -258,25 +258,26 @@ logging photo 6 ...
 #########################
 Config:
 
-input_left : data/Synthetic/TL6.png
-input_right : data/Synthetic/TR6.png
-output : data/Output/out6.pfm
-GT : data/Synthetic/TLD6.pfm
+input_left : data/Real/TL6.bmp
+input_right : data/Real/TR6.bmp
+output : data/Output/real_out6.pfm
+GT : None
 max_disp : 60
 verbose : False
 config : False
-real : False
+real : True
 CM_base : False
 OP_base : True
 RF_base : True
 arms_th : 10
 log_disp : False
-N : 256
+N : 128
 #########################
 
-data/Output/out6.pfm
-Compute disparity for data/Synthetic/TL6.png
-max disp: 36
+data/Output/real_out6.pfm
+Compute disparity for data/Real/TL6.bmp
+60
+6
 Computing arms...
 Computing U ...
 Computing pixel-wise cost for each disparity...
@@ -286,12 +287,11 @@ Getting costs...
 Aggregating...
 Aggregating horizontal cost...
 Aggregating vertical cost...
-1371
-1658
+0
+0
 Writing out...
 Segmenting...
-Error is: 2.1145928
-Elapsed time: 83.320472 sec.
+Elapsed time: 17.560055 sec.
 
 
 logging photo 7 ...
@@ -300,25 +300,26 @@ logging photo 7 ...
 #########################
 Config:
 
-input_left : data/Synthetic/TL7.png
-input_right : data/Synthetic/TR7.png
-output : data/Output/out7.pfm
-GT : data/Synthetic/TLD7.pfm
+input_left : data/Real/TL7.bmp
+input_right : data/Real/TR7.bmp
+output : data/Output/real_out7.pfm
+GT : None
 max_disp : 60
 verbose : False
 config : False
-real : False
+real : True
 CM_base : False
 OP_base : True
 RF_base : True
 arms_th : 10
 log_disp : False
-N : 256
+N : 128
 #########################
 
-data/Output/out7.pfm
-Compute disparity for data/Synthetic/TL7.png
-max disp: 61
+data/Output/real_out7.pfm
+Compute disparity for data/Real/TL7.bmp
+60
+15
 Computing arms...
 Computing U ...
 Computing pixel-wise cost for each disparity...
@@ -328,12 +329,11 @@ Getting costs...
 Aggregating...
 Aggregating horizontal cost...
 Aggregating vertical cost...
-2083
-2524
+49
+63
 Writing out...
 Segmenting...
-Error is: 4.2889357
-Elapsed time: 102.547876 sec.
+Elapsed time: 18.015869 sec.
 
 
 logging photo 8 ...
@@ -342,25 +342,26 @@ logging photo 8 ...
 #########################
 Config:
 
-input_left : data/Synthetic/TL8.png
-input_right : data/Synthetic/TR8.png
-output : data/Output/out8.pfm
-GT : data/Synthetic/TLD8.pfm
+input_left : data/Real/TL8.bmp
+input_right : data/Real/TR8.bmp
+output : data/Output/real_out8.pfm
+GT : None
 max_disp : 60
 verbose : False
 config : False
-real : False
+real : True
 CM_base : False
 OP_base : True
 RF_base : True
 arms_th : 10
 log_disp : False
-N : 256
+N : 128
 #########################
 
-data/Output/out8.pfm
-Compute disparity for data/Synthetic/TL8.png
-max disp: 45
+data/Output/real_out8.pfm
+Compute disparity for data/Real/TL8.bmp
+60
+6
 Computing arms...
 Computing U ...
 Computing pixel-wise cost for each disparity...
@@ -370,12 +371,11 @@ Getting costs...
 Aggregating...
 Aggregating horizontal cost...
 Aggregating vertical cost...
-488
-566
+0
+0
 Writing out...
 Segmenting...
-Error is: 1.6606822
-Elapsed time: 93.925044 sec.
+Elapsed time: 15.894544 sec.
 
 
 logging photo 9 ...
@@ -384,25 +384,26 @@ logging photo 9 ...
 #########################
 Config:
 
-input_left : data/Synthetic/TL9.png
-input_right : data/Synthetic/TR9.png
-output : data/Output/out9.pfm
-GT : data/Synthetic/TLD9.pfm
+input_left : data/Real/TL9.bmp
+input_right : data/Real/TR9.bmp
+output : data/Output/real_out9.pfm
+GT : None
 max_disp : 60
 verbose : False
 config : False
-real : False
+real : True
 CM_base : False
 OP_base : True
 RF_base : True
 arms_th : 10
 log_disp : False
-N : 256
+N : 128
 #########################
 
-data/Output/out9.pfm
-Compute disparity for data/Synthetic/TL9.png
-max disp: 60
+data/Output/real_out9.pfm
+Compute disparity for data/Real/TL9.bmp
+60
+20
 Computing arms...
 Computing U ...
 Computing pixel-wise cost for each disparity...
@@ -412,14 +413,8 @@ Getting costs...
 Aggregating...
 Aggregating horizontal cost...
 Aggregating vertical cost...
-1413
-1958
+323
+315
 Writing out...
 Segmenting...
-Error is: 2.9381263
-Elapsed time: 94.329586 sec.
-###########################
-
-Average Error: 2.71082146 
-
-###########################
+Elapsed time: 20.012112 sec.

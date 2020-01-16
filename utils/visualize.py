@@ -52,7 +52,7 @@ def compare_GT(GT_path):
 	return
 
 if __name__ == '__main__':
-	# main()
-	GT_path = sys.argv[2]
-	compare_GT(GT_path)
+	main()
+	#GT_path = sys.argv[2]
+	#compare_GT(GT_path)
 	exit()
