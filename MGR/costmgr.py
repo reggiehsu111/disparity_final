@@ -11,7 +11,7 @@ WINDOW_SIZE = 37
 def parse_from_costmgr(parser):
     parser.add_argument('--arms_th', default=10, type=float, help='the threshold for computing arms')
     parser.add_argument('--log_disp', action='store_true', help='Specify to log all levels of disparity map')
-    parser.add_argument('--N', default=128, type=int, help='For the usage of binary stereo matching')
+    parser.add_argument('--N', default=256, type=int, help='For the usage of binary stereo matching')
     return parser
 
 
@@ -439,7 +439,7 @@ class costMgr(costMgrBase):
         # c1 : census
         # c2 : base
         # c3 : bsm 
-        ld_1 = 350
+        ld_1 = 100
         ld_2 = 100
         ld_3 = 100
         costs = (1-np.exp(-c1/ld_1))+(1-np.exp(-c2/ld_2))+(1-np.exp(-c3/ld_3))
@@ -509,12 +509,12 @@ class costMgr(costMgrBase):
         # cost_base_l, cost_base_r = self.get_cost(I_l, I_r)
         cost_base_l, cost_base_r = self.base_method(I_l, I_r)
         cost_bsm_l, cost_bsm_r = self.get_cost_BSM(I_l, I_r)
-        # cost_volume_l = cost_base_l
-        # cost_volume_r = cost_base_r
+        cost_volume_l = cost_census_l
+        cost_volume_r = cost_census_r
 
 
-        cost_volume_l = self.cost_merge(cost_census_l, cost_base_l, cost_bsm_l)
-        cost_volume_r = self.cost_merge(cost_census_r, cost_base_r, cost_bsm_r)
+        # cost_volume_l = self.cost_merge(cost_census_l, cost_base_l, cost_bsm_l)
+        # cost_volume_r = self.cost_merge(cost_census_r, cost_base_r, cost_bsm_r)
 
         # return cost_l, cost_r
 

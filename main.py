@@ -59,6 +59,7 @@ def main():
     img_right = hisEqulColor(img_right)
     DM = dispMgr(args)
     disp = DM.computeDisp(img_left,img_right)
+    cv2.imwrite("data/Output/out"+args.output.split('/')[1].split('.')[0]+".jpg", disp)
     # Only when GT is valid
     if args.GT is not None:
         GT = readPFM(args.GT)
