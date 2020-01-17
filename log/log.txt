@@ -2,3 +2,489 @@
 
 logging photo 0 ...
 
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL0.png
+input_right : data/Synthetic/TR0.png
+output : data/Output/out0.pfm
+GT : data/Synthetic/TLD0.pfm
+max_disp : 60
+verbose : False
+config : False
+real : False
+CM_base : True
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 256
+#########################
+
+data/Output/out0.pfm
+Compute disparity for data/Synthetic/TL0.png
+60
+47
+Computing arms...
+Computing U ...
+Computing pixel-wise cost for each disparity...
+==> Compute census cost...
+==> Compute base cost...
+==> Compute BSM cost...
+Getting costs...
+Aggregating...
+Aggregating horizontal cost...
+Aggregating vertical cost...
+5424
+5895
+Writing out...
+Synthetic
+Error is: 1.4351639
+Elapsed time: 209.114086 sec.
+###########################
+
+Average Error: 0.14351639 
+
+###########################
+
+
+logging photo 1 ...
+
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL1.png
+input_right : data/Synthetic/TR1.png
+output : data/Output/out1.pfm
+GT : data/Synthetic/TLD1.pfm
+max_disp : 60
+verbose : False
+config : False
+real : False
+CM_base : True
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 256
+#########################
+
+data/Output/out1.pfm
+Compute disparity for data/Synthetic/TL1.png
+60
+52
+Computing arms...
+Computing U ...
+Computing pixel-wise cost for each disparity...
+==> Compute census cost...
+==> Compute base cost...
+==> Compute BSM cost...
+Getting costs...
+Aggregating...
+Aggregating horizontal cost...
+Aggregating vertical cost...
+3660
+3304
+Writing out...
+Synthetic
+Error is: 2.402084
+Elapsed time: 221.648073 sec.
+###########################
+
+Average Error: 0.38372479 
+
+###########################
+
+
+logging photo 2 ...
+
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL2.png
+input_right : data/Synthetic/TR2.png
+output : data/Output/out2.pfm
+GT : data/Synthetic/TLD2.pfm
+max_disp : 60
+verbose : False
+config : False
+real : False
+CM_base : True
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 256
+#########################
+
+data/Output/out2.pfm
+Compute disparity for data/Synthetic/TL2.png
+60
+31
+Computing arms...
+Computing U ...
+Computing pixel-wise cost for each disparity...
+==> Compute census cost...
+==> Compute base cost...
+==> Compute BSM cost...
+Getting costs...
+Aggregating...
+Aggregating horizontal cost...
+Aggregating vertical cost...
+749
+897
+Writing out...
+Synthetic
+Error is: 2.4012158
+Elapsed time: 186.852828 sec.
+###########################
+
+Average Error: 0.6238463700000001 
+
+###########################
+
+
+logging photo 3 ...
+
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL3.png
+input_right : data/Synthetic/TR3.png
+output : data/Output/out3.pfm
+GT : data/Synthetic/TLD3.pfm
+max_disp : 60
+verbose : False
+config : False
+real : False
+CM_base : True
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 256
+#########################
+
+data/Output/out3.pfm
+Compute disparity for data/Synthetic/TL3.png
+60
+59
+Computing arms...
+Computing U ...
+Computing pixel-wise cost for each disparity...
+==> Compute census cost...
+==> Compute base cost...
+==> Compute BSM cost...
+Getting costs...
+Aggregating...
+Aggregating horizontal cost...
+Aggregating vertical cost...
+3759
+4761
+Writing out...
+Synthetic
+Error is: 2.9498177
+Elapsed time: 214.473223 sec.
+###########################
+
+Average Error: 0.9188281400000001 
+
+###########################
+
+
+logging photo 4 ...
+
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL4.png
+input_right : data/Synthetic/TR4.png
+output : data/Output/out4.pfm
+GT : data/Synthetic/TLD4.pfm
+max_disp : 60
+verbose : False
+config : False
+real : False
+CM_base : True
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 256
+#########################
+
+data/Output/out4.pfm
+Compute disparity for data/Synthetic/TL4.png
+60
+55
+Computing arms...
+Computing U ...
+Computing pixel-wise cost for each disparity...
+==> Compute census cost...
+==> Compute base cost...
+==> Compute BSM cost...
+Getting costs...
+Aggregating...
+Aggregating horizontal cost...
+Aggregating vertical cost...
+5618
+4448
+Writing out...
+Synthetic
+Error is: 3.937886
+Elapsed time: 216.613576 sec.
+###########################
+
+Average Error: 1.3126167400000002 
+
+###########################
+
+
+logging photo 5 ...
+
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL5.png
+input_right : data/Synthetic/TR5.png
+output : data/Output/out5.pfm
+GT : data/Synthetic/TLD5.pfm
+max_disp : 60
+verbose : False
+config : False
+real : False
+CM_base : True
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 256
+#########################
+
+data/Output/out5.pfm
+Compute disparity for data/Synthetic/TL5.png
+60
+54
+Computing arms...
+Computing U ...
+Computing pixel-wise cost for each disparity...
+==> Compute census cost...
+==> Compute base cost...
+==> Compute BSM cost...
+Getting costs...
+Aggregating...
+Aggregating horizontal cost...
+Aggregating vertical cost...
+1406
+1681
+Writing out...
+Synthetic
+Error is: 5.1153965
+Elapsed time: 216.155455 sec.
+###########################
+
+Average Error: 1.8241563900000002 
+
+###########################
+
+
+logging photo 6 ...
+
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL6.png
+input_right : data/Synthetic/TR6.png
+output : data/Output/out6.pfm
+GT : data/Synthetic/TLD6.pfm
+max_disp : 60
+verbose : False
+config : False
+real : False
+CM_base : True
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 256
+#########################
+
+data/Output/out6.pfm
+Compute disparity for data/Synthetic/TL6.png
+60
+36
+Computing arms...
+Computing U ...
+Computing pixel-wise cost for each disparity...
+==> Compute census cost...
+==> Compute base cost...
+==> Compute BSM cost...
+Getting costs...
+Aggregating...
+Aggregating horizontal cost...
+Aggregating vertical cost...
+4040
+4068
+Writing out...
+Synthetic
+Error is: 2.025831
+Elapsed time: 192.837001 sec.
+###########################
+
+Average Error: 2.02673949 
+
+###########################
+
+
+logging photo 7 ...
+
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL7.png
+input_right : data/Synthetic/TR7.png
+output : data/Output/out7.pfm
+GT : data/Synthetic/TLD7.pfm
+max_disp : 60
+verbose : False
+config : False
+real : False
+CM_base : True
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 256
+#########################
+
+data/Output/out7.pfm
+Compute disparity for data/Synthetic/TL7.png
+60
+61
+Computing arms...
+Computing U ...
+Computing pixel-wise cost for each disparity...
+==> Compute census cost...
+==> Compute base cost...
+==> Compute BSM cost...
+Getting costs...
+Aggregating...
+Aggregating horizontal cost...
+Aggregating vertical cost...
+4030
+3678
+Writing out...
+Synthetic
+Error is: 4.3726864
+Elapsed time: 226.221399 sec.
+###########################
+
+Average Error: 2.4640081300000003 
+
+###########################
+
+
+logging photo 8 ...
+
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL8.png
+input_right : data/Synthetic/TR8.png
+output : data/Output/out8.pfm
+GT : data/Synthetic/TLD8.pfm
+max_disp : 60
+verbose : False
+config : False
+real : False
+CM_base : True
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 256
+#########################
+
+data/Output/out8.pfm
+Compute disparity for data/Synthetic/TL8.png
+60
+45
+Computing arms...
+Computing U ...
+Computing pixel-wise cost for each disparity...
+==> Compute census cost...
+==> Compute base cost...
+==> Compute BSM cost...
+Getting costs...
+Aggregating...
+Aggregating horizontal cost...
+Aggregating vertical cost...
+1472
+1646
+Writing out...
+Synthetic
+Error is: 1.793635
+Elapsed time: 211.258759 sec.
+###########################
+
+Average Error: 2.64337163 
+
+###########################
+
+
+logging photo 9 ...
+
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL9.png
+input_right : data/Synthetic/TR9.png
+output : data/Output/out9.pfm
+GT : data/Synthetic/TLD9.pfm
+max_disp : 60
+verbose : False
+config : False
+real : False
+CM_base : True
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 256
+#########################
+
+data/Output/out9.pfm
+Compute disparity for data/Synthetic/TL9.png
+60
+60
+Computing arms...
+Computing U ...
+Computing pixel-wise cost for each disparity...
+==> Compute census cost...
+==> Compute base cost...
+==> Compute BSM cost...
+Getting costs...
+Aggregating...
+Aggregating horizontal cost...
+Aggregating vertical cost...
+3735
+4568
+Writing out...
+Synthetic
+Error is: 2.5336435
+Elapsed time: 220.529086 sec.
+###########################
+
+Average Error: 2.89673598 
+
+###########################
