@@ -8,8 +8,8 @@ from skimage.feature import peak_local_max
 
 def parse_from_disp(parser):
     parser.add_argument('--CM_base', action='store_true', help='Specify only when using base method for costMgr')
-    parser.add_argument('--OP_base', action='store_true', help='Specify only when using base method for optimizer')
-    parser.add_argument('--RF_base', action='store_true', help='Specify only when using base method for refiner')
+    parser.add_argument('--OP_base', action='store_false', help='Specify only when using base method for optimizer')
+    parser.add_argument('--RF_base', action='store_false', help='Specify only when using base method for refiner')
     return parser
 
 class dispMgr():

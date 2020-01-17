@@ -45,21 +45,25 @@ def main():
     REAL = False
     if args.input_left.endswith("bmp"):
         REAL = True
-    args.real = (args.real or REAL)
-  
+    args.real = (args.real or REAL)   
     img_left = cv2.imread(args.input_left)
     img_right = cv2.imread(args.input_right)
     tic = time.time()
     # max distance
-    # print(args.max_disp)
-    args.max_disp = max_dis(img_left, img_right)
-    print("max disp:", args.max_disp)
+    print(args.max_disp)
+    if REAL:
+        args.max_disp = max_dis_real(img_left, img_right)
+        args.CM_base = False
+    else:
+        args.max_disp = max_dis(img_left, img_right)
+        args.CM_base = True
+    print(args.max_disp)
     #add hisEqulColor
     img_left = hisEqulColor(img_left)
     img_right = hisEqulColor(img_right)
     DM = dispMgr(args)
     disp = DM.computeDisp(img_left,img_right)
-    cv2.imwrite("data/Output/out"+args.output.split('/')[1].split('.')[0]+".jpg", disp)
+    # cv2.imwrite("data/Output/out"+args.output.split('/')[1].split('.')[0]+".jpg", disp)
     # Only when GT is valid
     if args.GT is not None:
         GT = readPFM(args.GT)
@@ -107,11 +111,38 @@ def max_dis(img_left, img_right):
         if (dis[len(dis)-1-i] - dis[len(dis)-2-i]) < 2 and (dis[len(dis)-1-i] - dis[len(dis)-3-i]) < 2:
             max_dis = dis[len(dis)-1-i]
             break
+    max_dis += 10
+    return int(max_dis)
+
+def max_dis_real(img_left, img_right):
+    surf = cv2.xfeatures2d.SURF_create(1000)
+    bf = cv2.BFMatcher()
+    left_kp, left_des = surf.detectAndCompute(img_left,None)
+    right_kp, right_des = surf.detectAndCompute(img_right,None)
+    matches = bf.knnMatch(left_des, right_des, k=2)
+    good = list()
+    pos = 0
+    for (m, n) in matches:
+        if m.distance < 0.75 * n.distance:
+            good.append(m)
+    dis = list()
+    for _m in good:
+        left_idx = left_kp[_m.queryIdx].pt
+        right_idx = right_kp[_m.trainIdx].pt
+        if (left_idx[0] > right_idx[0]):
+            dis.append(left_idx[0] - right_idx[0])
+    dis = (np.array(dis))
+    dis = np.abs(dis)
+    dis = np.sort(dis)
+    max_dis = 60
+    for i in range(len(dis)):
+        if (dis[len(dis)-1-i] - dis[len(dis)-2-i]) < 2 and (dis[len(dis)-1-i] - dis[len(dis)-3-i]) < 2:
+            max_dis = dis[len(dis)-1-i]
+            break
     max_dis += 1
     temp = max(6,int(max_dis))
     temp = min(temp, 70)
-    return temp
-
+    return int(temp)
 
 if __name__ == '__main__':
     main()

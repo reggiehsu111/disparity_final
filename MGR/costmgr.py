@@ -200,10 +200,8 @@ class costMgrBase:
         cost_matrix_right = np.zeros((self.max_disp+1, h, w))
         N = self.args.N
         
-        print("Getting costs...")
         costl, costr, phi_l, phi_r = compute_cost(w, h, Il_gray, Il_lab, Ir_gray, Ir_lab, N)
 
-        print("Aggregating...")
         padding = self.max_disp
         for d in tqdm(range(self.max_disp+1)):
             tmp = np.zeros((h,w-d))
@@ -439,7 +437,7 @@ class costMgr(costMgrBase):
         # c1 : census
         # c2 : base
         # c3 : bsm 
-        ld_1 = 100
+        ld_1 = 350
         ld_2 = 100
         ld_3 = 100
         costs = (1-np.exp(-c1/ld_1))+(1-np.exp(-c2/ld_2))+(1-np.exp(-c3/ld_3))
@@ -505,16 +503,19 @@ class costMgr(costMgrBase):
         print("Computing pixel-wise cost for each disparity...")
 
         census_mgr = CensusCostMgr(r=2, max_disp=self.max_disp)
+        print("Computing Census cost...")
         cost_census_l, cost_census_r = census_mgr.get_cost(I_l, I_r)
         # cost_base_l, cost_base_r = self.get_cost(I_l, I_r)
+        print("Computing AD cost...")
         cost_base_l, cost_base_r = self.base_method(I_l, I_r)
+        print("Computing BSM cost...")
         cost_bsm_l, cost_bsm_r = self.get_cost_BSM(I_l, I_r)
-        cost_volume_l = cost_census_l
-        cost_volume_r = cost_census_r
+        # cost_volume_l = cost_base_l
+        # cost_volume_r = cost_base_r
 
 
-        # cost_volume_l = self.cost_merge(cost_census_l, cost_base_l, cost_bsm_l)
-        # cost_volume_r = self.cost_merge(cost_census_r, cost_base_r, cost_bsm_r)
+        cost_volume_l = self.cost_merge(cost_census_l, cost_base_l, cost_bsm_l)
+        cost_volume_r = self.cost_merge(cost_census_r, cost_base_r, cost_bsm_r)
 
         # return cost_l, cost_r
 
