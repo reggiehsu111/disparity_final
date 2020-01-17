@@ -15,9 +15,9 @@ for i in {0..9}
 		LEFT_PATH="${DATA_DIR}${SYN_DIR}TL$i.png"
 		RIGHT_PATH="${DATA_DIR}${SYN_DIR}TR$i.png"
 		GT_PATH="${DATA_DIR}${SYN_DIR}TLD$i.pfm"
-		OUT_PATH="${DATA_DIR}${OUT_DIR}out$i.pfm"
+		OUT_PATH="${DATA_DIR}${OUT_DIR}syn_out$i.pfm"
 		touch $OUT_PATH
 		echo -e "\n\nlogging photo $i ...\n" | tee -a $LOGFILE
-		python3 main.py --input-left $LEFT_PATH --input-right $RIGHT_PATH --output $OUT_PATH --GT $GT_PATH --CM_base --OP_base --RF_base --N 256| tee -a $LOGFILE
-    python3 utils/errors.py | tee -a $LOGFILE
-  done
+		python main.py --input-left $LEFT_PATH --input-right $RIGHT_PATH --output $OUT_PATH --GT $GT_PATH  --N 256| tee -a $LOGFILE
+    done
+python utils/errors.py | tee -a $LOGFILE

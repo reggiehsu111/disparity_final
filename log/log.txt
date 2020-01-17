@@ -8,13 +8,21 @@ Config:
 
 input_left : data/Synthetic/TL0.png
 input_right : data/Synthetic/TR0.png
+<<<<<<< HEAD
 output : data/Output/out0.pfm
+=======
+output : data/Output/syn_out0.pfm
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 GT : data/Synthetic/TLD0.pfm
 max_disp : 60
 verbose : False
 config : False
 real : False
+<<<<<<< HEAD
 CM_base : True
+=======
+CM_base : False
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 OP_base : True
 RF_base : True
 arms_th : 10
@@ -22,6 +30,7 @@ log_disp : False
 N : 256
 #########################
 
+<<<<<<< HEAD
 data/Output/out0.pfm
 Compute disparity for data/Synthetic/TL0.png
 60
@@ -47,6 +56,19 @@ Elapsed time: 209.114086 sec.
 Average Error: 0.14351639 
 
 ###########################
+=======
+data/Output/syn_out0.pfm
+Compute disparity for data/Synthetic/TL0.png
+60
+Syn
+56
+4156
+3434
+Writing out...
+Segmenting...
+Error is: 1.8745785
+Elapsed time: 9.525661 sec.
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 
 
 logging photo 1 ...
@@ -57,13 +79,21 @@ Config:
 
 input_left : data/Synthetic/TL1.png
 input_right : data/Synthetic/TR1.png
+<<<<<<< HEAD
 output : data/Output/out1.pfm
+=======
+output : data/Output/syn_out1.pfm
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 GT : data/Synthetic/TLD1.pfm
 max_disp : 60
 verbose : False
 config : False
 real : False
+<<<<<<< HEAD
 CM_base : True
+=======
+CM_base : False
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 OP_base : True
 RF_base : True
 arms_th : 10
@@ -71,6 +101,7 @@ log_disp : False
 N : 256
 #########################
 
+<<<<<<< HEAD
 data/Output/out1.pfm
 Compute disparity for data/Synthetic/TL1.png
 60
@@ -96,6 +127,19 @@ Elapsed time: 221.648073 sec.
 Average Error: 0.38372479 
 
 ###########################
+=======
+data/Output/syn_out1.pfm
+Compute disparity for data/Synthetic/TL1.png
+60
+Syn
+61
+4236
+1965
+Writing out...
+Segmenting...
+Error is: 2.392845
+Elapsed time: 9.150238 sec.
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 
 
 logging photo 2 ...
@@ -106,13 +150,21 @@ Config:
 
 input_left : data/Synthetic/TL2.png
 input_right : data/Synthetic/TR2.png
+<<<<<<< HEAD
 output : data/Output/out2.pfm
+=======
+output : data/Output/syn_out2.pfm
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 GT : data/Synthetic/TLD2.pfm
 max_disp : 60
 verbose : False
 config : False
 real : False
+<<<<<<< HEAD
 CM_base : True
+=======
+CM_base : False
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 OP_base : True
 RF_base : True
 arms_th : 10
@@ -120,6 +172,7 @@ log_disp : False
 N : 256
 #########################
 
+<<<<<<< HEAD
 data/Output/out2.pfm
 Compute disparity for data/Synthetic/TL2.png
 60
@@ -145,6 +198,19 @@ Elapsed time: 186.852828 sec.
 Average Error: 0.6238463700000001 
 
 ###########################
+=======
+data/Output/syn_out2.pfm
+Compute disparity for data/Synthetic/TL2.png
+60
+Syn
+40
+1334
+816
+Writing out...
+Segmenting...
+Error is: 1.6308731
+Elapsed time: 7.906803 sec.
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 
 
 logging photo 3 ...
@@ -155,13 +221,21 @@ Config:
 
 input_left : data/Synthetic/TL3.png
 input_right : data/Synthetic/TR3.png
+<<<<<<< HEAD
 output : data/Output/out3.pfm
+=======
+output : data/Output/syn_out3.pfm
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 GT : data/Synthetic/TLD3.pfm
 max_disp : 60
 verbose : False
 config : False
 real : False
+<<<<<<< HEAD
 CM_base : True
+=======
+CM_base : False
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 OP_base : True
 RF_base : True
 arms_th : 10
@@ -169,6 +243,7 @@ log_disp : False
 N : 256
 #########################
 
+<<<<<<< HEAD
 data/Output/out3.pfm
 Compute disparity for data/Synthetic/TL3.png
 60
@@ -194,6 +269,19 @@ Elapsed time: 214.473223 sec.
 Average Error: 0.9188281400000001 
 
 ###########################
+=======
+data/Output/syn_out3.pfm
+Compute disparity for data/Synthetic/TL3.png
+60
+Syn
+68
+2443
+1927
+Writing out...
+Segmenting...
+Error is: 2.9036694
+Elapsed time: 11.068049 sec.
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 
 
 logging photo 4 ...
@@ -204,13 +292,21 @@ Config:
 
 input_left : data/Synthetic/TL4.png
 input_right : data/Synthetic/TR4.png
+<<<<<<< HEAD
 output : data/Output/out4.pfm
+=======
+output : data/Output/syn_out4.pfm
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 GT : data/Synthetic/TLD4.pfm
 max_disp : 60
 verbose : False
 config : False
 real : False
+<<<<<<< HEAD
 CM_base : True
+=======
+CM_base : False
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 OP_base : True
 RF_base : True
 arms_th : 10
@@ -218,6 +314,7 @@ log_disp : False
 N : 256
 #########################
 
+<<<<<<< HEAD
 data/Output/out4.pfm
 Compute disparity for data/Synthetic/TL4.png
 60
@@ -243,6 +340,19 @@ Elapsed time: 216.613576 sec.
 Average Error: 1.3126167400000002 
 
 ###########################
+=======
+data/Output/syn_out4.pfm
+Compute disparity for data/Synthetic/TL4.png
+60
+Syn
+64
+5938
+4109
+Writing out...
+Segmenting...
+Error is: 3.5557013
+Elapsed time: 10.640387 sec.
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 
 
 logging photo 5 ...
@@ -253,13 +363,21 @@ Config:
 
 input_left : data/Synthetic/TL5.png
 input_right : data/Synthetic/TR5.png
+<<<<<<< HEAD
 output : data/Output/out5.pfm
+=======
+output : data/Output/syn_out5.pfm
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 GT : data/Synthetic/TLD5.pfm
 max_disp : 60
 verbose : False
 config : False
 real : False
+<<<<<<< HEAD
 CM_base : True
+=======
+CM_base : False
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 OP_base : True
 RF_base : True
 arms_th : 10
@@ -267,6 +385,7 @@ log_disp : False
 N : 256
 #########################
 
+<<<<<<< HEAD
 data/Output/out5.pfm
 Compute disparity for data/Synthetic/TL5.png
 60
@@ -292,6 +411,19 @@ Elapsed time: 216.155455 sec.
 Average Error: 1.8241563900000002 
 
 ###########################
+=======
+data/Output/syn_out5.pfm
+Compute disparity for data/Synthetic/TL5.png
+60
+Syn
+63
+1994
+1344
+Writing out...
+Segmenting...
+Error is: 3.102599
+Elapsed time: 8.411046 sec.
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 
 
 logging photo 6 ...
@@ -302,13 +434,21 @@ Config:
 
 input_left : data/Synthetic/TL6.png
 input_right : data/Synthetic/TR6.png
+<<<<<<< HEAD
 output : data/Output/out6.pfm
+=======
+output : data/Output/syn_out6.pfm
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 GT : data/Synthetic/TLD6.pfm
 max_disp : 60
 verbose : False
 config : False
 real : False
+<<<<<<< HEAD
 CM_base : True
+=======
+CM_base : False
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 OP_base : True
 RF_base : True
 arms_th : 10
@@ -316,6 +456,7 @@ log_disp : False
 N : 256
 #########################
 
+<<<<<<< HEAD
 data/Output/out6.pfm
 Compute disparity for data/Synthetic/TL6.png
 60
@@ -341,6 +482,19 @@ Elapsed time: 192.837001 sec.
 Average Error: 2.02673949 
 
 ###########################
+=======
+data/Output/syn_out6.pfm
+Compute disparity for data/Synthetic/TL6.png
+60
+Syn
+45
+3422
+2865
+Writing out...
+Segmenting...
+Error is: 2.1998165
+Elapsed time: 8.781218 sec.
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 
 
 logging photo 7 ...
@@ -351,13 +505,21 @@ Config:
 
 input_left : data/Synthetic/TL7.png
 input_right : data/Synthetic/TR7.png
+<<<<<<< HEAD
 output : data/Output/out7.pfm
+=======
+output : data/Output/syn_out7.pfm
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 GT : data/Synthetic/TLD7.pfm
 max_disp : 60
 verbose : False
 config : False
 real : False
+<<<<<<< HEAD
 CM_base : True
+=======
+CM_base : False
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 OP_base : True
 RF_base : True
 arms_th : 10
@@ -365,6 +527,7 @@ log_disp : False
 N : 256
 #########################
 
+<<<<<<< HEAD
 data/Output/out7.pfm
 Compute disparity for data/Synthetic/TL7.png
 60
@@ -390,6 +553,19 @@ Elapsed time: 226.221399 sec.
 Average Error: 2.4640081300000003 
 
 ###########################
+=======
+data/Output/syn_out7.pfm
+Compute disparity for data/Synthetic/TL7.png
+60
+Syn
+70
+4502
+2335
+Writing out...
+Segmenting...
+Error is: 3.6547909
+Elapsed time: 9.496934 sec.
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 
 
 logging photo 8 ...
@@ -400,13 +576,21 @@ Config:
 
 input_left : data/Synthetic/TL8.png
 input_right : data/Synthetic/TR8.png
+<<<<<<< HEAD
 output : data/Output/out8.pfm
+=======
+output : data/Output/syn_out8.pfm
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 GT : data/Synthetic/TLD8.pfm
 max_disp : 60
 verbose : False
 config : False
 real : False
+<<<<<<< HEAD
 CM_base : True
+=======
+CM_base : False
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 OP_base : True
 RF_base : True
 arms_th : 10
@@ -414,6 +598,7 @@ log_disp : False
 N : 256
 #########################
 
+<<<<<<< HEAD
 data/Output/out8.pfm
 Compute disparity for data/Synthetic/TL8.png
 60
@@ -439,6 +624,19 @@ Elapsed time: 211.258759 sec.
 Average Error: 2.64337163 
 
 ###########################
+=======
+data/Output/syn_out8.pfm
+Compute disparity for data/Synthetic/TL8.png
+60
+Syn
+54
+1081
+847
+Writing out...
+Segmenting...
+Error is: 1.7147303
+Elapsed time: 7.959356 sec.
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 
 
 logging photo 9 ...
@@ -449,13 +647,21 @@ Config:
 
 input_left : data/Synthetic/TL9.png
 input_right : data/Synthetic/TR9.png
+<<<<<<< HEAD
 output : data/Output/out9.pfm
+=======
+output : data/Output/syn_out9.pfm
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 GT : data/Synthetic/TLD9.pfm
 max_disp : 60
 verbose : False
 config : False
 real : False
+<<<<<<< HEAD
 CM_base : True
+=======
+CM_base : False
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 OP_base : True
 RF_base : True
 arms_th : 10
@@ -463,6 +669,7 @@ log_disp : False
 N : 256
 #########################
 
+<<<<<<< HEAD
 data/Output/out9.pfm
 Compute disparity for data/Synthetic/TL9.png
 60
@@ -486,5 +693,21 @@ Elapsed time: 220.529086 sec.
 ###########################
 
 Average Error: 2.89673598 
+=======
+data/Output/syn_out9.pfm
+Compute disparity for data/Synthetic/TL9.png
+60
+Syn
+69
+3050
+2542
+Writing out...
+Segmenting...
+Error is: 2.9755666
+Elapsed time: 9.447507 sec.
+###########################
+
+Average Error: 2.60051706 
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 
 ###########################

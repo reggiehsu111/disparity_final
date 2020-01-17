@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "input_left": "data/Synthetic/TL9.png",
   "input_right": "data/Synthetic/TR9.png",
@@ -13,4 +14,21 @@
   "arms_th": 10,
   "log_disp": false,
   "N": 256
+=======
+{
+  "input_left": "data/Synthetic/TL9.png",
+  "input_right": "data/Synthetic/TR9.png",
+  "output": "data/Output/out9.pfm",
+  "GT": "data/Synthetic/TLD9.pfm",
+  "max_disp": 60,
+  "verbose": false,
+  "config": false,
+  "real": false,
+  "CM_base": false,
+  "OP_base": true,
+  "RF_base": true,
+  "arms_th": 10,
+  "log_disp": false,
+  "N": 256
+>>>>>>> 94e723bcdeb84b2d51afe1e6849b9449fa56e8b4
 }

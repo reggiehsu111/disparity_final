@@ -11,7 +11,7 @@ WINDOW_SIZE = 37
 def parse_from_costmgr(parser):
     parser.add_argument('--arms_th', default=10, type=float, help='the threshold for computing arms')
     parser.add_argument('--log_disp', action='store_true', help='Specify to log all levels of disparity map')
-    parser.add_argument('--N', default=128, type=int, help='For the usage of binary stereo matching')
+    parser.add_argument('--N', default=256, type=int, help='For the usage of binary stereo matching')
     return parser
 
 
@@ -200,16 +200,14 @@ class costMgrBase:
         cost_matrix_right = np.zeros((self.max_disp+1, h, w))
         N = self.args.N
         
-        print("Getting costs...")
         costl, costr, phi_l, phi_r = compute_cost(w, h, Il_gray, Il_lab, Ir_gray, Ir_lab, N)
 
-        print("Aggregating...")
         padding = self.max_disp
         for d in tqdm(range(self.max_disp+1)):
             tmp = np.zeros((h,w-d))
             tmp = aggregate(costl[:, d:w], costr[:, :w-d], phi_l[:, d:w])
             # tmp = single_channel_agg(tmp, costl[:, d:w], phi_l[:, d:w])
-            # tmp = guidedFilter(guide=Il[:, d:w], src=tmp.astype(np.uint8), radius=1, eps=50, dDepth=-1)
+            tmp = guidedFilter(guide=Il[:, d:w], src=tmp.astype(np.uint8), radius=1, eps=50, dDepth=-1)
             # tmp = cv2.bilateralFilter(tmp.astype(np.float32), 5, 9, 16)
             tmp_l = np.hstack((np.full((h, d), padding), tmp))
             tmp_l = np.clip(tmp_l, 0, 255)
@@ -358,11 +356,11 @@ class costMgr(costMgrBase):
 
         print("Aggregating...")
         padding = self.max_disp
-        for d in tqdm(range(self.max_disp + 1)):
+        for d in range(self.max_disp + 1):
             tmp = np.zeros((h, w - d))
             tmp = aggregate(costl[:, d:w], costr[:, :w - d], phi_l[:, d:w])
             # tmp = single_channel_agg(tmp, costl[:, d:w], phi_l[:, d:w])
-            tmp = guidedFilter(guide=Il[:, d:w], src=tmp.astype(np.uint8), radius=1, eps=50, dDepth=-1)
+            # tmp = guidedFilter(guide=Il[:, d:w], src=tmp.astype(np.uint8), radius=1, eps=50, dDepth=-1)
             # tmp = cv2.bilateralFilter(tmp.astype(np.float32), 5, 9, 16)
             tmp_l = np.hstack((np.full((h, d), padding), tmp))
             tmp_l = np.clip(tmp_l, 0, 255)
@@ -440,8 +438,8 @@ class costMgr(costMgrBase):
         # c2 : base
         # c3 : bsm 
         ld_1 = 350
-        ld_2 = 80
-        ld_3 = 50
+        ld_2 = 100
+        ld_3 = 100
         costs = (1-np.exp(-c1/ld_1))+(1-np.exp(-c2/ld_2))+(1-np.exp(-c3/ld_3))
         costs /= 3
         return costs
@@ -503,11 +501,15 @@ class costMgr(costMgrBase):
         # cost_census_r = self.census_cost_R(11, 11, self.max_disp+1)
 
         print("Computing pixel-wise cost for each disparity...")
+
         census_mgr = CensusCostMgr(r=2, max_disp=self.max_disp)
         cost_census_l, cost_census_r = census_mgr.get_cost(I_l, I_r)
-        cost_base_l, cost_base_r = self.get_cost(I_l, I_r)
-        # cost_base_l, cost_base_r = self.base_method(I_l, I_r)
+        # cost_base_l, cost_base_r = self.get_cost(I_l, I_r)
+        cost_base_l, cost_base_r = self.base_method(I_l, I_r)
         cost_bsm_l, cost_bsm_r = self.get_cost_BSM(I_l, I_r)
+        # cost_volume_l = cost_base_l
+        # cost_volume_r = cost_base_r
+
 
         cost_volume_l = self.cost_merge(cost_census_l, cost_base_l, cost_bsm_l)
         cost_volume_r = self.cost_merge(cost_census_r, cost_base_r, cost_bsm_r)
@@ -522,8 +524,8 @@ class costMgr(costMgrBase):
             cost_volume_l = self.cost_aggregate_v(cost_volume_l, U_l)
             cost_volume_r = self.cost_aggregate_v(cost_volume_r, U_r)
         # for x in range(cost_volume_l.shape[0]):
-        #     cost_volume_l[x] = guidedFilter(guide=I_l, src=cost_volume_l[x].astype(np.uint8), radius=5, eps=4, dDepth=-1)
-        #     cost_volume_r[x] = guidedFilter(guide=I_l, src=cost_volume_r[x].astype(np.uint8), radius=5, eps=4, dDepth=-1)
+        #     cost_volume_l[x] = guidedFilter(guide=I_l, src=cost_volume_l[x].astype(np.uint8)*3, radius=1, eps=4, dDepth=-1)
+        #     cost_volume_r[x] = guidedFilter(guide=I_r, src=cost_volume_r[x].astype(np.uint8)*3, radius=1, eps=4, dDepth=-1)
 
         if self.args.log_disp:
             show_costs(cost_volume_l)

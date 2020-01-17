@@ -60,6 +60,7 @@ class refiner():
         D_r = cv2.medianBlur(D_r.astype('uint8'),3).astype('int')
         D_l = self.edge_detection(D_l.astype(np.int32), CM_out_l, diff=5)
         D_r = self.edge_detection(D_r.astype(np.int32), CM_out_r, diff=5)
+
         # consistency check
         y, x = np.indices((h, w))
         outlier = self.find_outlier(D_l, D_r, h, w)
@@ -85,20 +86,26 @@ class refiner():
         labels = np.minimum(F_l, F_r)
         labels_filtered = weightedMedianFilter(joint=Il.astype(np.uint8), src=labels.astype(np.uint8), r=32, sigma=15)
         labels = np.where(check_idx, labels, labels_filtered)
+        labels = cv2.medianBlur(labels.astype('uint8'),3).astype('int')
         
 
         # labels = guidedFilter(guide=gray, src=labels.astype(np.uint8), radius=1, eps=50, dDepth=-1)
 
         # labels = cv2.fastNlMeansDenoising(labels.astype(np.uint8))
-        labels = self.edge_detection(labels.astype(np.int32), CM_out_l, diff=5)
         # labels = self.subpixel_enhancement(labels.astype(np.int32), CM_out_l)
+
+
+        
 
         outlier = self.find_outlier(D_l, D_r, h, w)
         labels = self.segmentation(Il, labels, outlier, 200, 200)
-        if not self.args.real:
-            print("Synthetic")
-            labels = cv2.fastNlMeansDenoising(labels.astype(np.uint8))
-            labels = cv2.bilateralFilter(labels.astype('uint8'),10,9,2).astype('float32')
+        # if not self.args.real:
+        #     print("Synthetic")
+            # labels = cv2.fastNlMeansDenoising(labels.astype(np.uint8))
+        labels = cv2.bilateralFilter(labels.astype('uint8'),10,9,2).astype('float32')
+        labels = self.edge_detection(labels.astype(np.int32), CM_out_l, diff=5)
+
+
 
         # labels = guidedFilter(guide=Il, src=labels.astype(np.uint8), radius=2, eps=30, dDepth=-1)
         disp_normalized = form_color_map(labels)
@@ -117,6 +124,7 @@ class refiner():
                         outlier[y,x] = 1
         return outlier
     def segmentation(self, Il, D_l, outlier, k, min_size):
+        print("Segmenting...")
         segmentator = cv2.ximgproc.segmentation.createGraphSegmentation(sigma=0.5, k=k, min_size=min_size)
         segment = segmentator.processImage(Il)   
 

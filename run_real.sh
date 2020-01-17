@@ -14,9 +14,9 @@ for i in {0..9}
 	do
 		LEFT_PATH="${DATA_DIR}${SYN_DIR}TL$i.bmp"
 		RIGHT_PATH="${DATA_DIR}${SYN_DIR}TR$i.bmp"
-		OUT_PATH="${DATA_DIR}${OUT_DIR}out$i.pfm"
+		OUT_PATH="${DATA_DIR}${OUT_DIR}real_out$i.pfm"
 		touch $OUT_PATH
 		echo -e "\n\nlogging photo $i ...\n" | tee -a $LOGFILE
-		python3 main.py --input-left $LEFT_PATH --input-right $RIGHT_PATH --output $OUT_PATH --OP_base --RF_base --N 128| tee -a $LOGFILE
+		python main.py --input-left $LEFT_PATH --input-right $RIGHT_PATH --output $OUT_PATH --N 256 --real| tee -a $LOGFILE
 	done
 # python3 utils/errors.py | tee -a $LOGFILE

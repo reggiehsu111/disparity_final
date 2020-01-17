@@ -7,7 +7,7 @@
     "verbose": false,
     "config": false,
     "real": false,
-    "CM_base": true,
+    "CM_base": false,
     "OP_base": true,
     "RF_base": true,
     "arms_th": 10,
