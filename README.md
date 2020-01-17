@@ -1,5 +1,6 @@
 # CV Final Project Stereo Matching
 ## File Placements:
+
 ```
 .
     ├── data/                        # Place the data directory here
@@ -13,7 +14,16 @@
     └── ...
 ```
 
+## Run the Code
+
+```sh
+python3 main.py --input-left $LEFT_PATH --input-right $RIGHT_PATH --output $OUT_PATH
+```
+
+
+
 ## Development Notes
+
 - Follow the notes when developing
 
 ### requirements.txt
