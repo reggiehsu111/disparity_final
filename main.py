@@ -42,22 +42,31 @@ def main():
 
     print(args.output)
     print('Compute disparity for %s' % args.input_left)
+    #first let fail
     REAL = False
-    if args.input_left.endswith("bmp"):
-        REAL = True
-    args.real = (args.real or REAL)   
+
+    #check real by dis
+
     img_left = cv2.imread(args.input_left)
     img_right = cv2.imread(args.input_right)
     tic = time.time()
     # max distance
     print(args.max_disp)
-    if REAL:
-        args.max_disp = max_dis_real(img_left, img_right)
-        args.CM_base = False
+
+    args.max_disp = max_dis(img_left, img_right)
+    if args.max_disp < 25:
+        REAL = True
+        temp = max(6,int(args.max_disp))
+        temp = min(temp, 70)
+        args.max_disp = temp
+        print("real")
     else:
-        args.max_disp = max_dis(img_left, img_right)
-        args.CM_base = True
+        args.max_disp = args.max_disp+9
+        print("Syn")
+
     print(args.max_disp)
+    args.real = (args.real or REAL)
+    args.CM_base = not args.real
     #add hisEqulColor
     img_left = hisEqulColor(img_left)
     img_right = hisEqulColor(img_right)
@@ -111,7 +120,7 @@ def max_dis(img_left, img_right):
         if (dis[len(dis)-1-i] - dis[len(dis)-2-i]) < 2 and (dis[len(dis)-1-i] - dis[len(dis)-3-i]) < 2:
             max_dis = dis[len(dis)-1-i]
             break
-    max_dis += 10
+    max_dis += 1
     return int(max_dis)
 
 def max_dis_real(img_left, img_right):

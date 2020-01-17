@@ -6,14 +6,14 @@ logging photo 0 ...
 #########################
 Config:
 
-input_left : data/Real/TL0.bmp
-input_right : data/Real/TR0.bmp
-output : data/Output/real_out0.pfm
-GT : None
+input_left : data/Synthetic/TL0.png
+input_right : data/Synthetic/TR0.png
+output : data/Output/syn_out0.pfm
+GT : data/Synthetic/TLD0.pfm
 max_disp : 60
 verbose : False
 config : False
-real : True
+real : False
 CM_base : False
 OP_base : True
 RF_base : True
@@ -22,28 +22,334 @@ log_disp : False
 N : 256
 #########################
 
-data/Output/real_out0.pfm
-Compute disparity for data/Real/TL0.bmp
+data/Output/syn_out0.pfm
+Compute disparity for data/Synthetic/TL0.png
 60
-6
-Computing arms...
-Computing U ...
-Computing pixel-wise cost for each disparity...
-Computing Census cost...
-==> Compute census cost...
-Computing AD cost...
-Computing BSM cost...
-==> Compute BSM cost...
-Getting costs...
-Aggregating...
-Aggregating horizontal cost...
-Aggregating vertical cost...
-0
-0
+Syn
+56
+4156
+3434
 Writing out...
 Segmenting...
-Elapsed time: 38.079590 sec.
+Error is: 1.8745785
+Elapsed time: 9.525661 sec.
 
 
 logging photo 1 ...
 
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL1.png
+input_right : data/Synthetic/TR1.png
+output : data/Output/syn_out1.pfm
+GT : data/Synthetic/TLD1.pfm
+max_disp : 60
+verbose : False
+config : False
+real : False
+CM_base : False
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 256
+#########################
+
+data/Output/syn_out1.pfm
+Compute disparity for data/Synthetic/TL1.png
+60
+Syn
+61
+4236
+1965
+Writing out...
+Segmenting...
+Error is: 2.392845
+Elapsed time: 9.150238 sec.
+
+
+logging photo 2 ...
+
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL2.png
+input_right : data/Synthetic/TR2.png
+output : data/Output/syn_out2.pfm
+GT : data/Synthetic/TLD2.pfm
+max_disp : 60
+verbose : False
+config : False
+real : False
+CM_base : False
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 256
+#########################
+
+data/Output/syn_out2.pfm
+Compute disparity for data/Synthetic/TL2.png
+60
+Syn
+40
+1334
+816
+Writing out...
+Segmenting...
+Error is: 1.6308731
+Elapsed time: 7.906803 sec.
+
+
+logging photo 3 ...
+
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL3.png
+input_right : data/Synthetic/TR3.png
+output : data/Output/syn_out3.pfm
+GT : data/Synthetic/TLD3.pfm
+max_disp : 60
+verbose : False
+config : False
+real : False
+CM_base : False
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 256
+#########################
+
+data/Output/syn_out3.pfm
+Compute disparity for data/Synthetic/TL3.png
+60
+Syn
+68
+2443
+1927
+Writing out...
+Segmenting...
+Error is: 2.9036694
+Elapsed time: 11.068049 sec.
+
+
+logging photo 4 ...
+
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL4.png
+input_right : data/Synthetic/TR4.png
+output : data/Output/syn_out4.pfm
+GT : data/Synthetic/TLD4.pfm
+max_disp : 60
+verbose : False
+config : False
+real : False
+CM_base : False
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 256
+#########################
+
+data/Output/syn_out4.pfm
+Compute disparity for data/Synthetic/TL4.png
+60
+Syn
+64
+5938
+4109
+Writing out...
+Segmenting...
+Error is: 3.5557013
+Elapsed time: 10.640387 sec.
+
+
+logging photo 5 ...
+
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL5.png
+input_right : data/Synthetic/TR5.png
+output : data/Output/syn_out5.pfm
+GT : data/Synthetic/TLD5.pfm
+max_disp : 60
+verbose : False
+config : False
+real : False
+CM_base : False
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 256
+#########################
+
+data/Output/syn_out5.pfm
+Compute disparity for data/Synthetic/TL5.png
+60
+Syn
+63
+1994
+1344
+Writing out...
+Segmenting...
+Error is: 3.102599
+Elapsed time: 8.411046 sec.
+
+
+logging photo 6 ...
+
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL6.png
+input_right : data/Synthetic/TR6.png
+output : data/Output/syn_out6.pfm
+GT : data/Synthetic/TLD6.pfm
+max_disp : 60
+verbose : False
+config : False
+real : False
+CM_base : False
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 256
+#########################
+
+data/Output/syn_out6.pfm
+Compute disparity for data/Synthetic/TL6.png
+60
+Syn
+45
+3422
+2865
+Writing out...
+Segmenting...
+Error is: 2.1998165
+Elapsed time: 8.781218 sec.
+
+
+logging photo 7 ...
+
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL7.png
+input_right : data/Synthetic/TR7.png
+output : data/Output/syn_out7.pfm
+GT : data/Synthetic/TLD7.pfm
+max_disp : 60
+verbose : False
+config : False
+real : False
+CM_base : False
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 256
+#########################
+
+data/Output/syn_out7.pfm
+Compute disparity for data/Synthetic/TL7.png
+60
+Syn
+70
+4502
+2335
+Writing out...
+Segmenting...
+Error is: 3.6547909
+Elapsed time: 9.496934 sec.
+
+
+logging photo 8 ...
+
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL8.png
+input_right : data/Synthetic/TR8.png
+output : data/Output/syn_out8.pfm
+GT : data/Synthetic/TLD8.pfm
+max_disp : 60
+verbose : False
+config : False
+real : False
+CM_base : False
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 256
+#########################
+
+data/Output/syn_out8.pfm
+Compute disparity for data/Synthetic/TL8.png
+60
+Syn
+54
+1081
+847
+Writing out...
+Segmenting...
+Error is: 1.7147303
+Elapsed time: 7.959356 sec.
+
+
+logging photo 9 ...
+
+
+#########################
+Config:
+
+input_left : data/Synthetic/TL9.png
+input_right : data/Synthetic/TR9.png
+output : data/Output/syn_out9.pfm
+GT : data/Synthetic/TLD9.pfm
+max_disp : 60
+verbose : False
+config : False
+real : False
+CM_base : False
+OP_base : True
+RF_base : True
+arms_th : 10
+log_disp : False
+N : 256
+#########################
+
+data/Output/syn_out9.pfm
+Compute disparity for data/Synthetic/TL9.png
+60
+Syn
+69
+3050
+2542
+Writing out...
+Segmenting...
+Error is: 2.9755666
+Elapsed time: 9.447507 sec.
+###########################
+
+Average Error: 2.60051706 
+
+###########################

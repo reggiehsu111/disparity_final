@@ -24,10 +24,10 @@ def main():
 
 
 	disp_normalized = form_color_map(disp)
-	# cv2.imwrite("data/Comparisons/"+out_path+".jpg", disp_normalized)
-	cv2.imshow("visualized disparity", disp_normalized)
-	cv2.waitKey(0)
-	cv2.destroyAllWindows()
+	cv2.imwrite("data/Comparisons/"+out_path+".jpg", disp_normalized)
+	# cv2.imshow("visualized disparity", disp_normalized)
+	# cv2.waitKey(0)
+	# cv2.destroyAllWindows()
 
 def compare(images, output_str, out_path):
 	normalized_images = []
